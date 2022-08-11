@@ -1,0 +1,12 @@
+<app-interactive-table [name]="verbsService.name"
+                       [data]="verbsService.data"
+                       [currentItem]="verbsService.currentItem"
+                       [priority]="verbsService.priority"
+                       [isValidData]="verbsService.isValidData"
+                       [firstNext]="verbsService.firstNext"
+                       [index]="verbsService.index"
+                       (reload)="onReload()"
+                       (changePriority)="onChangePriority($event)"
+                       (previous)="onPrevious()"
+                       (next)="onNext()">
+</app-interactive-table>

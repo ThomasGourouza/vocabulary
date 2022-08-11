@@ -1,0 +1,19 @@
+<app-navigation></app-navigation>
+<div class="mx-5 main-page">
+  <div class="row">
+    <div class="col-3">
+      <div class="d-flex justify-content-center">
+        <img src="../assets/russian-eagle.png" alt="Russian Eagle" height="70%" width="70%">
+      </div>
+    </div>
+    <div class="col">
+      <p-card>
+        <router-outlet></router-outlet>
+      </p-card>
+    </div>
+    <div class="col-3">
+      <app-info></app-info>
+    </div>
+  </div>
+  <p-toast></p-toast>
+</div>

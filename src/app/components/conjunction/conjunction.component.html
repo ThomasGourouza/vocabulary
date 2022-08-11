@@ -1,0 +1,12 @@
+<app-interactive-table [name]="conjunctionsService.name"
+                       [data]="conjunctionsService.data"
+                       [currentItem]="conjunctionsService.currentItem"
+                       [priority]="conjunctionsService.priority"
+                       [isValidData]="conjunctionsService.isValidData"
+                       [firstNext]="conjunctionsService.firstNext"
+                       [index]="conjunctionsService.index"
+                       (reload)="onReload()"
+                       (changePriority)="onChangePriority($event)"
+                       (previous)="onPrevious()"
+                       (next)="onNext()">
+</app-interactive-table>

@@ -1,0 +1,27 @@
+<table class="fixed">
+    <tr>
+        <th scope="col">
+            <div class="d-flex justify-content-center">Français</div>
+        </th>
+        <th scope="col">
+            <div class="d-flex justify-content-center">Russe</div>
+        </th>
+    </tr>
+    <tr>
+        <td>
+            <div class="d-flex justify-content-center arial biggest">
+                <span *ngIf="data.length > 0 && !!currentItem">
+                    {{ currentItem?.french }}
+                </span>&nbsp;
+            </div>
+        </td>
+        <td>
+            <div class="d-flex justify-content-center arial answer biggest">
+                <span *ngIf="data.length > 0 && !!currentItem
+                            && firstNext">
+                    {{ currentItem?.russian }}
+                </span>
+            </div>
+        </td>
+    </tr>
+</table>
