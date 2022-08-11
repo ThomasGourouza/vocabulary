@@ -92,9 +92,9 @@ export class InteractiveTableComponent {
   }
 
   private loadAudioUrl(word: string): void {
-    this.readerSpeakerService.getVoice(word).subscribe((audioFileUrl) => {
+    this.readerSpeakerService.getVoice(word).subscribe((audioFile) => {
       this.isLoaded = true;
-      this.audioUrl = audioFileUrl;
+      this.audioUrl = this.readerSpeakerService.getUrl(audioFile);
       if (this.isPrevious) {
         this.onReadSpeak();
       }
