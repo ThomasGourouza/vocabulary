@@ -18,7 +18,7 @@ export class ReaderSpeakerService {
       {
         params: {
           Language: 'da-DK',
-          Voice: 'da-DK-Standard-A',
+          Voice: 'Naja_Female',
           type: 0,
           TextMessage
         },
