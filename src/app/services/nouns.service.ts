@@ -22,7 +22,7 @@ export class NounsService {
     this._tabIndex = 1;
     this._validKeys = [
       'french',
-      'russian',
+      'danish',
       'gender',
       'priority',
       'declension',

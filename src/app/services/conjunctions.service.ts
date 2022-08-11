@@ -22,7 +22,7 @@ export class ConjunctionsService {
     this._tabIndex = 5;
     this._validKeys = [
       'french',
-      'russian',
+      'danish',
       'case',
       'priority',
       'show'

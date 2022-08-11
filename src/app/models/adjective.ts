@@ -1,6 +1,6 @@
 export interface Adjective {
     french: string;
-    russian: string;
+    danish: string;
     priority: number;
     declension?: string;
     show?: string;

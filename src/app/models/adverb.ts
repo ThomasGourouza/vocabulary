@@ -1,6 +1,6 @@
 export interface Adverb {
     french: string;
-    russian: string;
+    danish: string;
     priority: number;
     show?: string;
 }

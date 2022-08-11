@@ -1,6 +1,6 @@
 export interface Noun {
     french: string;
-    russian: string;
+    danish: string;
     gender: string;
     priority: number;
     declension?: string;

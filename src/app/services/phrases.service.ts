@@ -22,7 +22,7 @@ export class PhrasesService {
     this._tabIndex = 6;
     this._validKeys = [
       'french',
-      'russian',
+      'danish',
       'priority',
       'show'
     ];

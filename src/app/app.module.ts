@@ -40,7 +40,6 @@ import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { TableDefaultComponent } from './components/interactive-table/table-default/table-default.component';
-import { TableConjunctionComponent } from './components/interactive-table/table-conjunction/table-conjunction.component';
 import { AdverbComponent } from './components/adverb/adverb.component';
 import { TimePipe } from './pipes/time.pipe';
 import { ReaderSpeakerService } from './services/reader-speaker.service';
@@ -61,7 +60,6 @@ import { ReaderSpeakerService } from './services/reader-speaker.service';
     InfoComponent,
     InfoContentComponent,
     TableDefaultComponent,
-    TableConjunctionComponent,
     AdverbComponent,
     TimePipe
   ],

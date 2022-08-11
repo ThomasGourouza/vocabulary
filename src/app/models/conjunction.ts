@@ -1,6 +1,6 @@
 export interface Conjunction {
     french: string;
-    russian: string;
+    danish: string;
     case: string;
     priority: number;
     show?: string;

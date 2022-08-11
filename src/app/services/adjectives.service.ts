@@ -22,7 +22,7 @@ export class AdjectivesService {
     this._tabIndex = 4;
     this._validKeys = [
       'french',
-      'russian',
+      'danish',
       'priority',
       'declension',
       'show'

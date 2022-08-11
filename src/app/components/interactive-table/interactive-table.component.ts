@@ -16,7 +16,7 @@ export class InteractiveTableComponent {
     this.item = item;
     this.canReadSpeak = false;
     if (!!item) {
-      this.loadAudioUrl(item.russian);
+      this.loadAudioUrl(item.danish);
     }
   }
   @Input() public priority: number | undefined;

@@ -1,6 +1,6 @@
 export interface Phrase {
     french: string;
-    russian: string;
+    danish: string;
     priority: number;
     show?: string;
 }
