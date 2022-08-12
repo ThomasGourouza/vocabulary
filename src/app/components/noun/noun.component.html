@@ -1,12 +1,3 @@
-<app-interactive-table [currentName]="nounsService.name"
-                       [data]="nounsService.data"
-                       [currentItem]="nounsService.currentItem"
-                       [priority]="nounsService.priority"
-                       [isValidData]="nounsService.isValidData"
-                       [firstNext]="nounsService.firstNext"
-                       [index]="nounsService.index"
-                       (reload)="onReload()"
-                       (changePriority)="onChangePriority($event)"
-                       (previous)="onPrevious()"
-                       (next)="onNext()">
-</app-interactive-table>
+<app-interactive-table
+    [service]="nounsService"
+></app-interactive-table>
