@@ -27,10 +27,10 @@ export class AdjectivesService {
       'declension',
       'show'
     ];
-    this.initAdjectivesVariables();
+    this.initVariables();
   }
 
-  public initAdjectivesVariables(): void {
+  public initVariables(): void {
     this._data = [];
     this._selectedData = [];
     this._currentItem = undefined;

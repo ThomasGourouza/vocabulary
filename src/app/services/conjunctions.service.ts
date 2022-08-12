@@ -27,10 +27,10 @@ export class ConjunctionsService {
       'priority',
       'show'
     ];
-    this.initConjunctionsVariables();
+    this.initVariables();
   }
 
-  public initConjunctionsVariables(): void {
+  public initVariables(): void {
     this._data = [];
     this._selectedData = [];
     this._currentItem = undefined;

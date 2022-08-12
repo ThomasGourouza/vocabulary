@@ -26,10 +26,10 @@ export class PhrasesService {
       'priority',
       'show'
     ];
-    this.initPhrasesVariables();
+    this.initVariables();
   }
 
-  public initPhrasesVariables(): void {
+  public initVariables(): void {
     this._data = [];
     this._selectedData = [];
     this._currentItem = undefined;

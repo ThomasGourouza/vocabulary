@@ -39,7 +39,7 @@ export class PhraseComponent implements OnInit, OnDestroy {
   }
 
   public onReload(): void {
-    this.phrasesService.initPhrasesVariables();
+    this.phrasesService.initVariables();
     this.messageService.add({
       severity: 'warn',
       summary: `${this.phrasesService.name.charAt(0).toUpperCase()}${this.phrasesService.name.slice(1)} éffacés.`

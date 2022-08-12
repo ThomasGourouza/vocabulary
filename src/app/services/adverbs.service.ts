@@ -26,10 +26,10 @@ export class AdverbsService {
       'priority',
       'show'
     ];
-    this.initAdverbsVariables();
+    this.initVariables();
   }
 
-  public initAdverbsVariables(): void {
+  public initVariables(): void {
     this._data = [];
     this._selectedData = [];
     this._currentItem = undefined;

@@ -3,6 +3,7 @@ import { MessageService } from 'primeng/api';
 import { interval, Subscription } from 'rxjs';
 import { Index } from 'src/app/models';
 import { Adverb } from 'src/app/models/adverb';
+import { Verb } from 'src/app/models/verb';
 import { Text } from 'src/app/models/text';
 import { AdjectivesService } from 'src/app/services/adjectives.service';
 import { AdverbsService } from 'src/app/services/adverbs.service';
@@ -14,6 +15,12 @@ import { NounsService } from 'src/app/services/nouns.service';
 import { PhrasesService } from 'src/app/services/phrases.service';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
 import { VerbsService } from 'src/app/services/verbs.service';
+import { Phrase } from 'src/app/models/phrase';
+import { Conjunction } from 'src/app/models/conjunction';
+import { Adjective } from 'src/app/models/adjective';
+import { Noun } from 'src/app/models/noun';
+
+export type GrammaticalType = Adverb | Verb | Noun | Adjective | Conjunction | Phrase;
 @Component({
   selector: 'app-interactive-table',
   templateUrl: './interactive-table.component.html'
@@ -37,142 +44,51 @@ export class InteractiveTableComponent {
     this.excelAdjectivesSubscription.unsubscribe();
     this.excelConjunctionsSubscription.unsubscribe();
     this.excelPhrasesSubscription.unsubscribe();
-    
-    // todo
-    this.excelVerbsSubscription = this.excelService.uploadedAdverbs$.subscribe((adverbs: Array<Adverb>) => {
-      this.adverbsService.setData(adverbs.filter((adverb) => adverb?.show !== '-'));
-      this.checkData(this.adverbsService.data);
-    });
-  }
 
-  private _service!: AdverbsService | VerbsService | NounsService | AdjectivesService | ConjunctionsService | PhrasesService;
-
-  @Input() set currentName(name: string) {
-    this.name = name;
-    switch (name) {
+    switch (this.name) {
       case this.adverbsService.name:
-        this.navigationService.setTabIndex(this.adverbsService.tabIndex);
-        this.data = this.adverbsService.data;
-        this.priority = this.adverbsService.priority;
-        this.isValidData = this.adverbsService.isValidData;
-        this.firstNext = this.adverbsService.firstNext;
-        this.index = this.adverbsService.index;
-        this.setItem(this.adverbsService.currentItem);
-
-        this.excelVerbsSubscription.unsubscribe();
-        this.excelNounsSubscription.unsubscribe();
-        this.excelAdjectivesSubscription.unsubscribe();
-        this.excelConjunctionsSubscription.unsubscribe();
-        this.excelPhrasesSubscription.unsubscribe();
         this.excelAdverbsSubscription = this.excelService.uploadedAdverbs$.subscribe((adverbs: Array<Adverb>) => {
           this.adverbsService.setData(adverbs.filter((adverb) => adverb?.show !== '-'));
           this.checkData(this.adverbsService.data);
         });
         break;
       case this.verbsService.name:
-        this.navigationService.setTabIndex(this.verbsService.tabIndex);
-        this.data = this.verbsService.data;
-        this.priority = this.verbsService.priority;
-        this.isValidData = this.verbsService.isValidData;
-        this.firstNext = this.verbsService.firstNext;
-        this.index = this.verbsService.index;
-        this.setItem(this.verbsService.currentItem);
-
-        this.excelAdverbsSubscription.unsubscribe();
-        this.excelNounsSubscription.unsubscribe();
-        this.excelAdjectivesSubscription.unsubscribe();
-        this.excelConjunctionsSubscription.unsubscribe();
-        this.excelPhrasesSubscription.unsubscribe();
-        // todo
-        this.excelVerbsSubscription = this.excelService.uploadedAdverbs$.subscribe((adverbs: Array<Adverb>) => {
-          this.adverbsService.setData(adverbs.filter((adverb) => adverb?.show !== '-'));
-          this.checkData(this.adverbsService.data);
+        this.excelVerbsSubscription = this.excelService.uploadedVerbs$.subscribe((verbs: Array<Verb>) => {
+          this.verbsService.setData(verbs.filter((verb) => verb?.show !== '-'));
+          this.checkData(this.verbsService.data);
         });
         break;
-      case this.nounsService.name:
-        this.navigationService.setTabIndex(this.nounsService.tabIndex);
-        this.data = this.nounsService.data;
-        this.priority = this.nounsService.priority;
-        this.isValidData = this.nounsService.isValidData;
-        this.firstNext = this.nounsService.firstNext;
-        this.index = this.nounsService.index;
-        this.setItem(this.nounsService.currentItem);
-
-        this.excelAdverbsSubscription.unsubscribe();
-        this.excelVerbsSubscription.unsubscribe();
-        this.excelAdjectivesSubscription.unsubscribe();
-        this.excelConjunctionsSubscription.unsubscribe();
-        this.excelPhrasesSubscription.unsubscribe();
-        // todo
-        this.excelNounsSubscription = this.excelService.uploadedAdverbs$.subscribe((adverbs: Array<Adverb>) => {
-          this.adverbsService.setData(adverbs.filter((adverb) => adverb?.show !== '-'));
-          this.checkData(this.adverbsService.data);
+        case this.nounsService.name:
+        this.excelNounsSubscription = this.excelService.uploadedNouns$.subscribe((nouns: Array<Noun>) => {
+          this.nounsService.setData(nouns.filter((noun) => noun?.show !== '-'));
+          this.checkData(this.nounsService.data);
         });
         break;
       case this.adjectivesService.name:
-        this.navigationService.setTabIndex(this.adjectivesService.tabIndex);
-        this.data = this.adjectivesService.data;
-        this.priority = this.adjectivesService.priority;
-        this.isValidData = this.adjectivesService.isValidData;
-        this.firstNext = this.adjectivesService.firstNext;
-        this.index = this.adjectivesService.index;
-        this.setItem(this.adjectivesService.currentItem);
-
-        this.excelAdverbsSubscription.unsubscribe();
-        this.excelVerbsSubscription.unsubscribe();
-        this.excelNounsSubscription.unsubscribe();
-        this.excelConjunctionsSubscription.unsubscribe();
-        this.excelPhrasesSubscription.unsubscribe();
-        // todo
-        this.excelAdjectivesSubscription = this.excelService.uploadedAdverbs$.subscribe((adverbs: Array<Adverb>) => {
-          this.adverbsService.setData(adverbs.filter((adverb) => adverb?.show !== '-'));
-          this.checkData(this.adverbsService.data);
+        this.excelAdjectivesSubscription = this.excelService.uploadedAdjectives$.subscribe((adjectives: Array<Adjective>) => {
+          this.adjectivesService.setData(adjectives.filter((adjective) => adjective?.show !== '-'));
+          this.checkData(this.adjectivesService.data);
         });
         break;
       case this.conjunctionsService.name:
-        this.navigationService.setTabIndex(this.conjunctionsService.tabIndex);
-        this.data = this.conjunctionsService.data;
-        this.priority = this.conjunctionsService.priority;
-        this.isValidData = this.conjunctionsService.isValidData;
-        this.firstNext = this.conjunctionsService.firstNext;
-        this.index = this.conjunctionsService.index;
-        this.setItem(this.conjunctionsService.currentItem);
-
-        this.excelAdverbsSubscription.unsubscribe();
-        this.excelVerbsSubscription.unsubscribe();
-        this.excelNounsSubscription.unsubscribe();
-        this.excelAdjectivesSubscription.unsubscribe();
-        this.excelPhrasesSubscription.unsubscribe();
-        // todo
-        this.excelConjunctionsSubscription = this.excelService.uploadedAdverbs$.subscribe((adverbs: Array<Adverb>) => {
-          this.adverbsService.setData(adverbs.filter((adverb) => adverb?.show !== '-'));
-          this.checkData(this.adverbsService.data);
+        this.excelConjunctionsSubscription = this.excelService.uploadedConjunctions$.subscribe((conjunctions: Array<Conjunction>) => {
+          this.conjunctionsService.setData(conjunctions.filter((conjunction) => conjunction?.show !== '-'));
+          this.checkData(this.conjunctionsService.data);
         });
         break;
       case this.phrasesService.name:
-        this.navigationService.setTabIndex(this.phrasesService.tabIndex);
-        this.data = this.phrasesService.data;
-        this.priority = this.phrasesService.priority;
-        this.isValidData = this.phrasesService.isValidData;
-        this.firstNext = this.phrasesService.firstNext;
-        this.index = this.phrasesService.index;
-        this.setItem(this.phrasesService.currentItem);
-
-        this.excelAdverbsSubscription.unsubscribe();
-        this.excelVerbsSubscription.unsubscribe();
-        this.excelNounsSubscription.unsubscribe();
-        this.excelAdjectivesSubscription.unsubscribe();
-        this.excelConjunctionsSubscription.unsubscribe();
-        // todo
-        this.excelPhrasesSubscription = this.excelService.uploadedAdverbs$.subscribe((adverbs: Array<Adverb>) => {
-          this.adverbsService.setData(adverbs.filter((adverb) => adverb?.show !== '-'));
-          this.checkData(this.adverbsService.data);
+        this.excelPhrasesSubscription = this.excelService.uploadedPhrases$.subscribe((phrases: Array<Phrase>) => {
+          this.phrasesService.setData(phrases.filter((phrase) => phrase?.show !== '-'));
+          this.checkData(this.phrasesService.data);
         });
         break;
       default:
         break;
     }
   }
+
+  private _service!: AdverbsService | VerbsService | NounsService | AdjectivesService | ConjunctionsService | PhrasesService;
+
   public name!: string;
   public data!: Array<any>;
   public priority: number | undefined;
@@ -230,19 +146,19 @@ export class InteractiveTableComponent {
     }
   }
 
-  private checkData(adverbs: Array<Adverb>): void {
+  private checkData(adverbs: Array<GrammaticalType>): void {
     if (adverbs.length < 2) {
-      this.adverbsService.setIsValidData(false);
+      this._service.setIsValidData(false);
       this.messageService.add({ severity: 'error', summary: Text.notEnoughText, detail: Text.addMoreDataText });
       return;
     }
     const keys = Object.keys(adverbs[0]);
     keys.forEach((key) => {
-      if (!this.adverbsService.validKeys.includes(key)) {
-        this.adverbsService.setIsValidData(false);
+      if (!this._service.validKeys.includes(key)) {
+        this._service.setIsValidData(false);
       }
     });
-    const message = (this.adverbsService.isValidData) ?
+    const message = (this._service.isValidData) ?
       { severity: 'info', summary: Text.validAdverbsText, detail: Text.selectPriorityText }
       : { severity: 'error', summary: Text.invalidText, detail: Text.removeText };
     this.messageService.add(message);
@@ -254,42 +170,41 @@ export class InteractiveTableComponent {
 
   public onReload(): void {
     // todo: switch
-    this.adverbsService.initAdverbsVariables();
+    this._service.initVariables();
     this.messageService.add({
       severity: 'warn',
-      summary: `${this.adverbsService.name.charAt(0).toUpperCase()}${this.adverbsService.name.slice(1)} éffacés.`
+      summary: `${this._service.name.charAt(0).toUpperCase()}${this._service.name.slice(1)} éffacés.`
     });
   }
 
   // todo: switch
   public onChangePriority(priority: string): void {
-    this.adverbsService.setCounter(0);
-    this.adverbsService.setFirstNext(true);
+    this._service.setCounter(0);
+    this._service.setFirstNext(true);
     if (priority === '0') {
-      this.adverbsService.setPriority(undefined);
-      this.adverbsService.setCurrentItem(undefined);
+      this._service.setPriority(undefined);
+      this._service.setCurrentItem(undefined);
     } else {
-      this.adverbsService.setPriority(+priority);
+      this._service.setPriority(+priority);
       this.selectAdverbs();
-      this.adverbsService.setIndex({
+      this._service.setIndex({
         previous: undefined,
-        current: this.adverbsService.index.current,
+        current: this._service.index.current,
         next: undefined
       });
     }
   }
   private selectAdverbs(): void {
-    if (this.adverbsService.priority !== undefined) {
-      this.adverbsService.setCurrentItem(undefined);
-      const priority = +this.adverbsService.priority;
-      const selectedData = this.adverbsService.data.filter((adverb) =>
+    if (this._service.priority !== undefined) {
+      this._service.setCurrentItem(undefined);
+      const priority = +this._service.priority;
+      const selectedData = (this._service.data as Array<GrammaticalType>).filter((adverb) =>
         +adverb.priority === priority
       );
-      this.adverbsService.setSelectedData(selectedData);
+      this._service.setSelectedData(selectedData as any);
       this.onNext();
     }
   }
-
 
   public onChangeTime(): void {
     if (this.isPlaying) {
@@ -302,24 +217,23 @@ export class InteractiveTableComponent {
     this.canReadSpeak = true;
     this.isPrevious = false;
 
-    // todo: switch
-    if (this.adverbsService.selectedData.length > 1) {
-      this.adverbsService.setFirstNext(!this.adverbsService.firstNext)
-      if (!this.adverbsService.firstNext) {
+    if (this._service.selectedData.length > 1) {
+      this._service.setFirstNext(!this._service.firstNext)
+      if (!this._service.firstNext) {
         const index: Index = {
-          previous: this.adverbsService.index.current,
+          previous: this._service.index.current,
           current: undefined,
           next: undefined
         };
-        if (this.adverbsService.index.next !== undefined) {
-          index.current = this.adverbsService.index.next;
+        if (this._service.index.next !== undefined) {
+          index.current = this._service.index.next;
         } else {
-          index.current = this.globalService.getNext(this.adverbsService.selectedData.length);
+          index.current = this.globalService.getNext(this._service.selectedData.length);
         }
-        this.adverbsService.setIndex(index);
+        this._service.setIndex(index);
         this.selectCurrentItem();
       } else {
-        this.adverbsService.setCounter(this.adverbsService.counter + 1);
+        this._service.setCounter(this._service.counter + 1);
       }
     }
 
@@ -334,28 +248,26 @@ export class InteractiveTableComponent {
     this.isPrevious = true;
 
     // todo: switch
-    if (this.adverbsService.index.previous !== undefined) {
-      if (this.adverbsService.firstNext) {
-        this.adverbsService.setCounter(this.adverbsService.counter - 1);
+    if (this._service.index.previous !== undefined) {
+      if (this._service.firstNext) {
+        this._service.setCounter(this._service.counter - 1);
       } else {
-        this.adverbsService.setFirstNext(true);
+        this._service.setFirstNext(true);
       }
       const index: Index = {
         previous: undefined,
-        current: this.adverbsService.index.previous,
-        next: this.adverbsService.index.current
+        current: this._service.index.previous,
+        next: this._service.index.current
       };
-      this.adverbsService.setIndex(index);
+      this._service.setIndex(index);
       this.selectCurrentItem();
     }
   }
 
-
-
   private selectCurrentItem(): void {
-    const currentIndex = this.adverbsService.index.current;
+    const currentIndex = this._service.index.current;
     if (currentIndex !== undefined) {
-      this.adverbsService.setCurrentItem(this.adverbsService.selectedData[currentIndex]);
+      this._service.setCurrentItem(this._service.selectedData[currentIndex] as any);
     }
   }
 

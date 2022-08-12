@@ -29,10 +29,10 @@ export class VerbsService {
       'conjugation',
       'show'
     ];
-    this.initVerbsVariables();
+    this.initVariables();
   }
 
-  public initVerbsVariables(): void {
+  public initVariables(): void {
     this._data = [];
     this._selectedData = [];
     this._currentItem = undefined;

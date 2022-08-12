@@ -28,10 +28,10 @@ export class NounsService {
       'declension',
       'show'
     ];
-    this.initNounsVariables();
+    this.initVariables();
   }
 
-  public initNounsVariables(): void {
+  public initVariables(): void {
     this._data = [];
     this._selectedData = [];
     this._currentItem = undefined;

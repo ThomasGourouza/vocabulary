@@ -39,7 +39,7 @@ export class VerbComponent implements OnInit, OnDestroy {
   }
 
   public onReload(): void {
-    this.verbsService.initVerbsVariables();
+    this.verbsService.initVariables();
     this.messageService.add({
       severity: 'warn',
       summary: `${this.verbsService.name.charAt(0).toUpperCase()}${this.verbsService.name.slice(1)} éffacés.`
