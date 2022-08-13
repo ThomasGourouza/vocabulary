@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GrammarName } from '../models/grammar-name';
+import { Key } from '../models/key';
 import { GrammarService } from './grammar.service';
 
 @Injectable()
@@ -11,11 +12,12 @@ export class AdjectivesService extends GrammarService {
       GrammarName.ADJECTIVES,
       4,
       [
-        'french',
-        'danish',
-        'priority',
-        'show'
-      ]
+        Key.FRENCH,
+        Key.DANISH,
+        Key.PRIORITY,
+        Key.SHOW
+      ],
+      { title: GrammarName.ADJECTIVESTITEL, singular: GrammarName.ADJECTIVE }
     );
   }
 

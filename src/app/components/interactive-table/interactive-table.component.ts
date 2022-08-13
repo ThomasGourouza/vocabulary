@@ -16,19 +16,14 @@ import { GrammarName } from 'src/app/models/grammar-name';
 })
 export class InteractiveTableComponent implements OnInit, OnDestroy {
 
-  @Input() set service(service: GrammarService) {
-    this._service = service;
-    
-  }
-
-  private _service!: GrammarService;
+  @Input() service!: GrammarService;
 
   public name!: string;
-  public data!: Array<any>;
+  public data: Array<any>;
   public priority: number | undefined;
   public isValidData!: boolean;
   public firstNext!: boolean;
-  public index!: Index;
+  public index: Index;
   public currentItem: Grammar | undefined;
   private _selectedData!: Array<Grammar>;
   private _counter!: number;
@@ -59,6 +54,12 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     // private readerSpeakerService: ReaderSpeakerService,
     private messageService: MessageService
   ) {
+    this.data = [];
+    this.index = {
+      previous: undefined,
+      current: undefined,
+      next: undefined
+    };
     this.times = [3000, 5000, 10000];
     this.time = 3000;
     this.priorities = this.excelService.priorities;
@@ -69,23 +70,21 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.excelSubscribe();
-    this.name = this._service.name;
-    this.navigationService.setTabIndex(this._service.tabIndex);
+    this.name = this.service.name;
+    this.navigationService.setTabIndex(this.service.tabIndex);
 
-    this._service.data$.subscribe((value) => {
-      if (!!value) {
-        this.data = value.filter((item) => item?.show !== '-');
-        this.checkData(this.data);
-      }
+    this.service.data$.subscribe((value) => {
+      this.data = value.filter((item) => item?.show !== '-');
+      this.checkData(this.data);
     });
-    this._service.priority$.subscribe((value) => this.priority = value);
-    this._service.isValidData$.subscribe((value) => this.isValidData = value);
-    this._service.firstNext$.subscribe((value) => this.firstNext = value);
-    this._service.index$.subscribe((value) => this.index = value);
-    this._service.selectedData$.subscribe((value) => this._selectedData = value);
-    this._service.counter$.subscribe((value) => this._counter = value);
-    
-    this._service.currentItem$.subscribe((value) => this.setCurrentItem(value));
+    this.service.priority$.subscribe((value) => this.priority = value);
+    this.service.isValidData$.subscribe((value) => this.isValidData = value);
+    this.service.firstNext$.subscribe((value) => this.firstNext = value);
+    this.service.index$.subscribe((value) => this.index = value);
+    this.service.selectedData$.subscribe((value) => this._selectedData = value);
+    this.service.counter$.subscribe((value) => this._counter = value);
+
+    this.service.currentItem$.subscribe((value) => this.setCurrentItem(value));
 
   }
 
@@ -123,32 +122,32 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     switch (this.name) {
       case GrammarName.ADVERBS:
         this.excelAdverbsSubscription = this.excelService.uploadedAdverbs$.subscribe((data) =>
-          this._service.setData$(data)
+          this.service.setData$(data)
         );
         break;
       case GrammarName.VERBS:
         this.excelVerbsSubscription = this.excelService.uploadedVerbs$.subscribe((data) =>
-          this._service.setData$(data)
+          this.service.setData$(data)
         );
         break;
       case GrammarName.NOUNS:
         this.excelNounsSubscription = this.excelService.uploadedNouns$.subscribe((data) =>
-          this._service.setData$(data)
+          this.service.setData$(data)
         );
         break;
       case GrammarName.ADJECTIVES:
         this.excelAdjectivesSubscription = this.excelService.uploadedAdjectives$.subscribe((data) =>
-          this._service.setData$(data)
+          this.service.setData$(data)
         );
         break;
       case GrammarName.CONJUNCTIONS:
         this.excelConjunctionsSubscription = this.excelService.uploadedConjunctions$.subscribe((data) =>
-          this._service.setData$(data)
+          this.service.setData$(data)
         );
         break;
       case GrammarName.PHRASES:
         this.excelPhrasesSubscription = this.excelService.uploadedPhrases$.subscribe((data) =>
-          this._service.setData$(data)
+          this.service.setData$(data)
         );
         break;
       default:
@@ -167,16 +166,16 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   private checkData(adverbs: Array<Grammar>): void {
     if (adverbs.length < 2) {
-      this._service.setIsValidData$(false);
-      
+      this.service.setIsValidData$(false);
+
       this.messageService.add({ severity: 'error', summary: Text.notEnoughText, detail: Text.addMoreDataText });
       return;
     }
     const keys = Object.keys(adverbs[0]);
     keys.forEach((key) => {
-      if (!this._service.validKeys.includes(key)) {
-        this._service.setIsValidData$(false);
-        
+      if (!this.service.validKeys.includes(key)) {
+        this.service.setIsValidData$(false);
+
       }
     });
     const message = (this.isValidData) ?
@@ -190,39 +189,39 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   public onReload(): void {
-    this._service.initVariables();
-    
+    this.service.initVariables();
+
     this.messageService.add({
       severity: 'warn',
-      summary: `${this._service.name.charAt(0).toUpperCase()}${this._service.name.slice(1)} éffacés.`
+      summary: `${this.service.name.charAt(0).toUpperCase()}${this.service.name.slice(1)} éffacés.`
     });
   }
 
   public onChangePriority(priority: string): void {
-    this._service.setCounter$(0);
-    this._service.setFirstNext$(true);
+    this.service.setCounter$(0);
+    this.service.setFirstNext$(true);
     if (priority === '0') {
-      this._service.setPriority$(undefined);
-      this._service.setCurrentItem$(undefined);
+      this.service.setPriority$(undefined);
+      this.service.setCurrentItem$(undefined);
     } else {
-      this._service.setPriority$(+priority);
+      this.service.setPriority$(+priority);
       this.selectAdverbs();
-      this._service.setIndex$({
+      this.service.setIndex$({
         previous: undefined,
         current: this.index.current,
         next: undefined
       });
     }
-    
+
   }
   private selectAdverbs(): void {
     if (this.priority !== undefined) {
-      this._service.setCurrentItem$(undefined);
+      this.service.setCurrentItem$(undefined);
       const priority = +this.priority;
       const selectedData = (this.data).filter((adverb) =>
         +adverb.priority === priority
       );
-      this._service.setSelectedData$(selectedData);
+      this.service.setSelectedData$(selectedData);
       this.onNext();
     }
   }
@@ -239,7 +238,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     this.isPrevious = false;
 
     if (this._selectedData.length > 1) {
-      this._service.setFirstNext$(!this.firstNext)
+      this.service.setFirstNext$(!this.firstNext)
       if (!this.firstNext) {
         const index: Index = {
           previous: this.index.current,
@@ -249,14 +248,14 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
         if (this.index.next !== undefined) {
           index.current = this.index.next;
         } else {
-          index.current = this._service.getNext(this._selectedData.length);
+          index.current = this.service.getNext(this._selectedData.length);
         }
-        this._service.setIndex$(index);
+        this.service.setIndex$(index);
         this.selectCurrentItem();
       } else {
-        this._service.setCounter$(this._counter + 1);
+        this.service.setCounter$(this._counter + 1);
       }
-      
+
     }
 
     // setTimeout(() => {
@@ -271,26 +270,26 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
     if (this.index.previous !== undefined) {
       if (this.firstNext) {
-        this._service.setCounter$(this._counter - 1);
+        this.service.setCounter$(this._counter - 1);
       } else {
-        this._service.setFirstNext$(true);
+        this.service.setFirstNext$(true);
       }
       const index: Index = {
         previous: undefined,
         current: this.index.previous,
         next: this.index.current
       };
-      this._service.setIndex$(index);
+      this.service.setIndex$(index);
       this.selectCurrentItem();
     }
-    
+
   }
 
   private selectCurrentItem(): void {
     const currentIndex = this.index.current;
     if (currentIndex !== undefined) {
-      this._service.setCurrentItem$(this._selectedData[currentIndex]);
-      
+      this.service.setCurrentItem$(this._selectedData[currentIndex]);
+
     }
   }
 
@@ -316,10 +315,10 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   // }
 
   public onReadSpeak(): void {
-  //   this.openReadSpeaker = false;
-  //   setTimeout(() => {
-  //     this.openReadSpeaker = true;
-  //   }, 100);
+    //   this.openReadSpeaker = false;
+    //   setTimeout(() => {
+    //     this.openReadSpeaker = true;
+    //   }, 100);
   }
 
 }

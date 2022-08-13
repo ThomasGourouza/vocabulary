@@ -2,7 +2,7 @@
     <div class="space-bellow col-9">
         <div class="row">
             <div class="col d-flex align-items-end">
-                <div *ngIf="!!data && data.length > 0; else loadData">
+                <div *ngIf="data.length > 0; else loadData">
                     <button pButton type="button" label="Effacer les {{ name }}" icon="pi pi-trash" iconPos="left"
                         class="p-button-secondary" (click)="onReload()" [disabled]="data.length === 0"></button>
                 </div>

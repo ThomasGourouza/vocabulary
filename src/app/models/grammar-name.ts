@@ -4,5 +4,17 @@ export enum GrammarName {
     ADJECTIVES = 'adjectifs',
     PHRASES = 'expressions',
     CONJUNCTIONS = 'conjonctions',
-    NOUNS = 'noms'
+    NOUNS = 'noms',
+    VERB = 'verbe',
+    ADVERB = 'adverbe',
+    ADJECTIVE = 'adjectif',
+    PHRASE = 'expression',
+    CONJUNCTION = 'conjonction',
+    NOUN = 'nom',
+    VERBSTITEL = 'verbes',
+    ADVERBSTITEL = 'adverbes',
+    ADJECTIVESTITEL = 'adjectifs',
+    PHRASESTITEL = 'expressions',
+    CONJUNCTIONSTITEL = 'conjonctions',
+    NOUNSTITEL = 'noms'
 }

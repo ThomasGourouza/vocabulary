@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Index } from '../models';
 import { Grammar } from '../models/grammar';
+import { InfoLabel } from '../models/info-label';
 
 @Injectable()
 export class GrammarService {
@@ -9,6 +10,7 @@ export class GrammarService {
   private _name!: string;
   private _tabIndex!: number;
   private _validKeys!: Array<string>;
+  private _infoLabel!: InfoLabel;
 
   private _data$ = new Subject<Array<Grammar>>();
   private _selectedData$ = new Subject<Array<Grammar>>();
@@ -36,6 +38,10 @@ export class GrammarService {
 
   get validKeys(): Array<string> {
     return this._validKeys;
+  }
+
+  get infoLabel(): InfoLabel {
+    return this._infoLabel;
   }
 
   get data$(): Observable<Array<Grammar>> {
@@ -94,10 +100,11 @@ export class GrammarService {
     this._isValidData$.next(isValidData);
   }
 
-  public setProperties(name: string, tabIndex: number, validKeys: Array<string>): void {
+  public setProperties(name: string, tabIndex: number, validKeys: Array<string>, infoLabel: InfoLabel): void {
     this._name = name;
     this._tabIndex = tabIndex;
     this._validKeys = validKeys;
+    this._infoLabel = infoLabel;
   }
 
   public initVariables(): void {
