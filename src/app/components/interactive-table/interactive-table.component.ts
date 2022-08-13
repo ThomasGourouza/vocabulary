@@ -28,7 +28,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   private _selectedData!: Array<Grammar>;
   private _counter!: number;
 
-  private excelAdverbsSubscription = new Subscription();
+  private excelSubscription = new Subscription();
   private excelVerbsSubscription = new Subscription();
   private excelNounsSubscription = new Subscription();
   private excelAdjectivesSubscription = new Subscription();
@@ -69,8 +69,8 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.excelSubscribe();
     this.name = this.service.name;
+    this.excelSubscribe(this.name);
     this.navigationService.setTabIndex(this.service.tabIndex);
 
     this.service.data$.subscribe((value) => {
@@ -78,7 +78,13 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       this.checkData(this.data);
     });
     this.service.priority$.subscribe((value) => this.priority = value);
-    this.service.isValidData$.subscribe((value) => this.isValidData = value);
+    this.service.isValidData$.subscribe((value) => {
+      this.isValidData = value;
+      const message = (this.isValidData) ?
+        { severity: 'info', summary: Text.validText, detail: Text.selectPriorityText }
+        : { severity: 'error', summary: Text.invalidText, detail: Text.removeText };
+      this.messageService.add(message);
+    });
     this.service.firstNext$.subscribe((value) => this.firstNext = value);
     this.service.index$.subscribe((value) => this.index = value);
     this.service.selectedData$.subscribe((value) => this._selectedData = value);
@@ -96,7 +102,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   private excelUnsubscribe(): void {
     switch (this.name) {
       case GrammarName.ADVERBS:
-        this.excelAdverbsSubscription.unsubscribe();
+        this.excelSubscription.unsubscribe();
         break;
       case GrammarName.VERBS:
         this.excelVerbsSubscription.unsubscribe();
@@ -118,10 +124,10 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  private excelSubscribe(): void {
-    switch (this.name) {
+  private excelSubscribe(currentName: string): void {
+    switch (currentName) {
       case GrammarName.ADVERBS:
-        this.excelAdverbsSubscription = this.excelService.uploadedAdverbs$.subscribe((data) =>
+        this.excelSubscription = this.excelService.uploadedAdverbs$.subscribe((data) =>
           this.service.setData$(data)
         );
         break;
@@ -164,24 +170,19 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     // }
   }
 
-  private checkData(adverbs: Array<Grammar>): void {
-    if (adverbs.length < 2) {
+  private checkData(data: Array<Grammar>): void {
+    this.service.setIsValidData$(true);
+    if (data.length < 2) {
       this.service.setIsValidData$(false);
-
       this.messageService.add({ severity: 'error', summary: Text.notEnoughText, detail: Text.addMoreDataText });
       return;
     }
-    const keys = Object.keys(adverbs[0]);
+    const keys = Object.keys(data[0]);
     keys.forEach((key) => {
       if (!this.service.validKeys.includes(key)) {
         this.service.setIsValidData$(false);
-
       }
     });
-    const message = (this.isValidData) ?
-      { severity: 'info', summary: Text.validAdverbsText, detail: Text.selectPriorityText }
-      : { severity: 'error', summary: Text.invalidText, detail: Text.removeText };
-    this.messageService.add(message);
   }
 
   public onUploadData(file: File): void {
@@ -205,7 +206,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       this.service.setCurrentItem$(undefined);
     } else {
       this.service.setPriority$(+priority);
-      this.selectAdverbs();
+      this.select();
       this.service.setIndex$({
         previous: undefined,
         current: this.index.current,
@@ -214,12 +215,12 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     }
 
   }
-  private selectAdverbs(): void {
+  private select(): void {
     if (this.priority !== undefined) {
       this.service.setCurrentItem$(undefined);
       const priority = +this.priority;
-      const selectedData = (this.data).filter((adverb) =>
-        +adverb.priority === priority
+      const selectedData = (this.data).filter((item) =>
+        +item.priority === priority
       );
       this.service.setSelectedData$(selectedData);
       this.onNext();

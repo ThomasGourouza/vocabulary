@@ -2,41 +2,36 @@ import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
 import * as _ from 'lodash';
 import { Observable, Subject } from 'rxjs';
-import { Verb } from '../models/verb';
-import { Noun } from '../models/noun';
-import { Adjective } from '../models/adjective';
-import { Conjunction } from '../models/conjunction';
-import { Phrase } from '../models/phrase';
-import { Adverb } from '../models/adverb';
+import { Grammar } from '../models/grammar';
 
 @Injectable()
 export class ExcelService {
 
-  private _uploadedVerbs$ = new Subject<Array<Verb>>();
-  private _uploadedNouns$ = new Subject<Array<Noun>>();
-  private _uploadedAdjectives$ = new Subject<Array<Adjective>>();
-  private _uploadedConjunctions$ = new Subject<Array<Conjunction>>();
-  private _uploadedAdverbs$ = new Subject<Array<Adverb>>();
-  private _uploadedPhrases$ = new Subject<Array<Phrase>>();
+  private _uploadedVerbs$ = new Subject<Array<Grammar>>();
+  private _uploadedNouns$ = new Subject<Array<Grammar>>();
+  private _uploadedAdjectives$ = new Subject<Array<Grammar>>();
+  private _uploadedConjunctions$ = new Subject<Array<Grammar>>();
+  private _uploadedAdverbs$ = new Subject<Array<Grammar>>();
+  private _uploadedPhrases$ = new Subject<Array<Grammar>>();
   private _priorities$ = new Subject<Array<number>>();
   private _priorities: Array<number> = [];
   
-  get uploadedVerbs$(): Observable<Array<Verb>> {
+  get uploadedVerbs$(): Observable<Array<Grammar>> {
     return this._uploadedVerbs$.asObservable();
   }
-  get uploadedNouns$(): Observable<Array<Noun>> {
+  get uploadedNouns$(): Observable<Array<Grammar>> {
     return this._uploadedNouns$.asObservable();
   }
-  get uploadedAdjectives$(): Observable<Array<Adjective>> {
+  get uploadedAdjectives$(): Observable<Array<Grammar>> {
     return this._uploadedAdjectives$.asObservable();
   }
-  get uploadedConjunctions$(): Observable<Array<Conjunction>> {
+  get uploadedConjunctions$(): Observable<Array<Grammar>> {
     return this._uploadedConjunctions$.asObservable();
   }
-  get uploadedAdverbs$(): Observable<Array<Adverb>> {
+  get uploadedAdverbs$(): Observable<Array<Grammar>> {
     return this._uploadedAdverbs$.asObservable();
   }
-  get uploadedPhrases$(): Observable<Array<Phrase>> {
+  get uploadedPhrases$(): Observable<Array<Grammar>> {
     return this._uploadedPhrases$.asObservable();
   }
   get priorities$(): Observable<Array<number>> {
