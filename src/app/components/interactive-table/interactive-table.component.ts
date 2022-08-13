@@ -19,7 +19,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   @Input() service!: GrammarService;
 
   public name!: string;
-  public data: Array<any>;
+  public data: Array<Grammar>;
   public priority: number | undefined;
   public isValidData!: boolean;
   public firstNext!: boolean;
@@ -62,17 +62,15 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     };
     this.times = [3000, 5000, 10000];
     this.time = 3000;
-    this.priorities = this.excelService.priorities;
-    this.excelService.priorities$.subscribe((priorities) =>
-      this.priorities = priorities
-    );
   }
 
   ngOnInit(): void {
     this.name = this.service.name;
     this.excelSubscribe(this.name);
     this.navigationService.setTabIndex(this.service.tabIndex);
-
+    this.excelService.priorities$.subscribe((priorities) =>
+      this.priorities = priorities
+    );
     this.service.data$.subscribe((value) => {
       this.data = value.filter((item) => item?.show !== '-');
       this.checkData(this.data);
@@ -91,74 +89,11 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     this.service.counter$.subscribe((value) => this._counter = value);
 
     this.service.currentItem$.subscribe((value) => this.setCurrentItem(value));
-
   }
 
   ngOnDestroy(): void {
     this.excelUnsubscribe();
     this.timeSubscription.unsubscribe();
-  }
-
-  private excelUnsubscribe(): void {
-    switch (this.name) {
-      case GrammarName.ADVERBS:
-        this.excelSubscription.unsubscribe();
-        break;
-      case GrammarName.VERBS:
-        this.excelVerbsSubscription.unsubscribe();
-        break;
-      case GrammarName.NOUNS:
-        this.excelNounsSubscription.unsubscribe();
-        break;
-      case GrammarName.ADJECTIVES:
-        this.excelAdjectivesSubscription.unsubscribe();
-        break;
-      case GrammarName.CONJUNCTIONS:
-        this.excelConjunctionsSubscription.unsubscribe();
-        break;
-      case GrammarName.PHRASES:
-        this.excelPhrasesSubscription.unsubscribe();
-        break;
-      default:
-        break;
-    }
-  }
-
-  private excelSubscribe(currentName: string): void {
-    switch (currentName) {
-      case GrammarName.ADVERBS:
-        this.excelSubscription = this.excelService.uploadedAdverbs$.subscribe((data) =>
-          this.service.setData$(data)
-        );
-        break;
-      case GrammarName.VERBS:
-        this.excelVerbsSubscription = this.excelService.uploadedVerbs$.subscribe((data) =>
-          this.service.setData$(data)
-        );
-        break;
-      case GrammarName.NOUNS:
-        this.excelNounsSubscription = this.excelService.uploadedNouns$.subscribe((data) =>
-          this.service.setData$(data)
-        );
-        break;
-      case GrammarName.ADJECTIVES:
-        this.excelAdjectivesSubscription = this.excelService.uploadedAdjectives$.subscribe((data) =>
-          this.service.setData$(data)
-        );
-        break;
-      case GrammarName.CONJUNCTIONS:
-        this.excelConjunctionsSubscription = this.excelService.uploadedConjunctions$.subscribe((data) =>
-          this.service.setData$(data)
-        );
-        break;
-      case GrammarName.PHRASES:
-        this.excelPhrasesSubscription = this.excelService.uploadedPhrases$.subscribe((data) =>
-          this.service.setData$(data)
-        );
-        break;
-      default:
-        break;
-    }
   }
 
   private setCurrentItem(currentItem: Grammar | undefined) {
@@ -290,7 +225,6 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     const currentIndex = this.index.current;
     if (currentIndex !== undefined) {
       this.service.setCurrentItem$(this._selectedData[currentIndex]);
-
     }
   }
 
@@ -320,6 +254,68 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     //   setTimeout(() => {
     //     this.openReadSpeaker = true;
     //   }, 100);
+  }
+
+  private excelUnsubscribe(): void {
+    switch (this.name) {
+      case GrammarName.ADVERBS:
+        this.excelSubscription.unsubscribe();
+        break;
+      case GrammarName.VERBS:
+        this.excelVerbsSubscription.unsubscribe();
+        break;
+      case GrammarName.NOUNS:
+        this.excelNounsSubscription.unsubscribe();
+        break;
+      case GrammarName.ADJECTIVES:
+        this.excelAdjectivesSubscription.unsubscribe();
+        break;
+      case GrammarName.CONJUNCTIONS:
+        this.excelConjunctionsSubscription.unsubscribe();
+        break;
+      case GrammarName.PHRASES:
+        this.excelPhrasesSubscription.unsubscribe();
+        break;
+      default:
+        break;
+    }
+  }
+
+  private excelSubscribe(currentName: string): void {
+    switch (currentName) {
+      case GrammarName.ADVERBS:
+        this.excelSubscription = this.excelService.uploadedAdverbs$.subscribe((data) =>
+          this.service.setData$(data)
+        );
+        break;
+      case GrammarName.VERBS:
+        this.excelVerbsSubscription = this.excelService.uploadedVerbs$.subscribe((data) =>
+          this.service.setData$(data)
+        );
+        break;
+      case GrammarName.NOUNS:
+        this.excelNounsSubscription = this.excelService.uploadedNouns$.subscribe((data) =>
+          this.service.setData$(data)
+        );
+        break;
+      case GrammarName.ADJECTIVES:
+        this.excelAdjectivesSubscription = this.excelService.uploadedAdjectives$.subscribe((data) =>
+          this.service.setData$(data)
+        );
+        break;
+      case GrammarName.CONJUNCTIONS:
+        this.excelConjunctionsSubscription = this.excelService.uploadedConjunctions$.subscribe((data) =>
+          this.service.setData$(data)
+        );
+        break;
+      case GrammarName.PHRASES:
+        this.excelPhrasesSubscription = this.excelService.uploadedPhrases$.subscribe((data) =>
+          this.service.setData$(data)
+        );
+        break;
+      default:
+        break;
+    }
   }
 
 }

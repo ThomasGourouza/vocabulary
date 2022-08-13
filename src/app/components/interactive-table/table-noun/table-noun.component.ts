@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Gender } from 'src/app/models/gender';
+import { Grammar } from 'src/app/models/grammar';
 
 @Component({
   selector: 'app-table-noun',
@@ -6,20 +8,20 @@ import { Component, Input } from '@angular/core';
 })
 export class TableNounComponent {
 
-  @Input() public data!: Array<any>;
-  @Input() public currentItem: any | undefined;
+  @Input() public data!: Array<Grammar>;
+  @Input() public currentItem: Grammar | undefined;
   @Input() public firstNext!: boolean;
 
-  public print(gender: string): string {
+  public print(gender: string | undefined): string {
     switch (gender) {
       case 'M':
-        return 'Masculin';
+        return Gender.M;
       case 'F':
-        return 'Féminin';
+        return Gender.F;
       case 'N':
-        return 'Neutre';
+        return Gender.N;
       case 'P':
-        return 'Pluriel';
+        return Gender.P;
       default:
         return '?';
     }

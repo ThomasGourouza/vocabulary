@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Grammar } from 'src/app/models/grammar';
 import { InfoLabel } from 'src/app/models/info-label';
 import { GrammarService } from 'src/app/services/grammar.service';
 
@@ -11,8 +12,8 @@ export class InfoContentComponent implements OnInit {
   @Input() service!: GrammarService;
   
   infoLabel!: InfoLabel;
-  public data!: Array<any>;
-  public currentItem: any | undefined;
+  public data!: Array<Grammar>;
+  public currentItem: Grammar | undefined;
   public counter!: number;
   public priority: number | undefined;
   public isValidData!: boolean;

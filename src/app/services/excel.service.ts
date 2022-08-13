@@ -14,7 +14,6 @@ export class ExcelService {
   private _uploadedAdverbs$ = new Subject<Array<Grammar>>();
   private _uploadedPhrases$ = new Subject<Array<Grammar>>();
   private _priorities$ = new Subject<Array<number>>();
-  private _priorities: Array<number> = [];
   
   get uploadedVerbs$(): Observable<Array<Grammar>> {
     return this._uploadedVerbs$.asObservable();
@@ -37,9 +36,6 @@ export class ExcelService {
   get priorities$(): Observable<Array<number>> {
     return this._priorities$.asObservable();
   }
-  get priorities(): Array<number> {
-    return this._priorities;
-  }
 
   public excelToJSON(name: string, file: File): void {
     const reader = new FileReader();
@@ -52,7 +48,7 @@ export class ExcelService {
         type: 'binary'
       });
       workbook.SheetNames.forEach((sheetName) => {
-        const sheet: Array<any> = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+        const sheet: Array<Grammar> = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
         const priorities: Array<number> = [];
         sheet?.map((item) => item?.priority)?.forEach((priority: number) => {
           if (!priorities.includes(priority)) {
@@ -60,7 +56,6 @@ export class ExcelService {
           }
         });
         this._priorities$.next(priorities);
-        this._priorities = priorities;
         switch (name) {
           case 'verbes':
             this._uploadedVerbs$.next(sheet);
