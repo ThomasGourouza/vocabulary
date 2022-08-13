@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { interval, Subscription } from 'rxjs';
 import { Index } from 'src/app/models';
@@ -15,60 +15,11 @@ import { GrammarName } from 'src/app/models/grammar-name';
   selector: 'app-interactive-table',
   templateUrl: './interactive-table.component.html'
 })
-export class InteractiveTableComponent {
+export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   @Input() set service(service: GrammarService) {
     this._service = service;
-    this.name = this._service.name;
-    this.navigationService.setTabIndex(this._service.tabIndex);
-    this.data = this._service.data;
-    this.priority = this._service.priority;
-    this.isValidData = this._service.isValidData;
-    this.firstNext = this._service.firstNext;
-    this.index = this._service.index;
-    this.setItem(this._service.currentItem);
-
-    this.excelAdverbsSubscription.unsubscribe();
-    this.excelVerbsSubscription.unsubscribe();
-    this.excelNounsSubscription.unsubscribe();
-    this.excelAdjectivesSubscription.unsubscribe();
-    this.excelConjunctionsSubscription.unsubscribe();
-    this.excelPhrasesSubscription.unsubscribe();
-
-    switch (this.name) {
-      case GrammarName.ADVERBS:
-        this.excelAdverbsSubscription = this.excelService.uploadedAdverbs$.subscribe((data) => {
-          this.setAndCheckData(data);
-        });
-        break;
-      case GrammarName.VERBS:
-        this.excelVerbsSubscription = this.excelService.uploadedVerbs$.subscribe((data) => {
-          this.setAndCheckData(data);
-        });
-        break;
-      case GrammarName.NOUNS:
-        this.excelNounsSubscription = this.excelService.uploadedNouns$.subscribe((data) => {
-          this.setAndCheckData(data);
-        });
-        break;
-      case GrammarName.ADJECTIVES:
-        this.excelAdjectivesSubscription = this.excelService.uploadedAdjectives$.subscribe((data) => {
-          this.setAndCheckData(data);
-        });
-        break;
-      case GrammarName.CONJUNCTIONS:
-        this.excelConjunctionsSubscription = this.excelService.uploadedConjunctions$.subscribe((data) => {
-          this.setAndCheckData(data);
-        });
-        break;
-      case GrammarName.PHRASES:
-        this.excelPhrasesSubscription = this.excelService.uploadedPhrases$.subscribe((data) => {
-          this.setAndCheckData(data);
-        });
-        break;
-      default:
-        break;
-    }
+    this.serviceUpdate();
   }
 
   private _service!: GrammarService;
@@ -115,9 +66,91 @@ export class InteractiveTableComponent {
     );
   }
 
+  ngOnInit(): void {
+    this.excelSubscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.excelUnsubscribe();
+  }
+
+  private excelUnsubscribe(): void {
+    switch (this.name) {
+      case GrammarName.ADVERBS:
+        this.excelAdverbsSubscription.unsubscribe();
+        break;
+      case GrammarName.VERBS:
+        this.excelVerbsSubscription.unsubscribe();
+        break;
+      case GrammarName.NOUNS:
+        this.excelNounsSubscription.unsubscribe();
+        break;
+      case GrammarName.ADJECTIVES:
+        this.excelAdjectivesSubscription.unsubscribe();
+        break;
+      case GrammarName.CONJUNCTIONS:
+        this.excelConjunctionsSubscription.unsubscribe();
+        break;
+      case GrammarName.PHRASES:
+        this.excelPhrasesSubscription.unsubscribe();
+        break;
+      default:
+        break;
+    }
+  }
+
+  private excelSubscribe(): void {
+    switch (this.name) {
+      case GrammarName.ADVERBS:
+        this.excelAdverbsSubscription = this.excelService.uploadedAdverbs$.subscribe((data) =>
+          this.setAndCheckData(data)
+        );
+        break;
+      case GrammarName.VERBS:
+        this.excelVerbsSubscription = this.excelService.uploadedVerbs$.subscribe((data) =>
+          this.setAndCheckData(data)
+        );
+        break;
+      case GrammarName.NOUNS:
+        this.excelNounsSubscription = this.excelService.uploadedNouns$.subscribe((data) =>
+          this.setAndCheckData(data)
+        );
+        break;
+      case GrammarName.ADJECTIVES:
+        this.excelAdjectivesSubscription = this.excelService.uploadedAdjectives$.subscribe((data) =>
+          this.setAndCheckData(data)
+        );
+        break;
+      case GrammarName.CONJUNCTIONS:
+        this.excelConjunctionsSubscription = this.excelService.uploadedConjunctions$.subscribe((data) =>
+          this.setAndCheckData(data)
+        );
+        break;
+      case GrammarName.PHRASES:
+        this.excelPhrasesSubscription = this.excelService.uploadedPhrases$.subscribe((data) =>
+          this.setAndCheckData(data)
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
   private setAndCheckData(data: Array<Grammar>): void {
     this._service.setData(data.filter((item) => item?.show !== '-'));
+    this.serviceUpdate();
     this.checkData(this._service.data);
+  }
+
+  private serviceUpdate(): void {
+    this.name = this._service.name;
+    this.data = this._service.data;
+    this.priority = this._service.priority;
+    this.isValidData = this._service.isValidData;
+    this.firstNext = this._service.firstNext;
+    this.index = this._service.index;
+    this.setItem(this._service.currentItem);
+    this.navigationService.setTabIndex(this._service.tabIndex);
   }
 
   private setItem(item: any) {
@@ -132,6 +165,7 @@ export class InteractiveTableComponent {
   private checkData(adverbs: Array<Grammar>): void {
     if (adverbs.length < 2) {
       this._service.setIsValidData(false);
+      this.serviceUpdate();
       this.messageService.add({ severity: 'error', summary: Text.notEnoughText, detail: Text.addMoreDataText });
       return;
     }
@@ -139,6 +173,7 @@ export class InteractiveTableComponent {
     keys.forEach((key) => {
       if (!this._service.validKeys.includes(key)) {
         this._service.setIsValidData(false);
+        this.serviceUpdate();
       }
     });
     const message = (this._service.isValidData) ?
@@ -153,6 +188,7 @@ export class InteractiveTableComponent {
 
   public onReload(): void {
     this._service.initVariables();
+    this.serviceUpdate();
     this.messageService.add({
       severity: 'warn',
       summary: `${this._service.name.charAt(0).toUpperCase()}${this._service.name.slice(1)} éffacés.`
@@ -174,6 +210,7 @@ export class InteractiveTableComponent {
         next: undefined
       });
     }
+    this.serviceUpdate();
   }
   private selectAdverbs(): void {
     if (this._service.priority !== undefined) {
@@ -216,6 +253,7 @@ export class InteractiveTableComponent {
       } else {
         this._service.setCounter(this._service.counter + 1);
       }
+      this.serviceUpdate();
     }
 
     // setTimeout(() => {
@@ -242,12 +280,14 @@ export class InteractiveTableComponent {
       this._service.setIndex(index);
       this.selectCurrentItem();
     }
+    this.serviceUpdate();
   }
 
   private selectCurrentItem(): void {
     const currentIndex = this._service.index.current;
     if (currentIndex !== undefined) {
-      this._service.setCurrentItem(this._service.selectedData[currentIndex] as any);
+      this._service.setCurrentItem(this._service.selectedData[currentIndex]);
+      this.serviceUpdate();
     }
   }
 
@@ -272,11 +312,11 @@ export class InteractiveTableComponent {
   //   });
   // }
 
-  // public onReadSpeak(): void {
+  public onReadSpeak(): void {
   //   this.openReadSpeaker = false;
   //   setTimeout(() => {
   //     this.openReadSpeaker = true;
   //   }, 100);
-  // }
+  }
 
 }
