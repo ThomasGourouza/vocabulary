@@ -7,7 +7,7 @@ export class NounsService extends GrammarService {
 
   constructor() {
     super();
-    this.setVariables(
+    this.setProperties(
       GrammarName.NOUNS,
       1,
       [

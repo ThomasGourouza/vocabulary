@@ -7,7 +7,7 @@ export class ConjunctionsService extends GrammarService {
 
   constructor() {
     super();
-    this.setVariables(
+    this.setProperties(
       GrammarName.CONJUNCTIONS,
       5,
       [

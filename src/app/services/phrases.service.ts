@@ -7,7 +7,7 @@ export class PhrasesService extends GrammarService {
 
   constructor() {
     super();
-    this.setVariables(
+    this.setProperties(
       GrammarName.PHRASES,
       6,
       [

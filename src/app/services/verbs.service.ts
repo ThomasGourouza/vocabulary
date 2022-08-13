@@ -7,7 +7,7 @@ export class VerbsService extends GrammarService {
 
   constructor() {
     super();
-    this.setVariables(
+    this.setProperties(
       GrammarName.VERBS,
       2,
       [

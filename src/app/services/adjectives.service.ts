@@ -7,7 +7,7 @@ export class AdjectivesService extends GrammarService {
 
   constructor() {
     super();
-    this.setVariables(
+    this.setProperties(
       GrammarName.ADJECTIVES,
       4,
       [
