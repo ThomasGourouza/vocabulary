@@ -48,7 +48,8 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   public openReadSpeaker = false;
   public canReadSpeak = false;
   public isPrevious = false;
-  public isLoaded = false;
+  // TODO: set to false
+  public isLoaded = true;
   public time: number;
 
   constructor(
@@ -72,6 +73,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.excelUnsubscribe();
+    this.timeSubscription.unsubscribe();
   }
 
   private excelUnsubscribe(): void {
@@ -154,7 +156,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   private setItem(item: any) {
-    this.isLoaded = false;
+    // this.isLoaded = false;
     this.item = item;
     this.canReadSpeak = false;
     // if (!!item) {
