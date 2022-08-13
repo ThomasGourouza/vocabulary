@@ -71,53 +71,56 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     this.excelService.priorities$.subscribe((priorities) =>
       this.priorities = priorities
     );
-    this.service.data$.subscribe((value) => {
-      this.data = value.filter((item) => item?.show !== '-');
-      this.checkData(this.data);
+    this.service.data$.subscribe((data) => {
+      this.data = data.filter((item) => item?.show !== '-');
+      this.service.setIsValidData$(true);
+      if (this.data.length < 2) {
+        this.service.setIsValidData$(false);
+        this.messageService.add({ severity: 'error', summary: Text.notEnoughText, detail: Text.addMoreDataText });
+        return;
+      }
+      const keys = Object.keys(this.data[0]);
+      keys.forEach((key) => {
+        if (!this.service.validKeys.includes(key)) {
+          this.service.setIsValidData$(false);
+        }
+      });
     });
-    this.service.priority$.subscribe((value) => this.priority = value);
-    this.service.isValidData$.subscribe((value) => {
-      this.isValidData = value;
+    this.service.priority$.subscribe((priority) => {
+      this.priority = priority;
+      if (this.priority !== undefined) {
+        this.service.setCurrentItem$(undefined);
+        const selectedData = (this.data).filter((item) =>
+          +item.priority === this.priority
+        );
+        this.service.setSelectedData$(selectedData);
+        this.onNext();
+      }
+    });
+    this.service.isValidData$.subscribe((isValidData) => {
+      this.isValidData = isValidData;
       const message = (this.isValidData) ?
         { severity: 'info', summary: Text.validText, detail: Text.selectPriorityText }
         : { severity: 'error', summary: Text.invalidText, detail: Text.removeText };
       this.messageService.add(message);
     });
-    this.service.firstNext$.subscribe((value) => this.firstNext = value);
-    this.service.index$.subscribe((value) => this.index = value);
-    this.service.selectedData$.subscribe((value) => this._selectedData = value);
-    this.service.counter$.subscribe((value) => this._counter = value);
-
-    this.service.currentItem$.subscribe((value) => this.setCurrentItem(value));
+    this.service.firstNext$.subscribe((firstNext) => this.firstNext = firstNext);
+    this.service.index$.subscribe((index) => this.index = index);
+    this.service.selectedData$.subscribe((selectedData) => this._selectedData = selectedData);
+    this.service.counter$.subscribe((counter) => this._counter = counter);
+    this.service.currentItem$.subscribe((currentItem) => {
+      // this.isLoaded = false;
+      this.currentItem = currentItem;
+      this.canReadSpeak = false;
+      // if (!!item) {
+      //   this.loadAudioUrl(item.danish);
+      // }
+    });
   }
 
   ngOnDestroy(): void {
     this.excelUnsubscribe();
     this.timeSubscription.unsubscribe();
-  }
-
-  private setCurrentItem(currentItem: Grammar | undefined) {
-    // this.isLoaded = false;
-    this.currentItem = currentItem;
-    this.canReadSpeak = false;
-    // if (!!item) {
-    //   this.loadAudioUrl(item.danish);
-    // }
-  }
-
-  private checkData(data: Array<Grammar>): void {
-    this.service.setIsValidData$(true);
-    if (data.length < 2) {
-      this.service.setIsValidData$(false);
-      this.messageService.add({ severity: 'error', summary: Text.notEnoughText, detail: Text.addMoreDataText });
-      return;
-    }
-    const keys = Object.keys(data[0]);
-    keys.forEach((key) => {
-      if (!this.service.validKeys.includes(key)) {
-        this.service.setIsValidData$(false);
-      }
-    });
   }
 
   public onUploadData(file: File): void {
@@ -141,7 +144,6 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       this.service.setCurrentItem$(undefined);
     } else {
       this.service.setPriority$(+priority);
-      this.select();
       this.service.setIndex$({
         previous: undefined,
         current: this.index.current,
@@ -149,17 +151,6 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       });
     }
 
-  }
-  private select(): void {
-    if (this.priority !== undefined) {
-      this.service.setCurrentItem$(undefined);
-      const priority = +this.priority;
-      const selectedData = (this.data).filter((item) =>
-        +item.priority === priority
-      );
-      this.service.setSelectedData$(selectedData);
-      this.onNext();
-    }
   }
 
   public onChangeTime(): void {
