@@ -43,6 +43,7 @@ import { TableDefaultComponent } from './components/interactive-table/table-defa
 import { AdverbComponent } from './components/adverb/adverb.component';
 import { TimePipe } from './pipes/time.pipe';
 import { ReaderSpeakerService } from './services/reader-speaker.service';
+import { GrammarService } from './services/grammar.service';
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import { ReaderSpeakerService } from './services/reader-speaker.service';
     AdverbsService,
     PhrasesService,
     GlobalService,
-    MessageService
+    MessageService,
+    GrammarService
   ],
   bootstrap: [AppComponent]
 })

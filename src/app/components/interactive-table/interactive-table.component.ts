@@ -2,32 +2,22 @@ import { Component, Input } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { interval, Subscription } from 'rxjs';
 import { Index } from 'src/app/models';
-import { Adverb } from 'src/app/models/adverb';
-import { Verb } from 'src/app/models/verb';
 import { Text } from 'src/app/models/text';
-import { AdjectivesService } from 'src/app/services/adjectives.service';
-import { AdverbsService } from 'src/app/services/adverbs.service';
-import { ConjunctionsService } from 'src/app/services/conjunctions.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { NavigationService } from 'src/app/services/navigation.service';
-import { NounsService } from 'src/app/services/nouns.service';
-import { PhrasesService } from 'src/app/services/phrases.service';
-import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
-import { VerbsService } from 'src/app/services/verbs.service';
-import { Phrase } from 'src/app/models/phrase';
-import { Conjunction } from 'src/app/models/conjunction';
-import { Adjective } from 'src/app/models/adjective';
-import { Noun } from 'src/app/models/noun';
+// import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
+import { GrammarService } from 'src/app/services/grammar.service';
+import { Grammar } from 'src/app/models/grammar';
+import { GrammarName } from 'src/app/models/grammar-name';
 
-export type GrammaticalType = Adverb | Verb | Noun | Adjective | Conjunction | Phrase;
 @Component({
   selector: 'app-interactive-table',
   templateUrl: './interactive-table.component.html'
 })
 export class InteractiveTableComponent {
 
-  @Input() set service(service: AdverbsService | VerbsService | NounsService | AdjectivesService | ConjunctionsService | PhrasesService) {
+  @Input() set service(service: GrammarService) {
     this._service = service;
     this.name = this._service.name;
     this.navigationService.setTabIndex(this._service.tabIndex);
@@ -46,40 +36,34 @@ export class InteractiveTableComponent {
     this.excelPhrasesSubscription.unsubscribe();
 
     switch (this.name) {
-      case this.adverbsService.name:
-        this.excelAdverbsSubscription = this.excelService.uploadedAdverbs$.subscribe((adverbs: Array<Adverb>) => {
-          this.adverbsService.setData(adverbs.filter((adverb) => adverb?.show !== '-'));
-          this.checkData(this.adverbsService.data);
+      case GrammarName.ADVERBS:
+        this.excelAdverbsSubscription = this.excelService.uploadedAdverbs$.subscribe((data) => {
+          this.setAndCheckData(data);
         });
         break;
-      case this.verbsService.name:
-        this.excelVerbsSubscription = this.excelService.uploadedVerbs$.subscribe((verbs: Array<Verb>) => {
-          this.verbsService.setData(verbs.filter((verb) => verb?.show !== '-'));
-          this.checkData(this.verbsService.data);
+      case GrammarName.VERBS:
+        this.excelVerbsSubscription = this.excelService.uploadedVerbs$.subscribe((data) => {
+          this.setAndCheckData(data);
         });
         break;
-        case this.nounsService.name:
-        this.excelNounsSubscription = this.excelService.uploadedNouns$.subscribe((nouns: Array<Noun>) => {
-          this.nounsService.setData(nouns.filter((noun) => noun?.show !== '-'));
-          this.checkData(this.nounsService.data);
+      case GrammarName.NOUNS:
+        this.excelNounsSubscription = this.excelService.uploadedNouns$.subscribe((data) => {
+          this.setAndCheckData(data);
         });
         break;
-      case this.adjectivesService.name:
-        this.excelAdjectivesSubscription = this.excelService.uploadedAdjectives$.subscribe((adjectives: Array<Adjective>) => {
-          this.adjectivesService.setData(adjectives.filter((adjective) => adjective?.show !== '-'));
-          this.checkData(this.adjectivesService.data);
+      case GrammarName.ADJECTIVES:
+        this.excelAdjectivesSubscription = this.excelService.uploadedAdjectives$.subscribe((data) => {
+          this.setAndCheckData(data);
         });
         break;
-      case this.conjunctionsService.name:
-        this.excelConjunctionsSubscription = this.excelService.uploadedConjunctions$.subscribe((conjunctions: Array<Conjunction>) => {
-          this.conjunctionsService.setData(conjunctions.filter((conjunction) => conjunction?.show !== '-'));
-          this.checkData(this.conjunctionsService.data);
+      case GrammarName.CONJUNCTIONS:
+        this.excelConjunctionsSubscription = this.excelService.uploadedConjunctions$.subscribe((data) => {
+          this.setAndCheckData(data);
         });
         break;
-      case this.phrasesService.name:
-        this.excelPhrasesSubscription = this.excelService.uploadedPhrases$.subscribe((phrases: Array<Phrase>) => {
-          this.phrasesService.setData(phrases.filter((phrase) => phrase?.show !== '-'));
-          this.checkData(this.phrasesService.data);
+      case GrammarName.PHRASES:
+        this.excelPhrasesSubscription = this.excelService.uploadedPhrases$.subscribe((data) => {
+          this.setAndCheckData(data);
         });
         break;
       default:
@@ -87,7 +71,7 @@ export class InteractiveTableComponent {
     }
   }
 
-  private _service!: AdverbsService | VerbsService | NounsService | AdjectivesService | ConjunctionsService | PhrasesService;
+  private _service!: GrammarService;
 
   public name!: string;
   public data!: Array<any>;
@@ -119,13 +103,7 @@ export class InteractiveTableComponent {
   constructor(
     private excelService: ExcelService,
     private navigationService: NavigationService,
-    private readerSpeakerService: ReaderSpeakerService,
-    private adverbsService: AdverbsService,
-    private verbsService: VerbsService,
-    private nounsService: NounsService,
-    private adjectivesService: AdjectivesService,
-    private conjunctionsService: ConjunctionsService,
-    private phrasesService: PhrasesService,
+    // private readerSpeakerService: ReaderSpeakerService,
     private messageService: MessageService,
     private globalService: GlobalService
   ) {
@@ -137,16 +115,21 @@ export class InteractiveTableComponent {
     );
   }
 
+  private setAndCheckData(data: Array<Grammar>): void {
+    this._service.setData(data.filter((item) => item?.show !== '-'));
+    this.checkData(this._service.data);
+  }
+
   private setItem(item: any) {
     this.isLoaded = false;
     this.item = item;
     this.canReadSpeak = false;
-    if (!!item) {
-      this.loadAudioUrl(item.danish);
-    }
+    // if (!!item) {
+    //   this.loadAudioUrl(item.danish);
+    // }
   }
 
-  private checkData(adverbs: Array<GrammaticalType>): void {
+  private checkData(adverbs: Array<Grammar>): void {
     if (adverbs.length < 2) {
       this._service.setIsValidData(false);
       this.messageService.add({ severity: 'error', summary: Text.notEnoughText, detail: Text.addMoreDataText });
@@ -163,13 +146,12 @@ export class InteractiveTableComponent {
       : { severity: 'error', summary: Text.invalidText, detail: Text.removeText };
     this.messageService.add(message);
   }
-  
+
   public onUploadData(file: File): void {
     this.excelService.excelToJSON(this.name, file);
   }
 
   public onReload(): void {
-    // todo: switch
     this._service.initVariables();
     this.messageService.add({
       severity: 'warn',
@@ -177,7 +159,6 @@ export class InteractiveTableComponent {
     });
   }
 
-  // todo: switch
   public onChangePriority(priority: string): void {
     this._service.setCounter(0);
     this._service.setFirstNext(true);
@@ -198,10 +179,10 @@ export class InteractiveTableComponent {
     if (this._service.priority !== undefined) {
       this._service.setCurrentItem(undefined);
       const priority = +this._service.priority;
-      const selectedData = (this._service.data as Array<GrammaticalType>).filter((adverb) =>
+      const selectedData = (this._service.data).filter((adverb) =>
         +adverb.priority === priority
       );
-      this._service.setSelectedData(selectedData as any);
+      this._service.setSelectedData(selectedData);
       this.onNext();
     }
   }
@@ -237,17 +218,16 @@ export class InteractiveTableComponent {
       }
     }
 
-    setTimeout(() => {
-      if (this.canReadSpeak) {
-        this.onReadSpeak();
-      }
-    }, 100);
+    // setTimeout(() => {
+    //   if (this.canReadSpeak) {
+    //     this.onReadSpeak();
+    //   }
+    // }, 100);
   }
 
   public onPrevious(): void {
     this.isPrevious = true;
 
-    // todo: switch
     if (this._service.index.previous !== undefined) {
       if (this._service.firstNext) {
         this._service.setCounter(this._service.counter - 1);
@@ -282,21 +262,21 @@ export class InteractiveTableComponent {
     this.timeSubscription.unsubscribe();
   }
 
-  private loadAudioUrl(word: string): void {
-    this.readerSpeakerService.getVoice(word).subscribe((audioFile) => {
-      this.isLoaded = true;
-      this.audioUrl = this.readerSpeakerService.getUrl(audioFile);
-      if (this.isPrevious) {
-        this.onReadSpeak();
-      }
-    });
-  }
+  // private loadAudioUrl(word: string): void {
+  //   this.readerSpeakerService.getVoice(word).subscribe((audioFile) => {
+  //     this.isLoaded = true;
+  //     this.audioUrl = this.readerSpeakerService.getUrl(audioFile);
+  //     if (this.isPrevious) {
+  //       this.onReadSpeak();
+  //     }
+  //   });
+  // }
 
-  public onReadSpeak(): void {
-    this.openReadSpeaker = false;
-    setTimeout(() => {
-      this.openReadSpeaker = true;
-    }, 100);
-  }
+  // public onReadSpeak(): void {
+  //   this.openReadSpeaker = false;
+  //   setTimeout(() => {
+  //     this.openReadSpeaker = true;
+  //   }, 100);
+  // }
 
 }
