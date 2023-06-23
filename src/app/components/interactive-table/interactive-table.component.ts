@@ -59,7 +59,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.name = this.service.name;
 
-    this.excelSubscription = this.excelService.uploadedAdjectives$.subscribe((data) =>
+    this.excelSubscription = this.excelService.uploadedWords$.subscribe((data) =>
       this.service.setData$(data)
     );
 

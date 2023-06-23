@@ -1,8 +1,8 @@
 import { Routes } from "@angular/router";
-import { AdjectiveComponent } from "./components/adjective/adjective.component";
+import { WordComponent } from "./components/word/word.component";
 
 export const APP_ROUTES: Routes = [
-    { path: '', redirectTo: '/adjectives', pathMatch: 'full' },
-    { path: 'adjectives', component: AdjectiveComponent },
-    { path: '**', redirectTo: '/adjectives' },
+    { path: '', redirectTo: '/words', pathMatch: 'full' },
+    { path: 'words', component: WordComponent },
+    { path: '**', redirectTo: '/words' },
 ];

@@ -6,11 +6,11 @@ import { Item } from '../models/item';
 
 @Injectable()
 export class ExcelService {
-  private _uploadedAdjectives$ = new Subject<Array<Item>>();
+  private _uploadedWords$ = new Subject<Array<Item>>();
   private _priorities$ = new Subject<Array<number>>();
 
-  get uploadedAdjectives$(): Observable<Array<Item>> {
-    return this._uploadedAdjectives$.asObservable();
+  get uploadedWords$(): Observable<Array<Item>> {
+    return this._uploadedWords$.asObservable();
   }
 
   get priorities$(): Observable<Array<number>> {
@@ -36,7 +36,7 @@ export class ExcelService {
           }
         });
         this._priorities$.next(priorities);
-        this._uploadedAdjectives$.next(sheet);
+        this._uploadedWords$.next(sheet);
       });
     });
     reader.readAsBinaryString(file);

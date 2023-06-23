@@ -14,7 +14,7 @@
                 </ng-template>
             </div>
             <div class="col-3">
-                <strong>Priorité:</strong>
+                <strong><span class="select">Priorité:</span></strong>
                 <select class="form-select" [(ngModel)]="priority" (ngModelChange)="onChangePriority($event)"
                     [disabled]="data.length === 0 || !isValidData">
                     <option *ngFor="let priority of priorities" [value]="priority" [label]="priority">
@@ -22,7 +22,7 @@
                 </select>
             </div>
             <div class="col-3">
-                <strong>Temps:</strong>
+                <strong><span class="select">Temps:</span></strong>
                 <select class="form-select" [(ngModel)]="time" (ngModelChange)="onChangeTime()">
                     <option *ngFor="let time of times" [value]="time" [label]="time | time">
                     </option>

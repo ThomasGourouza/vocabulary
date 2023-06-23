@@ -8,12 +8,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 
-import { AdjectiveComponent } from './components/adjective/adjective.component';
+import { WordComponent } from './components/word/word.component';
 
 import { InteractiveTableComponent } from './components/interactive-table/interactive-table.component';
 
 import { ExcelService } from './services/excel.service';
-import { AdjectivesService } from './services/adjectives.service';
+import { WordService } from './services/word.service';
 
 import { FileUploadModule } from 'primeng/fileupload';
 import { TabMenuModule } from 'primeng/tabmenu';
@@ -29,7 +29,7 @@ import { ItemService } from './services/item.service';
 @NgModule({
   declarations: [
     AppComponent,
-    AdjectiveComponent,
+    WordComponent,
     InteractiveTableComponent,
     TableDefaultComponent,
     TimePipe
@@ -51,7 +51,7 @@ import { ItemService } from './services/item.service';
   providers: [
     ExcelService,
     ReaderSpeakerService,
-    AdjectivesService,
+    WordService,
     MessageService,
     ItemService
   ],

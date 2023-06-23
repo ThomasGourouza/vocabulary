@@ -1,5 +1,5 @@
 body {
-  background-color: rgb(46, 48, 48);
+  background-color: rgb(50, 50, 50);
 }
 .main-page {
   margin-top: 3em;
@@ -11,10 +11,11 @@ td {
   border: 1px solid black;
 }
 th {
-  background-color: aliceblue;
+  background-color: rgb(120, 120, 120);
+  color: rgb(50, 50, 50);
 }
 td {
-  background-color: rgb(247, 251, 255);
+  background-color: rgb(150, 150, 150);
 }
 table.fixed {
   table-layout: fixed;
@@ -32,7 +33,19 @@ table.fixed td {
   font-family: Arial, Helvetica, sans-serif;
 }
 .answer {
-  color: rgb(23, 111, 114);
+
+}
+.form-select, .form-select:disabled {
+  background-color: rgb(120, 120, 120);
+  color: rgb(20, 20, 20);
+}
+
+span.select {
+  color: white;
+}
+.card {
+  background-color: rgb(80, 80, 80);
+  padding: 30px 0;
 }
 .medium {
   font-size: large;
