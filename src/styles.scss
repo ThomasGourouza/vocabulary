@@ -27,14 +27,12 @@ table.fixed th {
 }
 table.fixed td {
   overflow: hidden;
-  height: 150px;
+  height: 120px;
 }
 .arial {
   font-family: Arial, Helvetica, sans-serif;
 }
-.answer {
 
-}
 .form-select, .form-select:disabled {
   background-color: rgb(110, 110, 110);
   color: rgb(20, 20, 20);
@@ -47,19 +45,14 @@ span.select {
   background-color: rgb(80, 80, 80);
   padding: 30px 0;
 }
-.medium {
-  font-size: large;
-}
+
 .big {
   font-size: x-large;
 }
 .biggest {
   font-size: xx-large;
 }
-.selected {
-  background-color: rgb(167, 212, 255);
-  font-weight: bold;
-}
+
 .space-around {
   margin-left: 1em;
   margin-right: 1em;
@@ -74,7 +67,4 @@ span.select {
 }
 .space-bellow {
   margin-bottom: 3em;
-}
-.summary .summary-item:not(:last-child) {
-  margin-bottom: 1em;
 }
