@@ -4,8 +4,7 @@ import { interval, Subscription } from 'rxjs';
 import { Index } from 'src/app/models';
 import { Text } from 'src/app/models/text';
 import { ExcelService } from 'src/app/services/excel.service';
-import { NavigationService } from 'src/app/services/navigation.service';
-// import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
+import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
 import { GrammarService } from 'src/app/services/grammar.service';
 import { Grammar } from 'src/app/models/grammar';
 import { GrammarName } from 'src/app/models/grammar-name';
@@ -45,13 +44,12 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   public canReadSpeak = false;
   public isPrevious = false;
   // TODO: set to false
-  public isLoaded = true;
+  public isLoaded = false;
   public time: number;
 
   constructor(
     private excelService: ExcelService,
-    private navigationService: NavigationService,
-    // private readerSpeakerService: ReaderSpeakerService,
+    private readerSpeakerService: ReaderSpeakerService,
     private messageService: MessageService
   ) {
     this.data = [];
@@ -67,7 +65,6 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.name = this.service.name;
     this.excelSubscribe(this.name);
-    this.navigationService.setTabIndex(this.service.tabIndex);
     this.excelService.priorities$.subscribe((priorities) =>
       this.priorities = priorities
     );
@@ -109,12 +106,12 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     this.service.selectedData$.subscribe((selectedData) => this._selectedData = selectedData);
     this.service.counter$.subscribe((counter) => this._counter = counter);
     this.service.currentItem$.subscribe((currentItem) => {
-      // this.isLoaded = false;
+      this.isLoaded = false;
       this.currentItem = currentItem;
       this.canReadSpeak = false;
-      // if (!!item) {
-      //   this.loadAudioUrl(item.danish);
-      // }
+      if (!!currentItem) {
+        this.loadAudioUrl(currentItem.danish);
+      }
     });
   }
 
@@ -185,11 +182,11 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
     }
 
-    // setTimeout(() => {
-    //   if (this.canReadSpeak) {
-    //     this.onReadSpeak();
-    //   }
-    // }, 100);
+    setTimeout(() => {
+      if (this.canReadSpeak) {
+        this.onReadSpeak();
+      }
+    }, 100);
   }
 
   public onPrevious(): void {
@@ -230,21 +227,22 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     this.timeSubscription.unsubscribe();
   }
 
-  // private loadAudioUrl(word: string): void {
-  //   this.readerSpeakerService.getVoice(word).subscribe((audioFile) => {
-  //     this.isLoaded = true;
-  //     this.audioUrl = this.readerSpeakerService.getUrl(audioFile);
-  //     if (this.isPrevious) {
-  //       this.onReadSpeak();
-  //     }
-  //   });
-  // }
+  private loadAudioUrl(word: string): void {
+    this.readerSpeakerService.getVoice(word).subscribe((audioFile) => {
+      this.isLoaded = true;
+      // this.audioUrl = this.readerSpeakerService.getUrl(audioFile);
+      this.audioUrl = audioFile.URL;
+      if (this.isPrevious) {
+        this.onReadSpeak();
+      }
+    });
+  }
 
   public onReadSpeak(): void {
-    //   this.openReadSpeaker = false;
-    //   setTimeout(() => {
-    //     this.openReadSpeaker = true;
-    //   }, 100);
+      this.openReadSpeaker = false;
+      setTimeout(() => {
+        this.openReadSpeaker = true;
+      }, 100);
   }
 
   private excelUnsubscribe(): void {

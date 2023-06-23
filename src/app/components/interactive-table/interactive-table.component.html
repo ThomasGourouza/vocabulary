@@ -33,20 +33,8 @@
 </div>
 
 <div class="big more-space-around">
-    <div [ngSwitch]="name">
-        <div *ngSwitchCase="'verbes'">
-            <app-table-verb [data]="data" [currentItem]="currentItem" [firstNext]="firstNext">
-            </app-table-verb>
-        </div>
-        <div *ngSwitchCase="'noms'">
-            <app-table-noun [data]="data" [currentItem]="currentItem" [firstNext]="firstNext">
-            </app-table-noun>
-        </div>
-        <div *ngSwitchDefault>
-            <app-table-default [data]="data" [currentItem]="currentItem" [firstNext]="firstNext">
-            </app-table-default>
-        </div>
-    </div>
+  <app-table-default [data]="data" [currentItem]="currentItem" [firstNext]="firstNext">
+  </app-table-default>
 </div>
 
 <div class="d-flex justify-content-center">

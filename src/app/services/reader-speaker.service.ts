@@ -10,17 +10,16 @@ export class ReaderSpeakerService {
   constructor(
     private readonly http: HttpClient
   ) {
-    this.baseUrl = 'https://freetts.com/Home/PlayAudio';
+    this.baseUrl = 'https://ttsmp3.com/makemp3_new.php';
   }
 
   getVoice(TextMessage: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}`,
+    return this.http.post(`${this.baseUrl}`,
       {
         params: {
-          Language: 'da-DK',
-          Voice: 'Naja_Female',
-          type: 0,
-          TextMessage
+          msg:	TextMessage,
+          lang:	"Tatyana",
+          source:	"ttsmp3"
         },
       });
   }
