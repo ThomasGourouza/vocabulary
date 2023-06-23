@@ -11,11 +11,11 @@ td {
   border: 1px solid black;
 }
 th {
-  background-color: rgb(120, 120, 120);
+  background-color: rgb(110, 110, 110);
   color: rgb(50, 50, 50);
 }
 td {
-  background-color: rgb(150, 150, 150);
+  background-color: rgb(130, 130, 130);
 }
 table.fixed {
   table-layout: fixed;
@@ -36,7 +36,7 @@ table.fixed td {
 
 }
 .form-select, .form-select:disabled {
-  background-color: rgb(120, 120, 120);
+  background-color: rgb(110, 110, 110);
   color: rgb(20, 20, 20);
 }
 

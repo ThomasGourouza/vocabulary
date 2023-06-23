@@ -10,8 +10,6 @@ import { AppComponent } from './app.component';
 
 import { WordComponent } from './components/word/word.component';
 
-import { InteractiveTableComponent } from './components/interactive-table/interactive-table.component';
-
 import { ExcelService } from './services/excel.service';
 import { WordService } from './services/word.service';
 
@@ -21,7 +19,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { TableDefaultComponent } from './components/interactive-table/table-default/table-default.component';
+import { TableDefaultComponent } from './components/table-default/table-default.component';
 import { TimePipe } from './pipes/time.pipe';
 import { ReaderSpeakerService } from './services/reader-speaker.service';
 import { ItemService } from './services/item.service';
@@ -30,7 +28,6 @@ import { ItemService } from './services/item.service';
   declarations: [
     AppComponent,
     WordComponent,
-    InteractiveTableComponent,
     TableDefaultComponent,
     TimePipe
   ],
