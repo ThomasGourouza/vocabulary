@@ -1,6 +1,6 @@
-export interface Grammar {
+export interface Item {
     french: string;
-    danish: string;
+    word: string;
     priority: number;
     gender?: string;
     conjugation?: string;

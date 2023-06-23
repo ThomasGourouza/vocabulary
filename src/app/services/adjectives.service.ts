@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
-import { GrammarName } from '../models/grammar-name';
-import { Key } from '../models/key';
-import { GrammarService } from './grammar.service';
+import { ItemService } from './item.service';
 
 @Injectable()
-export class AdjectivesService extends GrammarService {
+export class AdjectivesService extends ItemService {
 
   constructor() {
     super();
     this.setProperties(
-      GrammarName.ADJECTIVES,
+      "adjectifs",
       4,
       [
-        Key.FRENCH,
-        Key.DANISH,
-        Key.PRIORITY,
-        Key.SHOW
-      ],
-      { title: GrammarName.ADJECTIVESTITEL, singular: GrammarName.ADJECTIVE }
+        "french",
+        "word",
+        "priority",
+        "show"
+      ]
     );
   }
 

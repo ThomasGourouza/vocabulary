@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Grammar } from 'src/app/models/grammar';
+import { Item } from 'src/app/models/item';
 
 @Component({
   selector: 'app-table-default',
@@ -7,8 +7,8 @@ import { Grammar } from 'src/app/models/grammar';
 })
 export class TableDefaultComponent {
 
-  @Input() public data!: Array<Grammar>;
-  @Input() public currentItem: Grammar | undefined;
+  @Input() public data!: Array<Item>;
+  @Input() public currentItem: Item | undefined;
   @Input() public firstNext!: boolean;
 
 }

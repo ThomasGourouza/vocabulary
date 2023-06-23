@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Index } from '../models';
-import { Grammar } from '../models/grammar';
-import { InfoLabel } from '../models/info-label';
+import { Item } from '../models/item';
 
 @Injectable()
-export class GrammarService {
+export class ItemService {
 
   private _name!: string;
   private _tabIndex!: number;
   private _validKeys!: Array<string>;
-  private _infoLabel!: InfoLabel;
 
-  private _data$ = new Subject<Array<Grammar>>();
-  private _selectedData$ = new Subject<Array<Grammar>>();
-  private _currentItem$ = new Subject<Grammar | undefined>();
+  private _data$ = new Subject<Array<Item>>();
+  private _selectedData$ = new Subject<Array<Item>>();
+  private _currentItem$ = new Subject<Item | undefined>();
   private _index$ = new Subject<Index>();
   private _firstNext$ = new Subject<boolean>();
   private _priority$ = new Subject<number | undefined>();
@@ -40,28 +38,24 @@ export class GrammarService {
     return this._validKeys;
   }
 
-  get infoLabel(): InfoLabel {
-    return this._infoLabel;
-  }
-
-  get data$(): Observable<Array<Grammar>> {
+  get data$(): Observable<Array<Item>> {
     return this._data$.asObservable();
   }
-  setData$(data: Array<Grammar>): void {
+  setData$(data: Array<Item>): void {
     this._data$.next(data);
   }
 
-  get selectedData$(): Observable<Array<Grammar>> {
+  get selectedData$(): Observable<Array<Item>> {
     return this._selectedData$.asObservable();
   }
-  setSelectedData$(selectedData: Array<Grammar>): void {
+  setSelectedData$(selectedData: Array<Item>): void {
     this._selectedData$.next(selectedData);
   }
 
-  get currentItem$(): Observable<Grammar | undefined> {
+  get currentItem$(): Observable<Item | undefined> {
     return this._currentItem$.asObservable();
   }
-  setCurrentItem$(currentItem: Grammar | undefined): void {
+  setCurrentItem$(currentItem: Item | undefined): void {
     this._currentItem$.next(currentItem);
   }
 
@@ -100,11 +94,10 @@ export class GrammarService {
     this._isValidData$.next(isValidData);
   }
 
-  public setProperties(name: string, tabIndex: number, validKeys: Array<string>, infoLabel: InfoLabel): void {
+  public setProperties(name: string, tabIndex: number, validKeys: Array<string>): void {
     this._name = name;
     this._tabIndex = tabIndex;
     this._validKeys = validKeys;
-    this._infoLabel = infoLabel;
   }
 
   public initVariables(): void {

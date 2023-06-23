@@ -5,9 +5,8 @@ import { Index } from 'src/app/models';
 import { Text } from 'src/app/models/text';
 import { ExcelService } from 'src/app/services/excel.service';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
-import { GrammarService } from 'src/app/services/grammar.service';
-import { Grammar } from 'src/app/models/grammar';
-import { GrammarName } from 'src/app/models/grammar-name';
+import { ItemService } from 'src/app/services/item.service';
+import { Item } from 'src/app/models/item';
 
 @Component({
   selector: 'app-interactive-table',
@@ -15,24 +14,19 @@ import { GrammarName } from 'src/app/models/grammar-name';
 })
 export class InteractiveTableComponent implements OnInit, OnDestroy {
 
-  @Input() service!: GrammarService;
+  @Input() service!: ItemService;
 
   public name!: string;
-  public data: Array<Grammar>;
+  public data: Array<Item>;
   public priority: number | undefined;
   public isValidData!: boolean;
   public firstNext!: boolean;
   public index: Index;
-  public currentItem: Grammar | undefined;
-  private _selectedData!: Array<Grammar>;
+  public currentItem: Item | undefined;
+  private _selectedData!: Array<Item>;
   private _counter!: number;
 
   private excelSubscription = new Subscription();
-  private excelVerbsSubscription = new Subscription();
-  private excelNounsSubscription = new Subscription();
-  private excelAdjectivesSubscription = new Subscription();
-  private excelConjunctionsSubscription = new Subscription();
-  private excelPhrasesSubscription = new Subscription();
 
   public priorities: Array<number> = [];
   public times: Array<number>;
@@ -64,7 +58,11 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.name = this.service.name;
-    this.excelSubscribe(this.name);
+
+    this.excelSubscription = this.excelService.uploadedAdjectives$.subscribe((data) =>
+      this.service.setData$(data)
+    );
+
     this.excelService.priorities$.subscribe((priorities) =>
       this.priorities = priorities
     );
@@ -110,13 +108,13 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       this.currentItem = currentItem;
       this.canReadSpeak = false;
       if (!!currentItem) {
-        this.loadAudioUrl(currentItem.danish);
+        this.loadAudioUrl(currentItem.word);
       }
     });
   }
 
   ngOnDestroy(): void {
-    this.excelUnsubscribe();
+    this.excelSubscription.unsubscribe();
     this.timeSubscription.unsubscribe();
   }
 
@@ -243,68 +241,6 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         this.openReadSpeaker = true;
       }, 100);
-  }
-
-  private excelUnsubscribe(): void {
-    switch (this.name) {
-      case GrammarName.ADVERBS:
-        this.excelSubscription.unsubscribe();
-        break;
-      case GrammarName.VERBS:
-        this.excelVerbsSubscription.unsubscribe();
-        break;
-      case GrammarName.NOUNS:
-        this.excelNounsSubscription.unsubscribe();
-        break;
-      case GrammarName.ADJECTIVES:
-        this.excelAdjectivesSubscription.unsubscribe();
-        break;
-      case GrammarName.CONJUNCTIONS:
-        this.excelConjunctionsSubscription.unsubscribe();
-        break;
-      case GrammarName.PHRASES:
-        this.excelPhrasesSubscription.unsubscribe();
-        break;
-      default:
-        break;
-    }
-  }
-
-  private excelSubscribe(currentName: string): void {
-    switch (currentName) {
-      case GrammarName.ADVERBS:
-        this.excelSubscription = this.excelService.uploadedAdverbs$.subscribe((data) =>
-          this.service.setData$(data)
-        );
-        break;
-      case GrammarName.VERBS:
-        this.excelVerbsSubscription = this.excelService.uploadedVerbs$.subscribe((data) =>
-          this.service.setData$(data)
-        );
-        break;
-      case GrammarName.NOUNS:
-        this.excelNounsSubscription = this.excelService.uploadedNouns$.subscribe((data) =>
-          this.service.setData$(data)
-        );
-        break;
-      case GrammarName.ADJECTIVES:
-        this.excelAdjectivesSubscription = this.excelService.uploadedAdjectives$.subscribe((data) =>
-          this.service.setData$(data)
-        );
-        break;
-      case GrammarName.CONJUNCTIONS:
-        this.excelConjunctionsSubscription = this.excelService.uploadedConjunctions$.subscribe((data) =>
-          this.service.setData$(data)
-        );
-        break;
-      case GrammarName.PHRASES:
-        this.excelPhrasesSubscription = this.excelService.uploadedPhrases$.subscribe((data) =>
-          this.service.setData$(data)
-        );
-        break;
-      default:
-        break;
-    }
   }
 
 }
