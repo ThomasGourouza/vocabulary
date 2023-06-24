@@ -13,7 +13,6 @@ import { Text } from 'src/app/models/text';
   templateUrl: './word.component.html'
 })
 export class WordComponent implements OnInit, OnDestroy {
-  public name!: string;
   public data: Array<Item>;
   public priority: number | undefined;
   public isValidData!: boolean;
@@ -34,7 +33,6 @@ export class WordComponent implements OnInit, OnDestroy {
   public openReadSpeaker = false;
   public canReadSpeak = false;
   public isPrevious = false;
-  // TODO: set to false
   public isLoaded = false;
   public time: number;
 
@@ -55,8 +53,6 @@ export class WordComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.name = this.wordService.name;
-
     this.excelSubscription = this.excelService.uploadedWords$.subscribe((data) =>
       this.wordService.setData$(data)
     );
@@ -65,7 +61,7 @@ export class WordComponent implements OnInit, OnDestroy {
       this.priorities = priorities
     );
     this.wordService.data$.subscribe((data) => {
-      this.data = data.filter((item) => item?.show !== '-');
+      this.data = data;
       this.wordService.setIsValidData$(true);
       if (this.data.length < 2) {
         this.wordService.setIsValidData$(false);
@@ -117,7 +113,7 @@ export class WordComponent implements OnInit, OnDestroy {
   }
 
   public onUploadData(file: File): void {
-    this.excelService.excelToJSON(this.name, file);
+    this.excelService.excelToJSON(file);
   }
 
   public onReload(): void {
@@ -125,7 +121,7 @@ export class WordComponent implements OnInit, OnDestroy {
 
     this.messageService.add({
       severity: 'warn',
-      summary: `${this.wordService.name.charAt(0).toUpperCase()}${this.wordService.name.slice(1)} éffacés.`
+      summary: `Mots éffacés.`
     });
   }
 
@@ -143,7 +139,6 @@ export class WordComponent implements OnInit, OnDestroy {
         next: undefined
       });
     }
-
   }
 
   public onChangeTime(): void {

@@ -17,7 +17,7 @@ export class ExcelService {
     return this._priorities$.asObservable();
   }
 
-  public excelToJSON(name: string, file: File): void {
+  public excelToJSON(file: File): void {
     const reader = new FileReader();
     reader.onload = ((e) => {
       if (e.target == null) {

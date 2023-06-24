@@ -22,7 +22,6 @@ import { MessageService } from 'primeng/api';
 import { TableDefaultComponent } from './components/table-default/table-default.component';
 import { TimePipe } from './pipes/time.pipe';
 import { ReaderSpeakerService } from './services/reader-speaker.service';
-import { ItemService } from './services/item.service';
 
 @NgModule({
   declarations: [
@@ -49,8 +48,7 @@ import { ItemService } from './services/item.service';
     ExcelService,
     ReaderSpeakerService,
     WordService,
-    MessageService,
-    ItemService
+    MessageService
   ],
   bootstrap: [AppComponent]
 })

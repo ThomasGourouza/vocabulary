@@ -3,12 +3,12 @@
       <div class="row">
           <div class="col d-flex align-items-end">
               <div *ngIf="data.length > 0; else loadData">
-                  <button pButton type="button" label="Effacer les {{ name }}" icon="pi pi-trash" iconPos="left"
+                  <button pButton type="button" label="Effacer les mots" icon="pi pi-trash" iconPos="left"
                       class="p-button-secondary" (click)="onReload()" [disabled]="data.length === 0"></button>
               </div>
               <ng-template #loadData>
                   <p-fileUpload mode="basic" [maxFileSize]="5000000" chooseIcon="pi-file-excel"
-                      chooseLabel="Charger des {{ name }}" (onSelect)="onUploadData($event.currentFiles[0])"
+                      chooseLabel="Charger des mots" (onSelect)="onUploadData($event.currentFiles[0])"
                       [auto]="true" [disabled]="data.length > 0">
                   </p-fileUpload>
               </ng-template>

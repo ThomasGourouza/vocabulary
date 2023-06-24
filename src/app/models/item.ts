@@ -3,6 +3,4 @@ export interface Item {
     word: string;
     priority: number;
     gender?: string;
-    conjugation?: string;
-    show?: string;
 }
