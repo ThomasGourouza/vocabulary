@@ -14,28 +14,48 @@ table {
   border-spacing: 0;
   border-collapse: separate;
   border-radius: 10px;
-  border: 1px solid rgb(50, 50, 50);
+  border: 1px solid rgb(255, 255, 255);
   overflow: hidden;
   table-layout: fixed;
   width: 100%;
 }
 th:not(:last-child) {
-  border-right: 1px solid rgb(50, 50, 50);
+  border-right: 1px solid rgb(120, 120, 120);
 }
 td:not(:last-child) {
-  border-right: 1px solid rgb(50, 50, 50);
+  border-right: 1px solid rgb(120, 120, 120);
 }
-th {
+td {
+  overflow: auto;
+}
+tr:first-child {
   background-color: rgb(110, 110, 110);
-  color: rgb(50, 50, 50);
+  color: rgb(240, 240, 240);
   overflow: auto;
   height: 50px;
 }
-td {
-  border-top: 1px solid rgb(50, 50, 50);
-  background-color: rgb(130, 130, 130);
-  overflow: auto;
+tr.toggle-list {
+  cursor: pointer;
+}
+tr.toggle-list:hover {
+  background-color: rgb(105, 105, 105);
+  color: white;
+}
+tr:not(:first-child):not(.list) {
   height: 150px;
+}
+tr.list {
+  height: 60px;
+}
+tr:nth-child(even) {
+  background-color: rgb(130, 130, 130);
+}
+tr:nth-child(odd):not(:first-child) {
+  background-color: rgb(140, 140, 140);
+}
+
+.white {
+  color: white;
 }
 .center-text {
   text-align: center;
@@ -87,4 +107,9 @@ span.select {
 button.counter:disabled {
   background-color: #56717d;;
   color: rgb(20, 20, 20);
+}
+
+.words {
+  margin: 50px 0;
+  padding: 2em 4em;
 }

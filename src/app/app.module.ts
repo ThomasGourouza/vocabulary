@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 
 import { WordComponent } from './components/word/word.component';
+import { ListComponent } from './components/list/list.component';
 
 import { ExcelService } from './services/excel.service';
 import { WordService } from './services/word.service';
@@ -21,14 +22,17 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { TableDefaultComponent } from './components/table-default/table-default.component';
 import { TimePipe } from './pipes/time.pipe';
+import { PriorityPipe } from './pipes/priority.pipe';
 import { ReaderSpeakerService } from './services/reader-speaker.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     WordComponent,
+    ListComponent,
     TableDefaultComponent,
-    TimePipe
+    TimePipe,
+    PriorityPipe
   ],
   imports: [
     BrowserModule,

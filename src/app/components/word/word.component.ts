@@ -196,7 +196,6 @@ export class WordComponent implements OnInit, OnDestroy {
       this.wordService.setIndex$(index);
       this.selectCurrentItem();
     }
-
   }
 
   private selectCurrentItem(): void {
