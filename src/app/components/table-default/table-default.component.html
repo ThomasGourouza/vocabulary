@@ -1,25 +1,25 @@
-<table class="fixed">
+<table>
     <tr>
         <th scope="col">
-            <div class="d-flex justify-content-center">Français</div>
+            <div class="center-text">Français</div>
         </th>
         <th scope="col">
-            <div class="d-flex justify-content-center">Traduction</div>
+            <div class="center-text">Traduction</div>
         </th>
     </tr>
     <tr>
         <td>
-            <div class="d-flex justify-content-center arial biggest">
+            <div class="arial biggest center-text">
                 <span *ngIf="data.length > 0 && !!currentItem">
-                    {{ currentItem?.french }}
+                    {{ currentItem.french }}
                 </span>&nbsp;
             </div>
         </td>
         <td>
-            <div class="d-flex justify-content-center arial biggest">
+            <div class="arial biggest center-text">
                 <span *ngIf="data.length > 0 && !!currentItem
                             && firstNext">
-                    {{ currentItem?.word }}
+                    {{ currentItem.word }}
                 </span>
             </div>
         </td>

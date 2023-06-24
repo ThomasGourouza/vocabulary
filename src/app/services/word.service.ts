@@ -78,10 +78,10 @@ export class WordService {
   public initVariables(): void {
     this._data$.next([]);
     this._selectedData$.next([]);
-    this._currentItem$.next();
+    this._currentItem$.next(undefined);
     this._index$.next({ previous: undefined, current: undefined, next: undefined });
     this._firstNext$.next(true);
-    this._priority$.next();
+    this._priority$.next(undefined);
     this._isValidData$.next(true);
     this._validKeys = [
       "french",
