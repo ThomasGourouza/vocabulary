@@ -34,6 +34,7 @@ export class WordComponent implements OnInit, OnDestroy {
   public canReadSpeak = false;
   public isPrevious = false;
   public isLoaded = false;
+  public isRemoving = false;
   public time: number;
 
   constructor(
@@ -62,6 +63,9 @@ export class WordComponent implements OnInit, OnDestroy {
     );
     this.wordService.data$.subscribe((data) => {
       this.data = data;
+      if (this.isRemoving) {
+        return;
+      }
       this.wordService.setIsValidData$(true);
       if (this.data.length < 2) {
         this.wordService.setIsValidData$(false);
@@ -77,17 +81,23 @@ export class WordComponent implements OnInit, OnDestroy {
     });
     this.wordService.priority$.subscribe((priority) => {
       this.priority = priority;
+      if (this.isRemoving) {
+        return;
+      }
       if (this.priority !== undefined) {
         this.wordService.setCurrentItem$(undefined);
         const selectedData = (this.data).filter((item) =>
           +item.priority === this.priority
         );
         this.wordService.setSelectedData$(selectedData);
-        this.onNext();
+        this.next();
       }
     });
     this.wordService.isValidData$.subscribe((isValidData) => {
       this.isValidData = isValidData;
+      if (this.isRemoving) {
+        return;
+      }
       const message = (this.isValidData) ?
         { severity: 'info', summary: Text.validText, detail: Text.selectPriorityText }
         : { severity: 'error', summary: Text.invalidText, detail: Text.removeText };
@@ -112,10 +122,13 @@ export class WordComponent implements OnInit, OnDestroy {
   }
 
   public onUploadData(file: File): void {
+    this.isRemoving = false;
     this.excelService.excelToJSON(file);
   }
 
   public onReload(): void {
+    this.isRemoving = true;
+    this.counter = 0;
     this.wordService.initVariables();
 
     this.messageService.add({
@@ -147,10 +160,20 @@ export class WordComponent implements OnInit, OnDestroy {
     }
   }
 
+  action(action: string): void {
+    action === 'next' ?this.onNext() : this.onPrevious();
+  }
+
   public onNext(): void {
+    if(!this.currentItem) {
+      return;
+    }
+    this.next();
+  }
+
+  private next(): void {
     this.canReadSpeak = true;
     this.isPrevious = false;
-
     if (this._selectedData.length > 1) {
       this.wordService.setFirstNext$(!this.firstNext)
       if (!this.firstNext) {
@@ -180,22 +203,22 @@ export class WordComponent implements OnInit, OnDestroy {
   }
 
   public onPrevious(): void {
-    this.isPrevious = true;
-
-    if (this.index.previous !== undefined) {
-      if (this.firstNext) {
-        this.counter --;
-      } else {
-        this.wordService.setFirstNext$(true);
-      }
-      const index: Index = {
-        previous: undefined,
-        current: this.index.previous,
-        next: this.index.current
-      };
-      this.wordService.setIndex$(index);
-      this.selectCurrentItem();
+    if (this.index.previous === undefined || !this.currentItem) {
+      return;
     }
+    this.isPrevious = true;
+    if (this.firstNext) {
+      this.counter--;
+    } else {
+      this.wordService.setFirstNext$(true);
+    }
+    const index: Index = {
+      previous: undefined,
+      current: this.index.previous,
+      next: this.index.current
+    };
+    this.wordService.setIndex$(index);
+    this.selectCurrentItem();
   }
 
   private selectCurrentItem(): void {
@@ -206,9 +229,12 @@ export class WordComponent implements OnInit, OnDestroy {
   }
 
   public onPlay(): void {
+    if (!this.currentItem) {
+      return;
+    }
     this.isPlaying = true;
     this.timeSubscription = interval(this.time).subscribe(() =>
-      this.onNext()
+      this.next()
     );
   }
   public onStop(): void {

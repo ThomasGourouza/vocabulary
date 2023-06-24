@@ -1,52 +1,79 @@
 <div class="card">
-  <div class="d-flex justify-content-center">
-    <div class="space-bellow col-9">
-      <div class="row">
-        <div class="col d-flex align-items-end">
-          <div *ngIf="data.length > 0; else loadData">
-            <button
-              pButton
-              type="button"
-              label="Effacer les mots"
-              icon="pi pi-trash"
-              iconPos="left"
-              class="p-button-secondary"
-              (click)="onReload()"
-              [disabled]="data.length === 0"
-            ></button>
-          </div>
-          <ng-template #loadData>
-            <p-fileUpload
-              mode="basic"
-              [maxFileSize]="5000000"
-              chooseIcon="pi-file-excel"
-              chooseLabel="Charger des mots"
-              (onSelect)="onUploadData($event.currentFiles[0])"
-              [auto]="true"
-              [disabled]="data.length > 0"
-            >
-            </p-fileUpload>
-          </ng-template>
+  <div class="d-flex justify-content-start">
+    <div class="settings">
+      <p-button
+        *ngIf="data.length > 0; else loadData"
+        styleClass="p-button-rounded p-button-danger p-button-raised"
+        icon="pi pi-trash"
+        (click)="onReload()"
+        [disabled]="data.length === 0"
+      ></p-button>
+      <ng-template #loadData>
+        <p-fileUpload
+          styleClass="p-button-rounded p-button-raised"
+          mode="basic"
+          [maxFileSize]="5000000"
+          chooseIcon="pi-file-excel"
+          (onSelect)="onUploadData($event.currentFiles[0])"
+          [auto]="true"
+          [disabled]="data.length > 0"
+        >
+        </p-fileUpload>
+      </ng-template>
+    </div>
+    <div class="settings priority-container">
+      <strong><span class="select">Priorité:</span></strong>
+      <select
+        class="form-select"
+        [(ngModel)]="priority"
+        (ngModelChange)="onChangePriority($event)"
+        [disabled]="data.length === 0 || !isValidData"
+      >
+        <option
+          *ngFor="let priority of priorities"
+          [value]="priority"
+          [label]="priority"
+        ></option>
+      </select>
+    </div>
+  </div>
+
+  <div class="big more-space-around">
+    <app-table-default
+      [data]="data"
+      [currentItem]="currentItem"
+      [firstNext]="firstNext"
+      (onAction)="action($event)"
+    >
+    </app-table-default>
+
+    <div class="d-flex justify-content-between">
+      <div class="counter-container">
+        <div class="space-around counter">
+          <span class="big white">&nbsp;&nbsp;{{ counter }}&nbsp;&nbsp;</span>
         </div>
-        <div class="col-3">
-          <strong><span class="select">Priorité:</span></strong>
+      </div>
+      <div class="d-flex justify-content-center">
+        <p-button
+          styleClass="p-button-rounded p-button-success p-button-raised"
+          icon="pi pi-play"
+          class="space-around"
+          *ngIf="!isPlaying; else is_playing"
+          [disabled]="!currentItem"
+          (click)="onPlay()"
+        ></p-button>
+        <ng-template #is_playing>
+          <p-button
+            styleClass="p-button-rounded p-button-danger p-button-raised"
+            icon="pi pi-stop"
+            class="space-around"
+            [disabled]="!currentItem"
+            (click)="onStop()"
+          ></p-button>
+        </ng-template>
+        <div>
           <select
-            class="form-select"
-            [(ngModel)]="priority"
-            (ngModelChange)="onChangePriority($event)"
-            [disabled]="data.length === 0 || !isValidData"
-          >
-            <option
-              *ngFor="let priority of priorities"
-              [value]="priority"
-              [label]="priority"
-            ></option>
-          </select>
-        </div>
-        <div class="col-3">
-          <strong><span class="select">Temps:</span></strong>
-          <select
-            class="form-select"
+            class="form-select time-select"
             [(ngModel)]="time"
             (ngModelChange)="onChangeTime()"
           >
@@ -58,71 +85,21 @@
           </select>
         </div>
       </div>
+      <div>
+        <div class="d-flex justify-content-center">
+          <p-button
+            styleClass="p-button-rounded p-button-raised"
+            icon="pi pi-volume-up"
+            class="space-around"
+            [disabled]="!audioUrl || !(canReadSpeak || isPrevious) || isPlaying"
+            (click)="onReadSpeak()"
+          ></p-button>
+          <audio *ngIf="openReadSpeaker" controls autoplay hidden>
+            <source [src]="audioUrl" type="audio/mpeg" />
+          </audio>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <div class="big more-space-around">
-    <app-table-default
-      [data]="data"
-      [currentItem]="currentItem"
-      [firstNext]="firstNext"
-    >
-    </app-table-default>
-  </div>
-
-  <div class="d-flex justify-content-center small-space-bellow">
-    <button
-      class="btn btn-secondary space-around"
-      [disabled]="index.previous === undefined || !currentItem"
-      (click)="onPrevious()"
-    >
-      <span class="biggest">&nbsp;&nbsp;&nbsp;←&nbsp;&nbsp;&nbsp;</span>
-    </button>
-    <button class="btn btn-secondary space-around counter" disabled>
-      <span class="biggest white">&nbsp;&nbsp;{{ counter }}&nbsp;&nbsp;</span>
-    </button>
-    <button
-      class="btn btn-secondary space-around"
-      [disabled]="!currentItem"
-      (click)="onNext()"
-    >
-      <span class="biggest">&nbsp;&nbsp;&nbsp;→&nbsp;&nbsp;&nbsp;</span>
-    </button>
-    <!-- <button class="btn btn-secondary space-around"
-        [disabled]="index.previous === undefined || !currentItem || isPlaying || !isLoaded" (click)="onPrevious()">
-        <span class="biggest">&nbsp;&nbsp;&nbsp;←&nbsp;&nbsp;&nbsp;</span>
-    </button>
-    <button class="btn btn-secondary space-around" [disabled]="!currentItem || isPlaying || !isLoaded" (click)="onNext()">
-        <span class="biggest">&nbsp;&nbsp;&nbsp;→&nbsp;&nbsp;&nbsp;</span>
-    </button> -->
-  </div>
-
-  <div class="d-flex justify-content-center">
-    <button
-      class="btn btn-primary space-around"
-      *ngIf="!isPlaying"
-      [disabled]="!currentItem"
-      (click)="onPlay()"
-    >
-      <span class="big">&nbsp;Lancer&nbsp;</span>
-    </button>
-    <button
-      class="btn btn-danger space-around"
-      *ngIf="currentItem && isPlaying"
-      (click)="onStop()"
-    >
-      <span class="big">&nbsp;Arrêter&nbsp;</span>
-    </button>
-    <button
-      class="btn btn-success space-around"
-      [disabled]="!audioUrl || !(canReadSpeak || isPrevious) || isPlaying"
-      (click)="onReadSpeak()"
-    >
-      <span class="big">&nbsp;Écouter&nbsp;</span>
-    </button>
-    <audio *ngIf="openReadSpeaker" controls autoplay hidden>
-      <source [src]="audioUrl" type="audio/mpeg" />
-    </audio>
   </div>
 </div>
 <app-list [data]="data" [priority]="priority"></app-list>

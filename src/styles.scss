@@ -75,7 +75,7 @@ span.select {
 }
 .card {
   background-color: rgb(80, 80, 80);
-  padding: 30px 0;
+  padding-top: 30px;
 }
 
 .big {
@@ -85,31 +85,58 @@ span.select {
   font-size: xx-large;
 }
 
+.time-select{
+  margin-top: 1.5em;
+  height: 50px;
+}
 .space-around {
-  margin-left: 1em;
-  margin-right: 1em;
-  margin-top: 1em;
-  margin-bottom: 1em;
+  margin: 1em;
 }
 .more-space-around {
   margin-left: 3em;
   margin-right: 3em;
   margin-top: 1em;
-  margin-bottom: 2em;
-}
-.space-bellow {
-  margin-bottom: 3em;
 }
 .small-space-bellow {
   margin-bottom: 1em;
 }
 
-button.counter:disabled {
-  background-color: #56717d;;
-  color: rgb(20, 20, 20);
+.counter-container {
+  width: 100px;
+}
+
+div.counter {
+  background-color: gray;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  padding-top: 7px;
 }
 
 .words {
-  margin: 50px 0;
+  margin: 30px 0;
   padding: 2em 4em;
+}
+.priority-container {
+  display: flex;
+  align-items: center;
+}
+
+.select {
+  margin: 0 10px;
+}
+
+.settings {
+  margin-left: 30px;
+}
+
+.form-select {
+  width: 75px;
+  color: white;
+}
+
+.clickable:hover {
+  background-color: rgb(140, 140, 140);
+  cursor: pointer;
 }

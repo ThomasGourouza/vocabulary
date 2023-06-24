@@ -8,14 +8,14 @@
         </th>
     </tr>
     <tr>
-        <td>
+        <td (click)="previous()" class="clickable">
             <div class="arial biggest center-text">
                 <span *ngIf="data.length > 0 && !!currentItem">
                     {{ currentItem.french }}
                 </span>&nbsp;
             </div>
         </td>
-        <td>
+        <td (click)="next()" class="clickable">
             <div class="arial biggest center-text">
                 <span *ngIf="data.length > 0 && !!currentItem
                             && firstNext">
