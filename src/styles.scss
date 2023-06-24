@@ -68,3 +68,11 @@ span.select {
 .space-bellow {
   margin-bottom: 3em;
 }
+.small-space-bellow {
+  margin-bottom: 1em;
+}
+
+button.counter:disabled {
+  background-color: #56717d;;
+  color: rgb(20, 20, 20);
+}

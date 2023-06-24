@@ -20,7 +20,6 @@ export class WordComponent implements OnInit, OnDestroy {
   public index: Index;
   public currentItem: Item | undefined;
   private _selectedData!: Array<Item>;
-  private _counter!: number;
 
   private excelSubscription = new Subscription();
 
@@ -28,6 +27,7 @@ export class WordComponent implements OnInit, OnDestroy {
   public times: Array<number>;
   private timeSubscription = new Subscription();
 
+  public counter = 0;
   public isPlaying = false;
   public audioUrl: undefined | string;
   public openReadSpeaker = false;
@@ -96,14 +96,13 @@ export class WordComponent implements OnInit, OnDestroy {
     this.wordService.firstNext$.subscribe((firstNext) => this.firstNext = firstNext);
     this.wordService.index$.subscribe((index) => this.index = index);
     this.wordService.selectedData$.subscribe((selectedData) => this._selectedData = selectedData);
-    this.wordService.counter$.subscribe((counter) => this._counter = counter);
     this.wordService.currentItem$.subscribe((currentItem) => {
       this.isLoaded = false;
       this.currentItem = currentItem;
       this.canReadSpeak = false;
-      if (!!currentItem) {
-        this.loadAudioUrl(currentItem.word);
-      }
+      // if (!!currentItem) {
+      //   this.loadAudioUrl(currentItem.word);
+      // }
     });
   }
 
@@ -126,7 +125,7 @@ export class WordComponent implements OnInit, OnDestroy {
   }
 
   public onChangePriority(priority: string): void {
-    this.wordService.setCounter$(0);
+    this.counter = 0;
     this.wordService.setFirstNext$(true);
     if (priority === '0') {
       this.wordService.setPriority$(undefined);
@@ -168,7 +167,7 @@ export class WordComponent implements OnInit, OnDestroy {
         this.wordService.setIndex$(index);
         this.selectCurrentItem();
       } else {
-        this.wordService.setCounter$(this._counter + 1);
+        this.counter++;
       }
 
     }
@@ -185,7 +184,7 @@ export class WordComponent implements OnInit, OnDestroy {
 
     if (this.index.previous !== undefined) {
       if (this.firstNext) {
-        this.wordService.setCounter$(this._counter - 1);
+        this.counter --;
       } else {
         this.wordService.setFirstNext$(true);
       }

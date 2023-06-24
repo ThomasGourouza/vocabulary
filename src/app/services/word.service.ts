@@ -13,7 +13,6 @@ export class WordService {
   private _index$ = new Subject<Index>();
   private _firstNext$ = new Subject<boolean>();
   private _priority$ = new Subject<number | undefined>();
-  private _counter$ = new Subject<number>();
   private _isValidData$ = new Subject<boolean>();
 
   private _memory: Array<number> = [];
@@ -69,13 +68,6 @@ export class WordService {
     this._priority$.next(priority);
   }
 
-  get counter$(): Observable<number> {
-    return this._counter$.asObservable();
-  }
-  setCounter$(counter: number): void {
-    this._counter$.next(counter);
-  }
-
   get isValidData$(): Observable<boolean> {
     return this._isValidData$.asObservable();
   }
@@ -90,7 +82,6 @@ export class WordService {
     this._index$.next({ previous: undefined, current: undefined, next: undefined });
     this._firstNext$.next(true);
     this._priority$.next();
-    this._counter$.next(0);
     this._isValidData$.next(true);
     this._validKeys = [
       "french",
