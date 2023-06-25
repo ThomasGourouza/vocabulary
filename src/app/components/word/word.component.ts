@@ -118,10 +118,6 @@ export class WordComponent implements OnInit, OnDestroy {
     }
   }
 
-  action(action: string): void {
-    action === 'next' ? this.onNext() : this.onPrevious();
-  }
-
   public onNext(): void {
     if (!this.currentItem) {
       return;

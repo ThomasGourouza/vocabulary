@@ -58,7 +58,7 @@
           icon="pi pi-step-backward"
           class="space-around"
           [disabled]="!currentItem || isPlaying"
-          (click)="action('previous')"
+          (click)="onPrevious()"
         ></p-button>
 
         <p-button
@@ -98,7 +98,7 @@
           icon="pi pi-step-forward"
           class="space-around"
           [disabled]="!currentItem || isPlaying"
-          (click)="action('next')"
+          (click)="onNext()"
         ></p-button>
 
       </div>
