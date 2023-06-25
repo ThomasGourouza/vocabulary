@@ -7,14 +7,9 @@ import { Item } from '../models/item';
 @Injectable()
 export class ExcelService {
   private _uploadedWords$ = new Subject<Array<Item>>();
-  private _priorities$ = new Subject<Array<number>>();
 
   get uploadedWords$(): Observable<Array<Item>> {
     return this._uploadedWords$.asObservable();
-  }
-
-  get priorities$(): Observable<Array<number>> {
-    return this._priorities$.asObservable();
   }
 
   public excelToJSON(file: File): void {
@@ -28,15 +23,8 @@ export class ExcelService {
         type: 'binary'
       });
       workbook.SheetNames.forEach((sheetName) => {
-        const sheet: Array<Item> = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-        const priorities: Array<number> = [];
-        sheet?.map((item) => item?.priority)?.forEach((priority: number) => {
-          if (!priorities.includes(priority)) {
-            priorities.push(priority);
-          }
-        });
-        this._priorities$.next(priorities);
-        this._uploadedWords$.next(sheet);
+        const data: Array<Item> = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+        this._uploadedWords$.next(data);
       });
     });
     reader.readAsBinaryString(file);

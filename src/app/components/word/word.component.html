@@ -2,11 +2,10 @@
   <div class="d-flex justify-content-start">
     <div class="settings">
       <p-button
-        *ngIf="data.length > 0; else loadData"
+        *ngIf="data.length > 0 || !isValidData; else loadData"
         styleClass="p-button-rounded p-button-danger p-button-raised"
         icon="pi pi-trash"
         (click)="onReload()"
-        [disabled]="data.length === 0"
       ></p-button>
       <ng-template #loadData>
         <p-fileUpload
@@ -91,12 +90,12 @@
             styleClass="p-button-rounded p-button-raised"
             icon="pi pi-volume-up"
             class="space-around"
-            [disabled]="!audioUrl || !(canReadSpeak || isPrevious) || isPlaying"
+            [disabled]="!isPrevious || isPlaying"
             (click)="onReadSpeak()"
           ></p-button>
-          <audio *ngIf="openReadSpeaker" controls autoplay hidden>
+          <!-- <audio *ngIf="openReadSpeaker" controls autoplay hidden>
             <source [src]="audioUrl" type="audio/mpeg" />
-          </audio>
+          </audio> -->
         </div>
       </div>
     </div>

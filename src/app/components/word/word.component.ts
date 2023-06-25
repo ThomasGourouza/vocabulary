@@ -4,8 +4,6 @@ import { Subscription, interval } from 'rxjs';
 import { Index } from 'src/app/models';
 import { Item } from 'src/app/models/item';
 import { ExcelService } from 'src/app/services/excel.service';
-import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
-import { WordService } from 'src/app/services/word.service';
 import { Text } from 'src/app/models/text';
 
 @Component({
@@ -13,106 +11,65 @@ import { Text } from 'src/app/models/text';
   templateUrl: './word.component.html'
 })
 export class WordComponent implements OnInit, OnDestroy {
-  public data: Array<Item>;
+  public data: Item[] = [];
   public priority: number | undefined;
-  public isValidData!: boolean;
-  public firstNext!: boolean;
-  public index: Index;
-  public currentItem: Item | undefined;
-  private _selectedData!: Array<Item>;
-
-  private excelSubscription = new Subscription();
-
-  public priorities: Array<number> = [];
-  public times: Array<number>;
-  private timeSubscription = new Subscription();
+  public time = 3000;
 
   public counter = 0;
   public isPlaying = false;
-  public audioUrl: undefined | string;
-  public openReadSpeaker = false;
-  public canReadSpeak = false;
   public isPrevious = false;
-  public isLoaded = false;
-  public isRemoving = false;
-  public time: number;
+
+  public times = [3000, 5000, 10000];
+  public priorities: number[] = [];
+
+  public isValidData = true;
+  private validKeys = [
+    "french",
+    "word",
+    "gender",
+    "priority"
+  ];
+  public firstNext = true;
+  public index: Index = {
+    previous: undefined,
+    current: undefined,
+    next: undefined
+  };
+  public currentItem: Item | undefined;
+
+  private memory: Array<number> = [];
+  private lastInMemory: number | undefined;
+
+  private excelSubscription = new Subscription();
+  private timeSubscription = new Subscription();
+
 
   constructor(
     private excelService: ExcelService,
-    private readerSpeakerService: ReaderSpeakerService,
-    private messageService: MessageService,
-    public wordService: WordService
-  ) {
-    this.data = [];
-    this.index = {
-      previous: undefined,
-      current: undefined,
-      next: undefined
-    };
-    this.times = [3000, 5000, 10000];
-    this.time = 3000;
-  }
+    private messageService: MessageService
+  ) { }
 
   ngOnInit(): void {
-    this.excelSubscription = this.excelService.uploadedWords$.subscribe((data) =>
-      this.wordService.setData$(data)
-    );
-
-    this.excelService.priorities$.subscribe((priorities) =>
-      this.priorities = priorities
-    );
-    this.wordService.data$.subscribe((data) => {
-      this.data = data;
-      if (this.isRemoving) {
-        return;
+    this.excelSubscription = this.excelService.uploadedWords$.subscribe((data) => {
+      const isEnoughData = data.length >= 2;
+      const areValidKeys = !Object.keys(data[0]).some((key) => !this.validKeys.includes(key));
+      this.isValidData = isEnoughData && areValidKeys;
+      if (this.isValidData) {
+        this.data = data;
+        this.data.map((item) => item?.priority)?.forEach((priority: number) => {
+          if (!this.priorities.includes(priority)) {
+            this.priorities.push(priority);
+          }
+        });
       }
-      this.wordService.setIsValidData$(true);
-      if (this.data.length < 2) {
-        this.wordService.setIsValidData$(false);
-        this.messageService.add({ severity: 'error', summary: Text.notEnoughText, detail: Text.addMoreDataText });
-        return;
+      let message = { severity: 'info', summary: Text.validText, detail: Text.selectPriorityText };
+      if (!areValidKeys) {
+        message = { severity: 'error', summary: Text.invalidText, detail: Text.removeText };
       }
-      const keys = Object.keys(this.data[0]);
-      keys.forEach((key) => {
-        if (!this.wordService.validKeys.includes(key)) {
-          this.wordService.setIsValidData$(false);
-        }
-      });
-    });
-    this.wordService.priority$.subscribe((priority) => {
-      this.priority = priority;
-      if (this.isRemoving) {
-        return;
+      if (!isEnoughData) {
+        message = { severity: 'error', summary: Text.notEnoughText, detail: Text.addMoreDataText };
       }
-      if (this.priority !== undefined) {
-        this.wordService.setCurrentItem$(undefined);
-        const selectedData = (this.data).filter((item) =>
-          +item.priority === this.priority
-        );
-        this.wordService.setSelectedData$(selectedData);
-        this.next();
-      }
-    });
-    this.wordService.isValidData$.subscribe((isValidData) => {
-      this.isValidData = isValidData;
-      if (this.isRemoving) {
-        return;
-      }
-      const message = (this.isValidData) ?
-        { severity: 'info', summary: Text.validText, detail: Text.selectPriorityText }
-        : { severity: 'error', summary: Text.invalidText, detail: Text.removeText };
       this.messageService.add(message);
-    });
-    this.wordService.firstNext$.subscribe((firstNext) => this.firstNext = firstNext);
-    this.wordService.index$.subscribe((index) => this.index = index);
-    this.wordService.selectedData$.subscribe((selectedData) => this._selectedData = selectedData);
-    this.wordService.currentItem$.subscribe((currentItem) => {
-      this.isLoaded = false;
-      this.currentItem = currentItem;
-      this.canReadSpeak = false;
-      // if (!!currentItem) {
-      //   this.loadAudioUrl(currentItem.word);
-      // }
     });
   }
 
@@ -122,14 +79,18 @@ export class WordComponent implements OnInit, OnDestroy {
   }
 
   public onUploadData(file: File): void {
-    this.isRemoving = false;
     this.excelService.excelToJSON(file);
   }
 
   public onReload(): void {
-    this.isRemoving = true;
+    this.isValidData = true;
     this.counter = 0;
-    this.wordService.initVariables();
+    this.data = [];
+    this.priority = undefined;
+    this.priorities = [];
+    this.currentItem = undefined;
+    this.index = { previous: undefined, current: undefined, next: undefined };
+    this.firstNext = true;
 
     this.messageService.add({
       severity: 'warn',
@@ -137,20 +98,17 @@ export class WordComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onChangePriority(priority: string): void {
+  public onChangePriority(priority: number): void {
     this.counter = 0;
-    this.wordService.setFirstNext$(true);
-    if (priority === '0') {
-      this.wordService.setPriority$(undefined);
-      this.wordService.setCurrentItem$(undefined);
-    } else {
-      this.wordService.setPriority$(+priority);
-      this.wordService.setIndex$({
-        previous: undefined,
-        current: this.index.current,
-        next: undefined
-      });
-    }
+    this.priority = +priority;
+    this.firstNext = true;
+    this.currentItem = undefined;
+    this.index = {
+      previous: undefined,
+      current: this.index.current,
+      next: undefined
+    };
+    this.next();
   }
 
   public onChangeTime(): void {
@@ -161,45 +119,36 @@ export class WordComponent implements OnInit, OnDestroy {
   }
 
   action(action: string): void {
-    action === 'next' ?this.onNext() : this.onPrevious();
+    action === 'next' ? this.onNext() : this.onPrevious();
   }
 
   public onNext(): void {
-    if(!this.currentItem) {
+    if (!this.currentItem) {
       return;
     }
     this.next();
   }
 
   private next(): void {
-    this.canReadSpeak = true;
     this.isPrevious = false;
-    if (this._selectedData.length > 1) {
-      this.wordService.setFirstNext$(!this.firstNext)
-      if (!this.firstNext) {
-        const index: Index = {
-          previous: this.index.current,
-          current: undefined,
-          next: undefined
-        };
-        if (this.index.next !== undefined) {
-          index.current = this.index.next;
-        } else {
-          index.current = this.wordService.getNext(this._selectedData.length);
-        }
-        this.wordService.setIndex$(index);
-        this.selectCurrentItem();
+    this.firstNext = !this.firstNext;
+    if (!this.firstNext) {
+      const index: Index = {
+        previous: this.index.current,
+        current: undefined,
+        next: undefined
+      };
+      if (this.index.next !== undefined) {
+        index.current = this.index.next;
       } else {
-        this.counter++;
+        index.current = this.getNext(this.data, this.priority);
       }
-
+      this.index = index;
+      this.selectCurrentItem();
+    } else {
+      this.counter++;
     }
 
-    setTimeout(() => {
-      if (this.canReadSpeak) {
-        this.onReadSpeak();
-      }
-    }, 100);
   }
 
   public onPrevious(): void {
@@ -210,21 +159,21 @@ export class WordComponent implements OnInit, OnDestroy {
     if (this.firstNext) {
       this.counter--;
     } else {
-      this.wordService.setFirstNext$(true);
+      this.firstNext = true;
     }
     const index: Index = {
       previous: undefined,
       current: this.index.previous,
       next: this.index.current
     };
-    this.wordService.setIndex$(index);
+    this.index = index;
     this.selectCurrentItem();
   }
 
   private selectCurrentItem(): void {
     const currentIndex = this.index.current;
     if (currentIndex !== undefined) {
-      this.wordService.setCurrentItem$(this._selectedData[currentIndex]);
+      this.currentItem = this.data.filter(item => item.priority === this.priority)[currentIndex];
     }
   }
 
@@ -242,22 +191,35 @@ export class WordComponent implements OnInit, OnDestroy {
     this.timeSubscription.unsubscribe();
   }
 
-  private loadAudioUrl(word: string): void {
-    this.readerSpeakerService.getVoice(word).subscribe((audioFile) => {
-      this.isLoaded = true;
-      // this.audioUrl = this.readerSpeakerService.getUrl(audioFile);
-      this.audioUrl = audioFile.URL;
-      if (this.isPrevious) {
-        this.onReadSpeak();
-      }
-    });
+  public onReadSpeak(): void {
+
   }
 
-  public onReadSpeak(): void {
-    this.openReadSpeaker = false;
-    setTimeout(() => {
-      this.openReadSpeaker = true;
-    }, 100);
+  public getNext(data: Item[], priority: number | undefined): number {
+    const length = data.filter(item => item.priority === priority).length;
+    if (length <= 0) {
+      return 0;
+    }
+    this.lastInMemory = undefined;
+    if (this.memory.length === length) {
+      this.lastInMemory = this.memory.pop();
+      this.memory = [];
+    }
+    let array: Array<number> = [];
+    for (let i = 0; i < length; i++) {
+      array.push(i);
+    }
+    const leftIndexes = array.filter((index) => !this.memory.includes(index));
+    let randomIndex = 0;
+    do {
+      randomIndex = leftIndexes[this.getRandomInt(leftIndexes.length)];
+    } while (randomIndex === this.lastInMemory);
+    this.memory.push(randomIndex);
+    return randomIndex;
+  }
+
+  private getRandomInt(max: number): number {
+    return Math.floor(Math.random() * max);
   }
 
 }

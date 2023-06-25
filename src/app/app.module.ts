@@ -3,8 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
-import { AppRoutingModule } from './app-routing.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 
@@ -12,7 +11,6 @@ import { WordComponent } from './components/word/word.component';
 import { ListComponent } from './components/list/list.component';
 
 import { ExcelService } from './services/excel.service';
-import { WordService } from './services/word.service';
 
 import { FileUploadModule } from 'primeng/fileupload';
 import { TabMenuModule } from 'primeng/tabmenu';
@@ -39,9 +37,7 @@ import { ReaderSpeakerService } from './services/reader-speaker.service';
     BrowserAnimationsModule,
     HttpClientModule,
     CommonModule,
-    AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule,
     FileUploadModule,
     TabMenuModule,
     ButtonModule,
@@ -51,7 +47,6 @@ import { ReaderSpeakerService } from './services/reader-speaker.service';
   providers: [
     ExcelService,
     ReaderSpeakerService,
-    WordService,
     MessageService
   ],
   bootstrap: [AppComponent]
