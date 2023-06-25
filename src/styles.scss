@@ -4,7 +4,8 @@
 
 body {
   font-family: var(--font-family);
-  background-color: rgb(50, 50, 50);
+  background-color: black;
+  color: white;
 }
 .main-page {
   margin-top: 3em;
@@ -14,7 +15,7 @@ table {
   border-spacing: 0;
   border-collapse: separate;
   border-radius: 10px;
-  border: 1px solid rgb(255, 255, 255);
+  border: 1px solid white;
   overflow: hidden;
   table-layout: fixed;
   width: 100%;
@@ -30,7 +31,6 @@ td {
 }
 tr:first-child {
   background-color: rgb(110, 110, 110);
-  color: rgb(240, 240, 240);
   overflow: auto;
   height: 50px;
 }
@@ -39,7 +39,6 @@ tr.toggle-list {
 }
 tr.toggle-list:hover {
   background-color: rgb(105, 105, 105);
-  color: white;
 }
 tr:not(:first-child):not(.list) {
   height: 150px;
@@ -48,15 +47,12 @@ tr.list {
   height: 60px;
 }
 tr:nth-child(even) {
-  background-color: rgb(130, 130, 130);
+  background-color: rgb(30, 30, 30);
 }
 tr:nth-child(odd):not(:first-child) {
-  background-color: rgb(140, 140, 140);
+  background-color: rgb(40, 40, 40);
 }
 
-.white {
-  color: white;
-}
 .center-text {
   text-align: center;
 }
@@ -67,14 +63,12 @@ tr:nth-child(odd):not(:first-child) {
 
 .form-select, .form-select:disabled {
   background-color: rgb(110, 110, 110);
-  color: rgb(20, 20, 20);
-}
-
-span.select {
+  width: 75px;
   color: white;
 }
+
 .card {
-  background-color: rgb(80, 80, 80);
+  background-color: rgb(60, 60, 60);
   padding-top: 30px;
 }
 
@@ -105,13 +99,15 @@ span.select {
   width: 100px;
 }
 
-div.counter {
-  background-color: gray;
-  border-radius: 50%;
+div.circle {
   height: 50px;
   width: 50px;
-  text-align: center;
-  padding-top: 7px;
+  border-radius: 50%;
+  border: 1px solid white;
+  background-color: rgb(110, 110, 110);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .words {
@@ -131,12 +127,7 @@ div.counter {
   margin-left: 30px;
 }
 
-.form-select {
-  width: 75px;
-  color: white;
-}
-
 .clickable:hover {
-  background-color: rgb(140, 140, 140);
+  background-color: rgb(40, 40, 40);
   cursor: pointer;
 }
