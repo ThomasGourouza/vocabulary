@@ -11,14 +11,14 @@
     <ng-container *ngIf="showList && data.length > 0 && !!priority">
       <tr *ngFor="let word of data | priority : priority" class="list">
         <td>
-          <div class="arial biggest center-text">
+          <div class="arial center-text">
             <span>
               {{ word.french }} </span
             >&nbsp;
           </div>
         </td>
         <td>
-          <div class="arial biggest center-text">
+          <div class="arial center-text">
             <span>
               {{ word.word }}
             </span>

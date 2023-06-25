@@ -31,6 +31,7 @@ td {
 }
 tr:first-child {
   background-color: rgb(110, 110, 110);
+  font-size: x-large;
   overflow: auto;
   height: 50px;
 }
@@ -45,6 +46,7 @@ tr:not(:first-child):not(.list) {
 }
 tr.list {
   height: 60px;
+  font-size: x-large;
 }
 tr:nth-child(even) {
   background-color: rgb(30, 30, 30);
@@ -61,10 +63,15 @@ tr:nth-child(odd):not(:first-child) {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.form-select, .form-select:disabled {
+.form-select {
   background-color: rgb(110, 110, 110);
   width: 75px;
   color: white;
+}
+.form-select:disabled {
+  color: rgb(190, 190, 190);
+  background-color: rgb(100, 100, 100);
+  border-color: rgb(190, 190, 190);
 }
 
 .card {
@@ -86,6 +93,9 @@ tr:nth-child(odd):not(:first-child) {
 .space-around {
   margin: 1em;
 }
+.space-right {
+  margin-right: 1em;
+}
 .more-space-around {
   margin-left: 3em;
   margin-right: 3em;
@@ -95,7 +105,7 @@ tr:nth-child(odd):not(:first-child) {
   margin-bottom: 1em;
 }
 
-.counter-container {
+.index-container {
   width: 100px;
 }
 
@@ -125,9 +135,4 @@ div.circle {
 
 .settings {
   margin-left: 30px;
-}
-
-.clickable:hover {
-  background-color: rgb(40, 40, 40);
-  cursor: pointer;
 }

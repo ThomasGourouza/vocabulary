@@ -186,7 +186,7 @@ export class WordComponent implements OnInit, OnDestroy {
       this.next()
     );
   }
-  public onStop(): void {
+  public onPause(): void {
     this.isPlaying = false;
     this.timeSubscription.unsubscribe();
   }
