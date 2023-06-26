@@ -10,7 +10,7 @@
       styleClass="p-button-rounded p-button-raised"
       icon="pi pi-step-backward"
       class="space-around"
-      [disabled]="isPlaying"
+      [disabled]="isPlaying || items.length === 0 || counter === 0"
       (click)="onPrevious()"
     ></p-button>
     <p-button
@@ -18,7 +18,7 @@
       styleClass="p-button-rounded p-button-success p-button-raised"
       icon="pi pi-play"
       class="space-around"
-      [disabled]="false"
+      [disabled]="items.length === 0"
       (click)="onPlay()"
     ></p-button>
     <ng-template #is_playing>
@@ -26,7 +26,6 @@
         styleClass="p-button-rounded p-button-warning p-button-raised"
         icon="pi pi-pause"
         class="space-around"
-        [disabled]="false"
         (click)="onPause()"
       ></p-button>
     </ng-template>
@@ -35,7 +34,7 @@
         class="form-select time-select"
         [(ngModel)]="time"
         (ngModelChange)="onChangeTime()"
-        [disabled]="isPlaying"
+        [disabled]="isPlaying || items.length === 0"
       >
         <option
           *ngFor="let time of times"
@@ -48,7 +47,7 @@
       styleClass="p-button-rounded p-button-raised"
       icon="pi pi-step-forward"
       class="space-around"
-      [disabled]="isPlaying"
+      [disabled]="isPlaying || items.length === 0"
       (click)="onNext()"
     ></p-button>
   </div>
@@ -58,7 +57,7 @@
         styleClass="p-button-rounded p-button-raised"
         icon="pi pi-volume-up"
         class="space-around"
-        [disabled]="isPlaying"
+        [disabled]="isPlaying || items.length === 0"
         (click)="onReadSpeak()"
       ></p-button>
       <!-- <audio *ngIf="openReadSpeaker" controls autoplay hidden>
