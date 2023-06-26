@@ -1,6 +1,13 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Subscription, interval } from 'rxjs';
 import { Item } from 'src/app/models/item';
+export interface Index {
+  previousNumber: number | undefined;
+  nextNumber: number | undefined;
+  number: number;
+  showTranslation: boolean;
+  counter: number;
+}
 
 
 @Component({
@@ -15,14 +22,24 @@ export class InteractiveTableComponent implements OnDestroy {
   @Input() set items(values: Item[]) {
     this._items = values;
     if (this._items.length === 0) {
-      this.counter = 0;
-      this.currentIndex = 0;
+      this.currentIndex = {
+        previousNumber: undefined,
+        nextNumber: undefined,
+        number: 0,
+        showTranslation: false,
+        counter: 1
+      };
       this.onPause();
     }
   }
 
-  public counter = 0;
-  public currentIndex = 0;
+  public currentIndex: Index = {
+    previousNumber: undefined,
+    nextNumber: undefined,
+    number: 0,
+    showTranslation: false,
+    counter: 1
+  };
   public isPlaying = false;
   public time = 3000;
   public times = [3000, 5000, 10000];
@@ -43,20 +60,42 @@ export class InteractiveTableComponent implements OnDestroy {
   }
 
   private next(): void {
-    this.counter++;
-    if (this.currentIndex < this._items.length - 1) {
-      this.currentIndex++;
+    if (!this.currentIndex.showTranslation) {
+      this.currentIndex.showTranslation = true;
     } else {
-      this.currentIndex = 0;
+      const previousNumber = this.currentIndex.number;
+      const number = this.currentIndex.nextNumber ?? this.getRandomIndex();
+      this.currentIndex = {
+        previousNumber,
+        nextNumber: undefined,
+        number,
+        showTranslation: false,
+        counter: this.currentIndex.counter + 1
+      };
     }
   }
 
+  public getRandomIndex(): number {
+    return this.getRandomInt(this.items.length);
+  }
+
   public onPrevious(): void {
-    if (this.isPlaying || this.items.length === 0 || this.counter === 0) {
+    if (this.isPlaying
+      || this.items.length === 0
+      || this.currentIndex.counter === 1
+      || this.currentIndex.previousNumber === undefined
+    ) {
       return;
     }
-    this.counter--;
-    this.currentIndex--;
+    const nextNumber = this.currentIndex.number;
+    const number = this.currentIndex.previousNumber;
+    this.currentIndex = {
+      previousNumber: undefined,
+      nextNumber,
+      number,
+      showTranslation: true,
+      counter: this.currentIndex.counter - 1
+    };
   }
 
   public onPlay(): void {
@@ -80,7 +119,7 @@ export class InteractiveTableComponent implements OnDestroy {
     }
   }
 
-  private getRandomInt(max: number): number {
-    return Math.floor(Math.random() * max);
+  private getRandomInt(exclusiveMax: number): number {
+    return Math.floor(Math.random() * exclusiveMax);
   }
 }

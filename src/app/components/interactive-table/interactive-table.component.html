@@ -1,8 +1,13 @@
-<app-table [item]="items[currentIndex]"></app-table>
+<app-table
+  [item]="items[currentIndex.number]"
+  [showTranslation]="currentIndex.showTranslation"
+></app-table>
 <div class="d-flex justify-content-between">
   <div class="index-container">
     <div class="space-around circle">
-      <span class="big">{{ counter }}</span>
+      <span class="big">{{
+        items.length === 0 ? 0 : currentIndex.counter
+      }}</span>
     </div>
   </div>
   <div class="d-flex justify-content-center">
@@ -10,7 +15,12 @@
       styleClass="p-button-rounded p-button-raised"
       icon="pi pi-step-backward"
       class="space-around"
-      [disabled]="isPlaying || items.length === 0 || counter === 0"
+      [disabled]="
+        isPlaying ||
+        items.length === 0 ||
+        currentIndex.counter === 1 ||
+        currentIndex.previousNumber === undefined
+      "
       (click)="onPrevious()"
     ></p-button>
     <p-button
