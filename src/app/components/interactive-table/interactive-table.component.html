@@ -1,0 +1,69 @@
+<app-table [item]="items[currentIndex]"></app-table>
+<div class="d-flex justify-content-between">
+  <div class="index-container">
+    <div class="space-around circle">
+      <span class="big">{{ counter }}</span>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center">
+    <p-button
+      styleClass="p-button-rounded p-button-raised"
+      icon="pi pi-step-backward"
+      class="space-around"
+      [disabled]="isPlaying"
+      (click)="onPrevious()"
+    ></p-button>
+    <p-button
+      *ngIf="!isPlaying; else is_playing"
+      styleClass="p-button-rounded p-button-success p-button-raised"
+      icon="pi pi-play"
+      class="space-around"
+      [disabled]="false"
+      (click)="onPlay()"
+    ></p-button>
+    <ng-template #is_playing>
+      <p-button
+        styleClass="p-button-rounded p-button-warning p-button-raised"
+        icon="pi pi-pause"
+        class="space-around"
+        [disabled]="false"
+        (click)="onPause()"
+      ></p-button>
+    </ng-template>
+    <div class="space-right">
+      <select
+        class="form-select time-select"
+        [(ngModel)]="time"
+        (ngModelChange)="onChangeTime()"
+        [disabled]="isPlaying"
+      >
+        <option
+          *ngFor="let time of times"
+          [value]="time"
+          [label]="time | time"
+        ></option>
+      </select>
+    </div>
+    <p-button
+      styleClass="p-button-rounded p-button-raised"
+      icon="pi pi-step-forward"
+      class="space-around"
+      [disabled]="isPlaying"
+      (click)="onNext()"
+    ></p-button>
+  </div>
+  <div>
+    <div class="d-flex justify-content-center">
+      <p-button
+        styleClass="p-button-rounded p-button-raised"
+        icon="pi pi-volume-up"
+        class="space-around"
+        [disabled]="isPlaying"
+        (click)="onReadSpeak()"
+      ></p-button>
+      <!-- <audio *ngIf="openReadSpeaker" controls autoplay hidden>
+            <source [src]="audioUrl" type="audio/mpeg" />
+          </audio> -->
+    </div>
+  </div>
+</div>

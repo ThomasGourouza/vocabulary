@@ -1,0 +1,26 @@
+<table>
+  <tr class="toggle-list" (click)="toggleList()">
+    <th scope="col">
+      <div class="center-text">Français</div>
+    </th>
+    <th scope="col">
+      <div class="center-text">Traduction</div>
+    </th>
+  </tr>
+  <ng-container *ngIf="showList && items.length > 0">
+    <tr *ngFor="let word of items" class="list">
+      <td>
+        <div class="arial center-text">
+          <span> {{ word.french }} </span>&nbsp;
+        </div>
+      </td>
+      <td>
+        <div class="arial center-text">
+          <span>
+            {{ word.word }}
+          </span>
+        </div>
+      </td>
+    </tr>
+  </ng-container>
+</table>

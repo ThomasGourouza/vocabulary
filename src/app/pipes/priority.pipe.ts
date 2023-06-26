@@ -6,7 +6,7 @@ import { Item } from '../models/item';
 })
 export class PriorityPipe implements PipeTransform {
 
-  transform(items: Array<Item>, priority: number | undefined): Array<Item> {
+  transform(items: Item[], priority: number | undefined): Item[] {
     return items.filter((item) => item.priority === priority);
   }
 }

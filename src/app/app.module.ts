@@ -7,8 +7,10 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 
-import { WordComponent } from './components/word/word.component';
-import { ListComponent } from './components/list/list.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { InteractiveTableComponent } from './components/interactive-table/interactive-table.component';
+import { TableComponent } from './components/interactive-table/table/table.component';
+import { TableListComponent } from './components/table-list/table-list.component';
 
 import { ExcelService } from './services/excel.service';
 
@@ -18,19 +20,21 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { TableDefaultComponent } from './components/table-default/table-default.component';
 import { TimePipe } from './pipes/time.pipe';
 import { PriorityPipe } from './pipes/priority.pipe';
+import { PrioritiesPipe } from './pipes/priorities.pipe';
 import { ReaderSpeakerService } from './services/reader-speaker.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WordComponent,
-    ListComponent,
-    TableDefaultComponent,
+    SettingsComponent,
+    InteractiveTableComponent,
+    TableComponent,
+    TableListComponent,
     TimePipe,
-    PriorityPipe
+    PriorityPipe,
+    PrioritiesPipe
   ],
   imports: [
     BrowserModule,

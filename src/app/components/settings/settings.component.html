@@ -1,0 +1,36 @@
+<div class="d-flex justify-content-start">
+  <div class="settings">
+    <p-fileUpload
+        *ngIf="showUpload; else showTrash"
+        styleClass="p-button-rounded p-button-raised"
+        mode="basic"
+        [maxFileSize]="5000000"
+        chooseIcon="pi-file-excel"
+        (onSelect)="onUploadData($event.currentFiles[0])"
+        [auto]="true"
+      >
+      </p-fileUpload>
+      <ng-template #showTrash>
+      <p-button
+        styleClass="p-button-rounded p-button-danger p-button-raised"
+        icon="pi pi-trash"
+        (click)="onReset()"
+      ></p-button>
+    </ng-template>
+  </div>
+  <div class="settings priority-container">
+    <strong><span class="select">Priorité:</span></strong>
+    <select
+      class="form-select"
+      (change)="onChangePriority($event.target)"
+      [disabled]="showUpload"
+      >
+      <option
+        *ngFor="let priority of priorities"
+        [value]="priority"
+        [label]="priority"
+        [selected]="priority === priorities[0]"
+      ></option>
+    </select>
+  </div>
+</div>

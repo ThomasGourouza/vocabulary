@@ -1,4 +1,18 @@
 <div class="mx-5 main-page">
-  <app-word></app-word>
+  <div class="card component">
+    <app-settings
+      [showUpload]="((data$ | async) ?? []).length === 0"
+      [priorities]="((data$ | async) ?? []) | priorities"
+      (priority)="onPriority($event)"
+    ></app-settings>
+  </div>
+  <div class="card">
+    <div class="big more-space-around">
+      <app-interactive-table [items]="((data$ | async) ?? []) | priority : priority"></app-interactive-table>
+    </div>
+  </div>
+  <div class="card component">
+    <app-table-list [items]="((data$ | async) ?? []) | priority : priority"></app-table-list>
+  </div>
   <p-toast></p-toast>
 </div>
