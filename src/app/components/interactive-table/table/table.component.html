@@ -1,26 +1,47 @@
 <table>
   <tr>
     <th scope="col">
-      <div class="center-text">Français</div>
+      <div class="center-text">
+        {{ isFrenchColFirst ? "Français" : "Traduction" }}
+      </div>
     </th>
     <th scope="col">
-      <div class="center-text">Traduction</div>
+      <div class="center-text">
+        {{ isFrenchColFirst ? "Traduction" : "Français" }}
+      </div>
     </th>
   </tr>
   <tr>
-    <td>
-      <div class="arial biggest center-text">
-        <span>
-          {{ item?.french ?? '' }} </span
-        >&nbsp;
-      </div>
-    </td>
-    <td>
-      <div class="arial biggest center-text">
-        <span *ngIf="showTranslation">
-          {{ item?.word ?? '' }}
-        </span>
-      </div>
-    </td>
+    <ng-container
+      *ngIf="isFrenchColFirst; then frenchFirst; else translationFirst"
+    ></ng-container>
+    <ng-template #frenchFirst>
+      <td>
+        <div class="arial biggest center-text">
+          <span> {{ item?.french }} </span>&nbsp;
+        </div>
+      </td>
+      <td>
+        <div class="arial biggest center-text">
+          <span *ngIf="showSecondWord">
+            {{ item?.word }}
+          </span>
+        </div>
+      </td>
+    </ng-template>
+    <ng-template #translationFirst>
+      <td>
+        <div class="arial biggest center-text">
+          <span>
+            {{ item?.word }}
+          </span>
+        </div>
+      </td>
+      <td>
+        <div class="arial biggest center-text">
+          <span *ngIf="showSecondWord"> {{ item?.french }} </span>&nbsp;
+        </div>
+      </td>
+    </ng-template>
   </tr>
 </table>

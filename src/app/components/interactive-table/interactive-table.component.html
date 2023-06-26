@@ -2,7 +2,8 @@
   [item]="
     currentIndex.number !== undefined ? items[currentIndex.number] : undefined
   "
-  [showTranslation]="currentIndex.showTranslation"
+  [showSecondWord]="currentIndex.showSecondWord"
+  [isFrenchColFirst]="(isFrenchColFirst$ | async) ?? true"
 ></app-table>
 <div class="d-flex justify-content-between">
   <div class="index-container">
@@ -23,14 +24,18 @@
       "
       (click)="onPrevious()"
     ></p-button>
-    <p-button
-      *ngIf="!isPlaying; else is_playing"
-      styleClass="p-button-rounded p-button-success p-button-raised"
-      icon="pi pi-play"
-      class="space-around"
-      [disabled]="items.length === 0"
-      (click)="onPlay()"
-    ></p-button>
+    <ng-container
+      *ngIf="!isPlaying; then is_not_playing; else is_playing"
+    ></ng-container>
+    <ng-template #is_not_playing>
+      <p-button
+        styleClass="p-button-rounded p-button-success p-button-raised"
+        icon="pi pi-play"
+        class="space-around"
+        [disabled]="items.length === 0"
+        (click)="onPlay()"
+      ></p-button>
+    </ng-template>
     <ng-template #is_playing>
       <p-button
         styleClass="p-button-rounded p-button-warning p-button-raised"
@@ -70,8 +75,8 @@
           isPlaying ||
           items.length === 0 ||
           !currentIndex.number ||
-          !currentIndex.showTranslation ||
-          !isSoundActivated
+          !currentIndex.showSecondWord ||
+          !(isReadSpeakerActivated$ | async)
         "
         (click)="onReadSpeak()"
       ></p-button>

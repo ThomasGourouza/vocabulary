@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ExcelService } from 'src/app/services/excel.service';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
 
@@ -6,7 +7,7 @@ import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
   selector: 'app-settings',
   templateUrl: './settings.component.html'
 })
-export class SettingsComponent {
+export class SettingsComponent implements OnInit {
   private _priorities!: number[];
   get priorities(): number[] {
     return this._priorities;
@@ -19,11 +20,16 @@ export class SettingsComponent {
   }
   @Input() showUpload!: boolean;
   @Output() priority = new EventEmitter<number>();
+  public isPlaying$!: Observable<boolean>;
 
   constructor(
     private excelService: ExcelService,
     private readerSpeakerService: ReaderSpeakerService
   ) { }
+
+  ngOnInit(): void {
+    this.isPlaying$ = this.readerSpeakerService.isPlaying$;
+  }
 
   public onUploadData(file: File): void {
     this.excelService.excelToJSON(file);
@@ -41,5 +47,9 @@ export class SettingsComponent {
 
   public toggleSound(value: boolean): void {
     this.readerSpeakerService.setIsReadSpeakerActivated$(value);
+  }
+
+  public onInterChange(): void {
+    this.readerSpeakerService.toggleIsFrenchColFirst$();
   }
 }

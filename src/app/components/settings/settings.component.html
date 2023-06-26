@@ -1,17 +1,21 @@
 <div class="d-flex justify-content-between">
-  <div class="flex-container">
+  <div class="flex-container one-third">
     <div class="settings">
-      <p-fileUpload
-        *ngIf="showUpload; else showTrash"
-        styleClass="p-button-rounded p-button-raised"
-        mode="basic"
-        [maxFileSize]="5000000"
-        chooseIcon="pi-file-excel"
-        (onSelect)="onUploadData($event.currentFiles[0])"
-        [auto]="true"
-      >
-      </p-fileUpload>
-      <ng-template #showTrash>
+      <ng-container
+        *ngIf="showUpload; then show_upload; else show_trash"
+      ></ng-container>
+      <ng-template #show_upload>
+        <p-fileUpload
+          styleClass="p-button-rounded p-button-raised"
+          mode="basic"
+          [maxFileSize]="5000000"
+          chooseIcon="pi-file-excel"
+          (onSelect)="onUploadData($event.currentFiles[0])"
+          [auto]="true"
+        >
+        </p-fileUpload>
+      </ng-template>
+      <ng-template #show_trash>
         <p-button
           styleClass="p-button-rounded p-button-danger p-button-raised"
           icon="pi pi-trash"
@@ -19,7 +23,7 @@
         ></p-button>
       </ng-template>
     </div>
-    <div class="settings flex-container">
+    <div class="select flex-container">
       <strong><span class="select">Priorité:</span></strong>
       <select
         class="form-select"
@@ -35,10 +39,21 @@
       </select>
     </div>
   </div>
-  <div class="flex-container">
+  <div class="flex-container one-third d-flex justify-content-center">
+    <p-button
+      styleClass="p-button-rounded p-button-raised"
+      icon="pi pi-arrow-right-arrow-left"
+      (click)="onInterChange()"
+      [disabled]="!!(isPlaying$ | async)"
+    ></p-button>
+  </div>
+  <div class="flex-container one-third">
     <i class="pi pi-volume-up" style="font-size: 2rem"></i>
     <div class="select">
-      <p-checkbox [binary]="true" (onChange)="toggleSound($event.checked)"></p-checkbox>
+      <p-checkbox
+        [binary]="true"
+        (onChange)="toggleSound($event.checked)"
+      ></p-checkbox>
     </div>
   </div>
 </div>

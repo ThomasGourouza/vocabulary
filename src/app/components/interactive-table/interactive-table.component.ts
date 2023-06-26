@@ -1,12 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription, interval } from 'rxjs';
+import { Observable, Subscription, interval, shareReplay } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
 export interface Index {
   previousNumber: number | undefined;
   nextNumber: number | undefined;
   number: number | undefined;
-  showTranslation: boolean;
+  showSecondWord: boolean;
   counter: number;
 }
 
@@ -26,7 +26,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
         previousNumber: undefined,
         nextNumber: undefined,
         number: undefined,
-        showTranslation: false,
+        showSecondWord: false,
         counter: 0
       };
       this.memory = [];
@@ -41,21 +41,27 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   public times = [2000, 3000, 5000, 10000];
   public time = this.times[0];
   private memory: number[] = [];
-  public isSoundActivated!: boolean;
 
-  private isSoundActivatedSubscription = new Subscription();
+  public isReadSpeakerActivated$!: Observable<boolean>;
+  public isFrenchColFirst$!: Observable<boolean>;
+
   private timeSubscription = new Subscription();
+  private isPlayingSubscription = new Subscription();
 
-  constructor(private readerSpeakerService: ReaderSpeakerService) { }
+  constructor(
+    private readerSpeakerService: ReaderSpeakerService
+  ) { }
 
   ngOnInit(): void {
-    this.isSoundActivatedSubscription = this.readerSpeakerService.isReadSpeakerActivated$
-      .subscribe(activated => this.isSoundActivated = activated);
+    this.isReadSpeakerActivated$ = this.readerSpeakerService.isReadSpeakerActivated$;
+    this.isFrenchColFirst$ = this.readerSpeakerService.isFrenchColFirst$;
+    this.isPlayingSubscription = this.readerSpeakerService.isPlaying$
+      .subscribe(value => this.isPlaying = value);
   }
 
   ngOnDestroy(): void {
     this.timeSubscription.unsubscribe();
-    this.isSoundActivatedSubscription.unsubscribe();
+    this.isPlayingSubscription.unsubscribe();
   }
 
   public onNext(): void {
@@ -66,9 +72,9 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   private next(): void {
-    if (!this.currentIndex.showTranslation && !!this.currentIndex.number) {
-      this.currentIndex.showTranslation = true;
-      this.textToSpeach('ru', this.items[this.currentIndex.number].word);
+    if (!this.currentIndex.showSecondWord && this.currentIndex.number !== undefined) {
+      this.currentIndex.showSecondWord = true;
+      this.textToSpeach(2, this.items[this.currentIndex.number]);
     } else {
       const previousNumber = this.currentIndex.number;
       const number = this.currentIndex.nextNumber ?? this.getRandomIndex();
@@ -76,10 +82,10 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
         previousNumber,
         nextNumber: undefined,
         number,
-        showTranslation: false,
+        showSecondWord: false,
         counter: this.currentIndex.counter + 1
       };
-      this.textToSpeach('fr', this.items[number].french);
+      this.textToSpeach(1, this.items[number]);
     }
   }
 
@@ -109,7 +115,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       previousNumber: undefined,
       nextNumber,
       number,
-      showTranslation: true,
+      showSecondWord: true,
       counter: this.currentIndex.counter - 1
     };
   }
@@ -118,13 +124,13 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     if (this.items.length === 0) {
       return;
     }
-    this.isPlaying = true;
+    this.readerSpeakerService.setIsPlaying$(true);
     this.timeSubscription = interval(this.time)
       .subscribe(() => this.next());
   }
 
   public onPause(): void {
-    this.isPlaying = false;
+    this.readerSpeakerService.setIsPlaying$(false);
     this.timeSubscription.unsubscribe();
   }
 
@@ -132,20 +138,18 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     if (this.isPlaying
       || this.items.length === 0
       || !this.currentIndex.number
-      || !this.currentIndex.showTranslation
+      || !this.currentIndex.showSecondWord
     ) {
       return;
     }
-    this.textToSpeach('ru', this.items[this.currentIndex.number].word);
+    this.textToSpeach(2, this.items[this.currentIndex.number]);
   }
 
   private getRandomInt(exclusiveMax: number): number {
     return Math.floor(Math.random() * exclusiveMax);
   }
 
-  private textToSpeach(lang: string, text: string): void {
-    if(this.isSoundActivated) {
-      console.log('Text to speach: ' + lang + ', ' + text);
-    }
+  private textToSpeach(position: number, item: Item): void {
+    this.readerSpeakerService.textToSpeach(position, item);
   }
 }

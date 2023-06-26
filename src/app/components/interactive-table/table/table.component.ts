@@ -7,5 +7,6 @@ import { Item } from 'src/app/models/item';
 })
 export class TableComponent {
   @Input() item: Item | undefined;
-  @Input() showTranslation!: boolean;
+  @Input() showSecondWord!: boolean;
+  @Input() isFrenchColFirst!: boolean;
 }
