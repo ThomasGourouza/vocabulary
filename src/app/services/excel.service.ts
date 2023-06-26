@@ -10,7 +10,7 @@ import { MessageService } from 'primeng/api';
 export class ExcelService {
   constructor(private messageService: MessageService) { }
 
-  public validKeys = [
+  private validKeys = [
     "french",
     "word",
     "priority"

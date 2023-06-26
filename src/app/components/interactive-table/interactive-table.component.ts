@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { Subscription, interval } from 'rxjs';
 import { Item } from 'src/app/models/item';
 
@@ -7,7 +7,7 @@ import { Item } from 'src/app/models/item';
   selector: 'app-interactive-table',
   templateUrl: './interactive-table.component.html'
 })
-export class InteractiveTableComponent implements OnInit, OnDestroy {
+export class InteractiveTableComponent implements OnDestroy {
   public _items!: Item[];
   get items(): Item[] {
     return this._items;
@@ -31,25 +31,18 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
-
   ngOnDestroy(): void {
     this.timeSubscription.unsubscribe();
-  }
-
-  public onChangeTime(): void {
-    if (this.isPlaying || this.items.length === 0) {
-      return;
-    }
-    this.timeSubscription.unsubscribe();
-    this.onPlay();
   }
 
   public onNext(): void {
     if (this.isPlaying || this.items.length === 0) {
       return;
     }
+    this.next();
+  }
+
+  private next(): void {
     this.counter++;
     if (this.currentIndex < this._items.length - 1) {
       this.currentIndex++;
@@ -71,9 +64,9 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       return;
     }
     this.isPlaying = true;
-    // this.timeSubscription = interval(this.time).subscribe(() =>
-    //   this.onNext()
-    // );
+    this.timeSubscription = interval(this.time).subscribe(() =>
+      this.next()
+    );
   }
 
   public onPause(): void {

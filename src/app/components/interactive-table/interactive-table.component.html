@@ -33,7 +33,6 @@
       <select
         class="form-select time-select"
         [(ngModel)]="time"
-        (ngModelChange)="onChangeTime()"
         [disabled]="isPlaying || items.length === 0"
       >
         <option
