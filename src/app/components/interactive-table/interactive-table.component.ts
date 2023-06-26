@@ -28,6 +28,7 @@ export class InteractiveTableComponent implements OnDestroy {
         showTranslation: false,
         counter: 0
       };
+      this.memory = [];
       this.onPause();
     } else {
       this.next();
@@ -38,6 +39,7 @@ export class InteractiveTableComponent implements OnDestroy {
   public isPlaying = false;
   public times = [2000, 3000, 5000, 10000];
   public time = this.times[0];
+  private memory: number[] = [];
 
   private timeSubscription = new Subscription();
 
@@ -73,7 +75,15 @@ export class InteractiveTableComponent implements OnDestroy {
   }
 
   public getRandomIndex(): number {
-    return this.getRandomInt(this.items.length);
+    if(this.memory.length === this.items.length) {
+      this.memory = [];
+    }
+    let randomIndex: number;
+    do {
+      randomIndex = this.getRandomInt(this.items.length);
+    } while(this.memory.includes(randomIndex));
+    this.memory.push(randomIndex);
+    return randomIndex;
   }
 
   public onPrevious(): void {
