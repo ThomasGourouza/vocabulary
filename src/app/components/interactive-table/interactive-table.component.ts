@@ -21,7 +21,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
   @Input() set items(values: Item[]) {
     this._items = values;
-    if (this.items.length === 0) {
+    if ([0, 1].includes(this.items.length)) {
       this.currentIndex = {
         previousNumber: undefined,
         nextNumber: undefined,
@@ -31,6 +31,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       };
       this.memory = [];
       this.onPause();
+      this.readerSpeakerService.setIsSecondWordDisplayed$(true);
     } else {
       this.next();
     }
@@ -65,16 +66,18 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   public onNext(): void {
-    if (this.isPlaying || this.items.length === 0) {
+    if (this.isPlaying || [0, 1].includes(this.items.length)) {
       return;
     }
     this.next();
   }
 
   private next(): void {
+  console.log(this.items);
+
     if (!this.currentIndex.showSecondWord && this.currentIndex.number !== undefined) {
       this.currentIndex.showSecondWord = true;
-      this.textToSpeach(2, this.items[this.currentIndex.number]);
+      this.readerSpeakerService.textToSpeach(2, this.items[this.currentIndex.number]);
     } else {
       const previousNumber = this.currentIndex.number;
       const number = this.currentIndex.nextNumber ?? this.getRandomIndex();
@@ -85,8 +88,9 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
         showSecondWord: false,
         counter: this.currentIndex.counter + 1
       };
-      this.textToSpeach(1, this.items[number]);
+      this.readerSpeakerService.textToSpeach(1, this.items[number]);
     }
+    this.readerSpeakerService.setIsSecondWordDisplayed$(this.currentIndex.showSecondWord);
   }
 
   public getRandomIndex(): number {
@@ -103,7 +107,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   public onPrevious(): void {
     if (this.isPlaying
-      || this.items.length === 0
+      || [0, 1].includes(this.items.length)
       || this.currentIndex.counter === 1
       || this.currentIndex.previousNumber === undefined
     ) {
@@ -121,7 +125,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   public onPlay(): void {
-    if (this.items.length === 0) {
+    if ([0, 1].includes(this.items.length)) {
       return;
     }
     this.readerSpeakerService.setIsPlaying$(true);
@@ -136,20 +140,16 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   public onReadSpeak(): void {
     if (this.isPlaying
-      || this.items.length === 0
+      || [0, 1].includes(this.items.length)
       || !this.currentIndex.number
       || !this.currentIndex.showSecondWord
     ) {
       return;
     }
-    this.textToSpeach(2, this.items[this.currentIndex.number]);
+    this.readerSpeakerService.textToSpeach(2, this.items[this.currentIndex.number]);
   }
 
   private getRandomInt(exclusiveMax: number): number {
     return Math.floor(Math.random() * exclusiveMax);
-  }
-
-  private textToSpeach(position: number, item: Item): void {
-    this.readerSpeakerService.textToSpeach(position, item);
   }
 }

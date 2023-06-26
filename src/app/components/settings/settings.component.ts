@@ -21,6 +21,7 @@ export class SettingsComponent implements OnInit {
   @Input() showUpload!: boolean;
   @Output() priority = new EventEmitter<number>();
   public isPlaying$!: Observable<boolean>;
+  public isSecondWordDisplayed$!: Observable<boolean>;
 
   constructor(
     private excelService: ExcelService,
@@ -29,6 +30,7 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.isPlaying$ = this.readerSpeakerService.isPlaying$;
+    this.isSecondWordDisplayed$ = this.readerSpeakerService.isSecondWordDisplayed$;
   }
 
   public onUploadData(file: File): void {

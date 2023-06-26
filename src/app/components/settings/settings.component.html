@@ -44,7 +44,7 @@
       styleClass="p-button-rounded p-button-raised"
       icon="pi pi-arrow-right-arrow-left"
       (click)="onInterChange()"
-      [disabled]="!!(isPlaying$ | async)"
+      [disabled]="!!(isPlaying$ | async) || !(isSecondWordDisplayed$ | async)"
     ></p-button>
   </div>
   <div class="flex-container one-third">

@@ -9,6 +9,7 @@ export class ReaderSpeakerService {
   private readonly baseUrl: string;
   private _isReadSpeakerActivated$ = new BehaviorSubject<boolean>(false);
   private _isPlaying$ = new BehaviorSubject<boolean>(false);
+  private _isSecondWordDisplayed$ = new BehaviorSubject<boolean>(true);
   private _isFrenchColFirst$ = new BehaviorSubject<boolean>(true);
 
   constructor(
@@ -22,7 +23,7 @@ export class ReaderSpeakerService {
   }
 
   toggleIsFrenchColFirst$() {
-    if (this._isPlaying$.getValue()) {
+    if (this._isPlaying$.getValue() || !this._isSecondWordDisplayed$.getValue()) {
       return;
     }
     this._isFrenchColFirst$.next(!this._isFrenchColFirst$.getValue());
@@ -67,5 +68,13 @@ export class ReaderSpeakerService {
 
   setIsPlaying$(value: boolean) {
     this._isPlaying$.next(value);
+  }
+
+  get isSecondWordDisplayed$(): Observable<boolean> {
+    return this._isSecondWordDisplayed$.asObservable();
+  }
+
+  setIsSecondWordDisplayed$(value: boolean) {
+    this._isSecondWordDisplayed$.next(value);
   }
 }

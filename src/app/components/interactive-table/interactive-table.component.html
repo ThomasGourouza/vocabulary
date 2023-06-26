@@ -8,7 +8,7 @@
 <div class="d-flex justify-content-between">
   <div class="index-container">
     <div class="space-around circle">
-      <span class="big">{{ currentIndex.counter }}</span>
+      <span class="big">{{ [0, 1].includes(items.length) ? 0 : currentIndex.counter }}</span>
     </div>
   </div>
   <div class="d-flex justify-content-center">
@@ -18,7 +18,7 @@
       class="space-around"
       [disabled]="
         isPlaying ||
-        items.length === 0 ||
+        [0, 1].includes(items.length) ||
         currentIndex.counter === 1 ||
         currentIndex.previousNumber === undefined
       "
@@ -32,7 +32,7 @@
         styleClass="p-button-rounded p-button-success p-button-raised"
         icon="pi pi-play"
         class="space-around"
-        [disabled]="items.length === 0"
+        [disabled]="[0, 1].includes(items.length)"
         (click)="onPlay()"
       ></p-button>
     </ng-template>
@@ -48,7 +48,7 @@
       <select
         class="form-select time-select"
         [(ngModel)]="time"
-        [disabled]="isPlaying || items.length === 0"
+        [disabled]="isPlaying || [0, 1].includes(items.length)"
       >
         <option
           *ngFor="let time of times"
@@ -61,7 +61,7 @@
       styleClass="p-button-rounded p-button-raised"
       icon="pi pi-step-forward"
       class="space-around"
-      [disabled]="isPlaying || items.length === 0"
+      [disabled]="isPlaying || [0, 1].includes(items.length)"
       (click)="onNext()"
     ></p-button>
   </div>
@@ -73,7 +73,7 @@
         class="space-around"
         [disabled]="
           isPlaying ||
-          items.length === 0 ||
+          [0, 1].includes(items.length) ||
           !currentIndex.number ||
           !currentIndex.showSecondWord ||
           !(isReadSpeakerActivated$ | async)
