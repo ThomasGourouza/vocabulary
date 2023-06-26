@@ -77,7 +77,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
     if (!this.currentIndex.showSecondWord && this.currentIndex.number !== undefined) {
       this.currentIndex.showSecondWord = true;
-      this.readerSpeakerService.textToSpeach(2, this.items[this.currentIndex.number]);
+      this.readerSpeakerService.textToSpeech(2, this.items[this.currentIndex.number]);
     } else {
       const previousNumber = this.currentIndex.number;
       const number = this.currentIndex.nextNumber ?? this.getRandomIndex();
@@ -88,7 +88,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
         showSecondWord: false,
         counter: this.currentIndex.counter + 1
       };
-      this.readerSpeakerService.textToSpeach(1, this.items[number]);
+      this.readerSpeakerService.textToSpeech(1, this.items[number]);
     }
     this.readerSpeakerService.setIsSecondWordDisplayed$(this.currentIndex.showSecondWord);
   }
@@ -146,7 +146,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     ) {
       return;
     }
-    this.readerSpeakerService.textToSpeach(2, this.items[this.currentIndex.number]);
+    this.readerSpeakerService.textToSpeech(2, this.items[this.currentIndex.number]);
   }
 
   private getRandomInt(exclusiveMax: number): number {

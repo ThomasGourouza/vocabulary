@@ -29,7 +29,7 @@ export class ReaderSpeakerService {
     this._isFrenchColFirst$.next(!this._isFrenchColFirst$.getValue());
   }
 
-  textToSpeach(position: number, item: Item): void {
+  textToSpeech(position: number, item: Item): void {
     if (!this._isReadSpeakerActivated$.getValue()) {
       return;
     }
