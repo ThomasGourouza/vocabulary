@@ -64,9 +64,15 @@
     <div class="d-flex justify-content-center">
       <p-button
         styleClass="p-button-rounded p-button-raised"
-        icon="pi pi-volume-up"
+        icon="pi pi-megaphone"
         class="space-around"
-        [disabled]="isPlaying || items.length === 0 || !currentIndex.number"
+        [disabled]="
+          isPlaying ||
+          items.length === 0 ||
+          !currentIndex.number ||
+          !currentIndex.showTranslation ||
+          !isSoundActivated
+        "
         (click)="onReadSpeak()"
       ></p-button>
       <!-- <audio *ngIf="openReadSpeaker" controls autoplay hidden>

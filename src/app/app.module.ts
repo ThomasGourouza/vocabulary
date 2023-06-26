@@ -19,6 +19,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
+import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService } from 'primeng/api';
 import { TimePipe } from './pipes/time.pipe';
 import { PriorityPipe } from './pipes/priority.pipe';
@@ -46,7 +47,8 @@ import { ReaderSpeakerService } from './services/reader-speaker.service';
     TabMenuModule,
     ButtonModule,
     CardModule,
-    ToastModule
+    ToastModule,
+    CheckboxModule
   ],
   providers: [
     ExcelService,

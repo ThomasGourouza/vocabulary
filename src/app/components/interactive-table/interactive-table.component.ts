@@ -1,6 +1,7 @@
-import { Component, Input, OnDestroy } from '@angular/core';
-import { Subscription, interval } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription, interval } from 'rxjs';
 import { Item } from 'src/app/models/item';
+import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
 export interface Index {
   previousNumber: number | undefined;
   nextNumber: number | undefined;
@@ -13,7 +14,7 @@ export interface Index {
   selector: 'app-interactive-table',
   templateUrl: './interactive-table.component.html'
 })
-export class InteractiveTableComponent implements OnDestroy {
+export class InteractiveTableComponent implements OnInit, OnDestroy {
   public _items!: Item[];
   get items(): Item[] {
     return this._items;
@@ -40,13 +41,21 @@ export class InteractiveTableComponent implements OnDestroy {
   public times = [2000, 3000, 5000, 10000];
   public time = this.times[0];
   private memory: number[] = [];
+  public isSoundActivated!: boolean;
 
+  private isSoundActivatedSubscription = new Subscription();
   private timeSubscription = new Subscription();
 
-  constructor() { }
+  constructor(private readerSpeakerService: ReaderSpeakerService) { }
+
+  ngOnInit(): void {
+    this.isSoundActivatedSubscription = this.readerSpeakerService.isReadSpeakerActivated$
+      .subscribe(activated => this.isSoundActivated = activated);
+  }
 
   ngOnDestroy(): void {
     this.timeSubscription.unsubscribe();
+    this.isSoundActivatedSubscription.unsubscribe();
   }
 
   public onNext(): void {
@@ -75,13 +84,13 @@ export class InteractiveTableComponent implements OnDestroy {
   }
 
   public getRandomIndex(): number {
-    if(this.memory.length === this.items.length) {
+    if (this.memory.length === this.items.length) {
       this.memory = [];
     }
     let randomIndex: number;
     do {
       randomIndex = this.getRandomInt(this.items.length);
-    } while(this.memory.includes(randomIndex));
+    } while (this.memory.includes(randomIndex));
     this.memory.push(randomIndex);
     return randomIndex;
   }
@@ -110,9 +119,8 @@ export class InteractiveTableComponent implements OnDestroy {
       return;
     }
     this.isPlaying = true;
-    this.timeSubscription = interval(this.time).subscribe(() =>
-      this.next()
-    );
+    this.timeSubscription = interval(this.time)
+      .subscribe(() => this.next());
   }
 
   public onPause(): void {
@@ -121,7 +129,11 @@ export class InteractiveTableComponent implements OnDestroy {
   }
 
   public onReadSpeak(): void {
-    if (this.isPlaying || this.items.length === 0 || !this.currentIndex.number) {
+    if (this.isPlaying
+      || this.items.length === 0
+      || !this.currentIndex.number
+      || !this.currentIndex.showTranslation
+    ) {
       return;
     }
     this.textToSpeach('ru', this.items[this.currentIndex.number].word);
@@ -132,6 +144,8 @@ export class InteractiveTableComponent implements OnDestroy {
   }
 
   private textToSpeach(lang: string, text: string): void {
-    console.log('Text to speach: ' + lang + ', ' + text);
+    if(this.isSoundActivated) {
+      console.log('Text to speach: ' + lang + ', ' + text);
+    }
   }
 }

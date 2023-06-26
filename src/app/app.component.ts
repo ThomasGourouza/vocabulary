@@ -22,5 +22,4 @@ export class AppComponent implements OnInit {
   onPriority(priority: number): void {
     this.priority = priority;
   }
-
 }

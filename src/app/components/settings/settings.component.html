@@ -1,6 +1,7 @@
-<div class="d-flex justify-content-start">
-  <div class="settings">
-    <p-fileUpload
+<div class="d-flex justify-content-between">
+  <div class="flex-container">
+    <div class="settings">
+      <p-fileUpload
         *ngIf="showUpload; else showTrash"
         styleClass="p-button-rounded p-button-raised"
         mode="basic"
@@ -11,26 +12,33 @@
       >
       </p-fileUpload>
       <ng-template #showTrash>
-      <p-button
-        styleClass="p-button-rounded p-button-danger p-button-raised"
-        icon="pi pi-trash"
-        (click)="onReset()"
-      ></p-button>
-    </ng-template>
-  </div>
-  <div class="settings priority-container">
-    <strong><span class="select">Priorité:</span></strong>
-    <select
-      class="form-select"
-      (change)="onChangePriority($event.target)"
-      [disabled]="showUpload"
+        <p-button
+          styleClass="p-button-rounded p-button-danger p-button-raised"
+          icon="pi pi-trash"
+          (click)="onReset()"
+        ></p-button>
+      </ng-template>
+    </div>
+    <div class="settings flex-container">
+      <strong><span class="select">Priorité:</span></strong>
+      <select
+        class="form-select"
+        (change)="onChangePriority($event.target)"
+        [disabled]="showUpload"
       >
-      <option
-        *ngFor="let priority of priorities"
-        [value]="priority"
-        [label]="priority"
-        [selected]="priority === priorities[0]"
-      ></option>
-    </select>
+        <option
+          *ngFor="let priority of priorities"
+          [value]="priority"
+          [label]="priority"
+          [selected]="priority === priorities[0]"
+        ></option>
+      </select>
+    </div>
+  </div>
+  <div class="flex-container">
+    <i class="pi pi-volume-up" style="font-size: 2rem"></i>
+    <div class="select">
+      <p-checkbox [binary]="true" (onChange)="toggleSound($event.checked)"></p-checkbox>
+    </div>
   </div>
 </div>

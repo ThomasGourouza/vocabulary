@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ExcelService } from 'src/app/services/excel.service';
+import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
 
 @Component({
   selector: 'app-settings',
@@ -20,7 +21,8 @@ export class SettingsComponent {
   @Output() priority = new EventEmitter<number>();
 
   constructor(
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private readerSpeakerService: ReaderSpeakerService
   ) { }
 
   public onUploadData(file: File): void {
@@ -36,5 +38,8 @@ export class SettingsComponent {
       this.priority.emit(+(priority as HTMLSelectElement).value);
     }
   }
-}
 
+  public toggleSound(value: boolean): void {
+    this.readerSpeakerService.setIsReadSpeakerActivated$(value);
+  }
+}
