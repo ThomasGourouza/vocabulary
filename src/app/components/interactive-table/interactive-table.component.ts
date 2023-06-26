@@ -9,7 +9,6 @@ export interface Index {
   counter: number;
 }
 
-
 @Component({
   selector: 'app-interactive-table',
   templateUrl: './interactive-table.component.html'
@@ -56,9 +55,9 @@ export class InteractiveTableComponent implements OnDestroy {
   }
 
   private next(): void {
-    if (!this.currentIndex.showTranslation && this.currentIndex.counter > 0) {
+    if (!this.currentIndex.showTranslation && !!this.currentIndex.number) {
       this.currentIndex.showTranslation = true;
-      // TextToSpeach Russian
+      this.textToSpeach('ru', this.items[this.currentIndex.number].word);
     } else {
       const previousNumber = this.currentIndex.number;
       const number = this.currentIndex.nextNumber ?? this.getRandomIndex();
@@ -69,7 +68,7 @@ export class InteractiveTableComponent implements OnDestroy {
         showTranslation: false,
         counter: this.currentIndex.counter + 1
       };
-      // TextToSpeach French
+      this.textToSpeach('fr', this.items[number].french);
     }
   }
 
@@ -112,13 +111,17 @@ export class InteractiveTableComponent implements OnDestroy {
   }
 
   public onReadSpeak(): void {
-    if (this.isPlaying || this.items.length === 0) {
+    if (this.isPlaying || this.items.length === 0 || !this.currentIndex.number) {
       return;
     }
-    // TextToSpeach Russian
+    this.textToSpeach('ru', this.items[this.currentIndex.number].word);
   }
 
   private getRandomInt(exclusiveMax: number): number {
     return Math.floor(Math.random() * exclusiveMax);
+  }
+
+  private textToSpeach(lang: string, text: string): void {
+    console.log('Text to speach: ' + lang + ', ' + text);
   }
 }
