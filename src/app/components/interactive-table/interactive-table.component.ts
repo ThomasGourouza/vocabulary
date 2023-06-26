@@ -4,7 +4,7 @@ import { Item } from 'src/app/models/item';
 export interface Index {
   previousNumber: number | undefined;
   nextNumber: number | undefined;
-  number: number;
+  number: number | undefined;
   showTranslation: boolean;
   counter: number;
 }
@@ -21,28 +21,24 @@ export class InteractiveTableComponent implements OnDestroy {
   }
   @Input() set items(values: Item[]) {
     this._items = values;
-    if (this._items.length === 0) {
+    if (this.items.length === 0) {
       this.currentIndex = {
         previousNumber: undefined,
         nextNumber: undefined,
-        number: 0,
+        number: undefined,
         showTranslation: false,
-        counter: 1
+        counter: 0
       };
       this.onPause();
+    } else {
+      this.next();
     }
   }
 
-  public currentIndex: Index = {
-    previousNumber: undefined,
-    nextNumber: undefined,
-    number: 0,
-    showTranslation: false,
-    counter: 1
-  };
+  public currentIndex!: Index;
   public isPlaying = false;
-  public time = 3000;
-  public times = [3000, 5000, 10000];
+  public times = [2000, 3000, 5000, 10000];
+  public time = this.times[0];
 
   private timeSubscription = new Subscription();
 
@@ -60,8 +56,9 @@ export class InteractiveTableComponent implements OnDestroy {
   }
 
   private next(): void {
-    if (!this.currentIndex.showTranslation) {
+    if (!this.currentIndex.showTranslation && this.currentIndex.counter > 0) {
       this.currentIndex.showTranslation = true;
+      // TextToSpeach Russian
     } else {
       const previousNumber = this.currentIndex.number;
       const number = this.currentIndex.nextNumber ?? this.getRandomIndex();
@@ -72,6 +69,7 @@ export class InteractiveTableComponent implements OnDestroy {
         showTranslation: false,
         counter: this.currentIndex.counter + 1
       };
+      // TextToSpeach French
     }
   }
 
@@ -117,6 +115,7 @@ export class InteractiveTableComponent implements OnDestroy {
     if (this.isPlaying || this.items.length === 0) {
       return;
     }
+    // TextToSpeach Russian
   }
 
   private getRandomInt(exclusiveMax: number): number {
