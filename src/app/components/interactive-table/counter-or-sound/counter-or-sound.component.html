@@ -19,9 +19,9 @@
       [disabled]="
         isPlaying ||
         isNotEnoughItem ||
-        !currentIndex.number ||
+        currentIndex.number === undefined ||
         !isReadSpeakerActivated ||
-        !currentIndex.showSecondWord
+        (isFrenchColFirst && !currentIndex.showSecondWord)
       "
       (click)="onReadSpeak()"
     ></p-button>

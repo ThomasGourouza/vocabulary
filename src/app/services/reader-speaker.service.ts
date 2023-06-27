@@ -38,14 +38,8 @@ export class ReaderSpeakerService {
       return;
     }
     const request: Request = (position === 1)
-      ? {
-        language: 'fr',
-        text: item.french
-      }
-      : {
-        language: 'ru',
-        text: item.word
-      };
+      ? { language: 'fr', text: item.french }
+      : { language: 'ru', text: item.word };
     console.log('Text to speech: ' + request.language + ', ' + request.text);
   }
 
