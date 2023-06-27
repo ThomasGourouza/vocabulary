@@ -52,23 +52,27 @@ export class ExcelService {
 
   public excelToJSON(file: File): void {
     const reader = new FileReader();
-    reader.onload = ((e) => {
-      if (e.target == null) {
+    reader.onload = (event) => {
+      if (event.target == null) {
         return;
       }
-      const data = e.target.result;
-      const workbook = XLSX.read(data, {
-        type: 'binary'
-      });
+      const data = event.target.result;
+      const workbook = XLSX.read(data, { type: 'binary' });
+
+      const jsonData: { [sheetName: string]: Item[] } = {};
+
       workbook.SheetNames.forEach((sheetName) => {
-        const data: Item[] = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-        this._uploadedData$.next(data);
+        const worksheet = workbook.Sheets[sheetName];
+        const sheetData: Item[] = XLSX.utils.sheet_to_json(worksheet);
+        jsonData[sheetName] = sheetData;
       });
-    });
+
+      this._uploadedData$.next(jsonData['name']);
+    };
     reader.readAsBinaryString(file);
   }
 
   public reset(): void {
-    this._uploadedData$.next([]);
-  }
+  this._uploadedData$.next([]);
+}
 }
