@@ -9,7 +9,7 @@ export class CounterOrSoundComponent {
   @Input() isNotEnoughItem!: boolean;
   @Input() currentIndex!: Index;
   @Input() isPlaying!: boolean;
-  @Input() isFrenchColFirst!: boolean;
+  @Input() isSourceColFirst!: boolean;
   @Input() isReadSpeakerActivated!: boolean;
   @Input() position!: 'left' | 'right';
   @Output() readSpeak = new EventEmitter<number>();
@@ -18,7 +18,7 @@ export class CounterOrSoundComponent {
     if (this.isPlaying
       || this.isNotEnoughItem
       || this.currentIndex.number === undefined
-      || (this.isFrenchColFirst && !this.currentIndex.showSecondWord)
+      || (this.isSourceColFirst && !this.currentIndex.showTarget)
     ) {
       return;
     }

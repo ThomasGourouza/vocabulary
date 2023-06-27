@@ -11,20 +11,20 @@ export class ExcelService {
   constructor(private messageService: MessageService) { }
 
   private validKeys = [
-    "french",
-    "word",
+    "source",
+    "target",
     "priority"
   ];
 
-  private _uploadedWords$ = new Subject<Item[]>();
+  private _uploadedData$ = new Subject<Item[]>();
 
-  get uploadedWords$(): Observable<Item[]> {
-    return this._uploadedWords$.asObservable()
+  get uploadedData$(): Observable<Item[]> {
+    return this._uploadedData$.asObservable()
       .pipe(
         map((data) => {
           if (data.length > 0 && Object.keys(data[0]).some((key) => !this.validKeys.includes(key))) {
             this.messageService.add({ severity: 'error', summary: Text.invalidText, detail: Text.invalidTextMessage });
-            return [{ french: '', word: '', priority: 0 }];
+            return [{ source: '', target: '', priority: 0 }];
           }
           this.messageService.add(
             data.length === 0 ?
@@ -47,13 +47,13 @@ export class ExcelService {
       });
       workbook.SheetNames.forEach((sheetName) => {
         const data: Item[] = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-        this._uploadedWords$.next(data);
+        this._uploadedData$.next(data);
       });
     });
     reader.readAsBinaryString(file);
   }
 
   public reset(): void {
-    this._uploadedWords$.next([]);
+    this._uploadedData$.next([]);
   }
 }

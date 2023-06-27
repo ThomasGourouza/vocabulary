@@ -2,29 +2,29 @@
   <tr>
     <th scope="col">
       <div class="center-text">
-        {{ isFrenchColFirst ? "Français" : "Traduction" }}
+        {{ isSourceColFirst ? "Français" : "Traduction" }}
       </div>
     </th>
     <th scope="col">
       <div class="center-text">
-        {{ isFrenchColFirst ? "Traduction" : "Français" }}
+        {{ isSourceColFirst ? "Traduction" : "Français" }}
       </div>
     </th>
   </tr>
   <tr>
     <ng-container
-      *ngIf="isFrenchColFirst; then frenchFirst; else translationFirst"
+      *ngIf="isSourceColFirst; then frenchFirst; else translationFirst"
     ></ng-container>
     <ng-template #frenchFirst>
       <td>
         <div class="arial biggest center-text">
-          <span> {{ item?.french }} </span>
+          <span> {{ item?.source }} </span>
         </div>
       </td>
       <td>
         <div class="arial biggest center-text">
-          <span *ngIf="showSecondWord">
-            {{ item?.word }}
+          <span *ngIf="showTarget">
+            {{ item?.target }}
           </span>
         </div>
       </td>
@@ -33,13 +33,13 @@
       <td>
         <div class="arial biggest center-text">
           <span>
-            {{ item?.word }}
+            {{ item?.target }}
           </span>
         </div>
       </td>
       <td>
         <div class="arial biggest center-text">
-          <span *ngIf="showSecondWord"> {{ item?.french }} </span>
+          <span *ngIf="showTarget"> {{ item?.source }} </span>
         </div>
       </td>
     </ng-template>

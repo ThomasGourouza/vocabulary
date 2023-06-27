@@ -1,5 +1,5 @@
 export interface Item {
-    french: string;
-    word: string;
+    source: string;
+    target: string;
     priority: number;
 }

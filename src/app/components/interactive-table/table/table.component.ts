@@ -7,6 +7,6 @@ import { Item } from 'src/app/models/item';
 })
 export class TableComponent {
   @Input() item: Item | undefined;
-  @Input() showSecondWord!: boolean;
-  @Input() isFrenchColFirst!: boolean;
+  @Input() showTarget!: boolean;
+  @Input() isSourceColFirst!: boolean;
 }

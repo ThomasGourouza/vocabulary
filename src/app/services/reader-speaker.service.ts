@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Item } from '../models/item';
+import { Language } from '../models/language';
 export interface Request {
   language: string,
   text: string
@@ -13,8 +14,8 @@ export class ReaderSpeakerService {
   private readonly baseUrl: string;
   private _isReadSpeakerActivated$ = new BehaviorSubject<boolean>(false);
   private _isPlaying$ = new BehaviorSubject<boolean>(false);
-  private _isSecondWordDisplayed$ = new BehaviorSubject<boolean>(true);
-  private _isFrenchColFirst$ = new BehaviorSubject<boolean>(true);
+  private _isTargetDisplayed$ = new BehaviorSubject<boolean>(true);
+  private _isSourceColFirst$ = new BehaviorSubject<boolean>(true);
 
   constructor(
     private readonly http: HttpClient
@@ -22,15 +23,15 @@ export class ReaderSpeakerService {
     this.baseUrl = 'https://ttsmp3.com/makemp3_new.php';
   }
 
-  get isFrenchColFirst$(): Observable<boolean> {
-    return this._isFrenchColFirst$.asObservable();
+  get isSourceColFirst$(): Observable<boolean> {
+    return this._isSourceColFirst$.asObservable();
   }
 
-  toggleIsFrenchColFirst$() {
-    if (this._isPlaying$.getValue() || !this._isSecondWordDisplayed$.getValue()) {
+  toggleIsSourceColFirst$() {
+    if (this._isPlaying$.getValue() || !this._isTargetDisplayed$.getValue()) {
       return;
     }
-    this._isFrenchColFirst$.next(!this._isFrenchColFirst$.getValue());
+    this._isSourceColFirst$.next(!this._isSourceColFirst$.getValue());
   }
 
   textToSpeech(item: Item, position: 1 | 2): void {
@@ -38,8 +39,8 @@ export class ReaderSpeakerService {
       return;
     }
     const request: Request = (position === 1)
-      ? { language: 'fr', text: item.french }
-      : { language: 'ru', text: item.word };
+      ? { language: Language.french, text: item.source }
+      : { language: Language.russian, text: item.target };
     console.log('Text to speech: ' + request.language + ', ' + request.text);
   }
 
@@ -74,11 +75,11 @@ export class ReaderSpeakerService {
     this._isPlaying$.next(value);
   }
 
-  get isSecondWordDisplayed$(): Observable<boolean> {
-    return this._isSecondWordDisplayed$.asObservable();
+  get isTargetDisplayed$(): Observable<boolean> {
+    return this._isTargetDisplayed$.asObservable();
   }
 
-  setIsSecondWordDisplayed$(value: boolean) {
-    this._isSecondWordDisplayed$.next(value);
+  setIsTargetDisplayed$(value: boolean) {
+    this._isTargetDisplayed$.next(value);
   }
 }

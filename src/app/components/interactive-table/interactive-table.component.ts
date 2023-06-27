@@ -6,7 +6,7 @@ export interface Index {
   previousNumber: number | undefined;
   nextNumber: number | undefined;
   number: number | undefined;
-  showSecondWord: boolean;
+  showTarget: boolean;
   counter: number;
 }
 
@@ -26,12 +26,12 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
         previousNumber: undefined,
         nextNumber: undefined,
         number: undefined,
-        showSecondWord: false,
+        showTarget: false,
         counter: 0
       };
       this.memory = [];
       this.onPause();
-      this.readerSpeakerService.setIsSecondWordDisplayed$(true);
+      this.readerSpeakerService.setIsTargetDisplayed$(true);
     } else {
       this.next();
     }
@@ -42,10 +42,10 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   public times = [2000, 3000, 5000, 10000];
   public time = this.times[0];
   private memory: number[] = [];
-  public isFrenchColFirst!: boolean;
+  public isSourceColFirst!: boolean;
 
   public isReadSpeakerActivated$!: Observable<boolean>;
-  public isFrenchColFirstSubscription = new Subscription();
+  public isSourceColFirstSubscription = new Subscription();
   private timeSubscription = new Subscription();
   private isPlayingSubscription = new Subscription();
 
@@ -55,8 +55,8 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isReadSpeakerActivated$ = this.readerSpeakerService.isReadSpeakerActivated$.pipe(shareReplay(1));
-    this.isFrenchColFirstSubscription = this.readerSpeakerService.isFrenchColFirst$
-      .subscribe(value => this.isFrenchColFirst = value);
+    this.isSourceColFirstSubscription = this.readerSpeakerService.isSourceColFirst$
+      .subscribe(value => this.isSourceColFirst = value);
     this.isPlayingSubscription = this.readerSpeakerService.isPlaying$
       .subscribe(value => this.isPlaying = value);
   }
@@ -64,7 +64,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.timeSubscription.unsubscribe();
     this.isPlayingSubscription.unsubscribe();
-    this.isFrenchColFirstSubscription.unsubscribe();
+    this.isSourceColFirstSubscription.unsubscribe();
   }
 
   public onNext(): void {
@@ -75,9 +75,9 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   private next(): void {
-    if (!this.currentIndex.showSecondWord && this.currentIndex.number !== undefined) {
-      this.currentIndex.showSecondWord = true;
-      this.readerSpeakerService.textToSpeech(this.items[this.currentIndex.number], this.isFrenchColFirst ? 2 : 1);
+    if (!this.currentIndex.showTarget && this.currentIndex.number !== undefined) {
+      this.currentIndex.showTarget = true;
+      this.readerSpeakerService.textToSpeech(this.items[this.currentIndex.number], this.isSourceColFirst ? 2 : 1);
     } else {
       const previousNumber = this.currentIndex.number;
       const number = this.currentIndex.nextNumber ?? this.getRandomIndex();
@@ -85,12 +85,12 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
         previousNumber,
         nextNumber: undefined,
         number,
-        showSecondWord: false,
+        showTarget: false,
         counter: this.currentIndex.counter + 1
       };
-      this.readerSpeakerService.textToSpeech(this.items[number], this.isFrenchColFirst ? 1 : 2);
+      this.readerSpeakerService.textToSpeech(this.items[number], this.isSourceColFirst ? 1 : 2);
     }
-    this.readerSpeakerService.setIsSecondWordDisplayed$(this.currentIndex.showSecondWord);
+    this.readerSpeakerService.setIsTargetDisplayed$(this.currentIndex.showTarget);
   }
 
   public getRandomIndex(): number {
@@ -119,7 +119,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       previousNumber: undefined,
       nextNumber,
       number,
-      showSecondWord: true,
+      showTarget: true,
       counter: this.currentIndex.counter - 1
     };
   }

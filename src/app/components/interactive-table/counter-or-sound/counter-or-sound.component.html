@@ -1,7 +1,7 @@
 <ng-container
   *ngIf="
-    (isFrenchColFirst && position === 'left') ||
-      (!isFrenchColFirst && position === 'right');
+    (isSourceColFirst && position === 'left') ||
+      (!isSourceColFirst && position === 'right');
     then display_counter;
     else display_sound_button
   "
@@ -21,7 +21,7 @@
         isNotEnoughItem ||
         currentIndex.number === undefined ||
         !isReadSpeakerActivated ||
-        (isFrenchColFirst && !currentIndex.showSecondWord)
+        (isSourceColFirst && !currentIndex.showTarget)
       "
       (click)="onReadSpeak()"
     ></p-button>

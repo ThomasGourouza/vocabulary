@@ -2,13 +2,13 @@
   [item]="
     currentIndex.number !== undefined ? items[currentIndex.number] : undefined
   "
-  [showSecondWord]="currentIndex.showSecondWord"
-  [isFrenchColFirst]="isFrenchColFirst"
+  [showTarget]="currentIndex.showTarget"
+  [isSourceColFirst]="isSourceColFirst"
 ></app-table>
 <div class="d-flex justify-content-between">
   <div class="index-container">
     <app-counter-or-sound
-      [isFrenchColFirst]="isFrenchColFirst"
+      [isSourceColFirst]="isSourceColFirst"
       [isNotEnoughItem]="[0, 1].includes(items.length)"
       [currentIndex]="currentIndex"
       [isPlaying]="isPlaying"
@@ -74,7 +74,7 @@
   <div>
     <div class="d-flex justify-content-center">
       <app-counter-or-sound
-        [isFrenchColFirst]="isFrenchColFirst"
+        [isSourceColFirst]="isSourceColFirst"
         [isNotEnoughItem]="[0, 1].includes(items.length)"
         [currentIndex]="currentIndex"
         [isPlaying]="isPlaying"

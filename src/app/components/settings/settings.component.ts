@@ -21,7 +21,7 @@ export class SettingsComponent implements OnInit {
   @Input() showUpload!: boolean;
   @Output() priority = new EventEmitter<number>();
   public isPlaying$!: Observable<boolean>;
-  public isSecondWordDisplayed$!: Observable<boolean>;
+  public isTargetDisplayed$!: Observable<boolean>;
 
   constructor(
     private excelService: ExcelService,
@@ -30,7 +30,7 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.isPlaying$ = this.readerSpeakerService.isPlaying$;
-    this.isSecondWordDisplayed$ = this.readerSpeakerService.isSecondWordDisplayed$;
+    this.isTargetDisplayed$ = this.readerSpeakerService.isTargetDisplayed$;
   }
 
   public onUploadData(file: File): void {
@@ -52,6 +52,6 @@ export class SettingsComponent implements OnInit {
   }
 
   public onInterChange(): void {
-    this.readerSpeakerService.toggleIsFrenchColFirst$();
+    this.readerSpeakerService.toggleIsSourceColFirst$();
   }
 }

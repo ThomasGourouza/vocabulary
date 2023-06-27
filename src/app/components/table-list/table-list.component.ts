@@ -11,14 +11,14 @@ export class TableListComponent implements OnInit {
   @Input() items!: Item[];
   public showList = false;
 
-  public isFrenchColFirst$!: Observable<boolean>;
+  public isSourceColFirst$!: Observable<boolean>;
 
   constructor(
     private readerSpeakerService: ReaderSpeakerService
   ) { }
 
   ngOnInit(): void {
-    this.isFrenchColFirst$ = this.readerSpeakerService.isFrenchColFirst$;
+    this.isSourceColFirst$ = this.readerSpeakerService.isSourceColFirst$;
   }
 
   public toggleList() {

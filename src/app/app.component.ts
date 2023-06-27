@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.data$ = this.excelService.uploadedWords$.pipe(shareReplay(1));
+    this.data$ = this.excelService.uploadedData$.pipe(shareReplay(1));
   }
 
   onPriority(priority: number): void {
