@@ -1,7 +1,6 @@
 <ng-container
   *ngIf="
-    (isSourceColFirst && position === 'left') ||
-      (!isSourceColFirst && position === 'right');
+    position === (isSourceColFirst ? 'left' : 'right');
     then display_counter;
     else display_sound_button
   "

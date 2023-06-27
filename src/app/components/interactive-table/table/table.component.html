@@ -2,12 +2,12 @@
   <tr>
     <th scope="col">
       <div class="center-text">
-        {{ isSourceColFirst ? "Source" : "Target" }}
+        {{ (isSourceColFirst ? item?.source_language : item?.target_language) | titlecase }}
       </div>
     </th>
     <th scope="col">
       <div class="center-text">
-        {{ isSourceColFirst ? "Target" : "Source" }}
+        {{ (isSourceColFirst ? item?.target_language : item?.source_language) | titlecase }}
       </div>
     </th>
   </tr>

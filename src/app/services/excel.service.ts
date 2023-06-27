@@ -36,8 +36,8 @@ export class ExcelService {
               this.messageService.add({ severity: 'error', summary: Text.incomplete, detail: Text.incompleteTextMessage });
               return [{ source_language: '', target_language: '', source: '', target: '', priority: 0 }];
             }
-            if (data.some(item =>
-              ![item.source_language, item.target_language].every(language => Object.keys(Language).includes(language as Language))
+            if (data.some(({ source_language, target_language }) =>
+              ![source_language, target_language].every(language => Object.keys(Language).includes(language as Language))
             )) {
               this.messageService.add({ severity: 'error', summary: Text.unsupportedLanguage, detail: Text.unsupportedLanguageTextMessage });
               return [{ source_language: '', target_language: '', source: '', target: '', priority: 0 }];

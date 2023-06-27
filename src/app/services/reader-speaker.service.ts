@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Item } from '../models/item';
 import { Language } from '../models/language';
@@ -12,6 +12,7 @@ export class ReaderSpeakerService {
   private _isPlaying$ = new BehaviorSubject<boolean>(false);
   private _isTargetDisplayed$ = new BehaviorSubject<boolean>(true);
   private _isSourceColFirst$ = new BehaviorSubject<boolean>(true);
+  private _audioSource$ = new Subject<string>();
 
   constructor(
     private readonly http: HttpClient
@@ -37,8 +38,8 @@ export class ReaderSpeakerService {
     const language = Language[
       (position === 1 ? item.source_language : item.target_language) as keyof typeof Language
     ];
-    const text = position === 1 ? item.source : item.target
-    console.log({ language, text });
+    const text = position === 1 ? item.source : item.target;
+    this._audioSource$.next(language + ' - ' + text);
   }
 
   getVoice(TextMessage: string): Observable<any> {
@@ -78,5 +79,9 @@ export class ReaderSpeakerService {
 
   setIsTargetDisplayed$(value: boolean) {
     this._isTargetDisplayed$.next(value);
+  }
+
+  get audioSource$(): Observable<string> {
+    return this._audioSource$.asObservable();
   }
 }
