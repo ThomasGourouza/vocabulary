@@ -1,23 +1,29 @@
 <table>
   <tr class="toggle-list" (click)="toggleList()">
     <th scope="col">
-      <div class="center-text">Français</div>
+      <div class="center-text">
+        {{ (isFrenchColFirst$ | async) ?? true ? "Français" : "Traduction" }}
+      </div>
     </th>
     <th scope="col">
-      <div class="center-text">Traduction</div>
+      <div class="center-text">
+        {{ (isFrenchColFirst$ | async) ?? true ? "Traduction" : "Français" }}
+      </div>
     </th>
   </tr>
   <ng-container *ngIf="showList && items.length > 0">
     <tr *ngFor="let word of items" class="list">
       <td>
         <div class="arial center-text">
-          <span> {{ word.french }} </span>&nbsp;
+          <span>
+            {{ (isFrenchColFirst$ | async) ?? true ? word.french : word.word }}
+          </span>
         </div>
       </td>
       <td>
         <div class="arial center-text">
           <span>
-            {{ word.word }}
+            {{ (isFrenchColFirst$ | async) ?? true ? word.word : word.french }}
           </span>
         </div>
       </td>

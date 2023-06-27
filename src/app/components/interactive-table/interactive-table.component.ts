@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription, interval, shareReplay } from 'rxjs';
+import { Observable, Subscription, interval } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
 export interface Index {
