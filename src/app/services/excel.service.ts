@@ -5,12 +5,15 @@ import { Observable, Subject, map } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { Text } from 'src/app/models/text';
 import { MessageService } from 'primeng/api';
+import { Language } from '../models/language';
 
 @Injectable()
 export class ExcelService {
   constructor(private messageService: MessageService) { }
 
   private validKeys = [
+    "source_language",
+    "target_language",
     "source",
     "target",
     "priority"
@@ -22,15 +25,27 @@ export class ExcelService {
     return this._uploadedData$.asObservable()
       .pipe(
         map((data) => {
-          if (data.length > 0 && Object.keys(data[0]).some((key) => !this.validKeys.includes(key))) {
-            this.messageService.add({ severity: 'error', summary: Text.invalidText, detail: Text.invalidTextMessage });
-            return [{ source: '', target: '', priority: 0 }];
+          if (data.length > 0) {
+            if (Object.keys(data[0]).some((key) => !this.validKeys.includes(key))) {
+              this.messageService.add({ severity: 'error', summary: Text.invalidText, detail: Text.invalidTextMessage });
+              return [{ source_language: '', target_language: '', source: '', target: '', priority: 0 }];
+            }
+            if (data.some(item =>
+              !item.source_language || !item.target_language || !item.source || !item.target || !item.priority
+            )) {
+              this.messageService.add({ severity: 'error', summary: Text.incomplete, detail: Text.incompleteTextMessage });
+              return [{ source_language: '', target_language: '', source: '', target: '', priority: 0 }];
+            }
+            if (data.some(item =>
+              ![item.source_language, item.target_language].every(language => Object.keys(Language).includes(language as Language))
+            )) {
+              this.messageService.add({ severity: 'error', summary: Text.unsupportedLanguage, detail: Text.unsupportedLanguageTextMessage });
+              return [{ source_language: '', target_language: '', source: '', target: '', priority: 0 }];
+            }
+            this.messageService.add({ severity: 'success', summary: Text.validText });
+            return data;
           }
-          this.messageService.add(
-            data.length === 0 ?
-              { severity: 'warn', summary: Text.dataDeletedText } :
-              { severity: 'info', summary: Text.validText }
-          );
+          this.messageService.add({ severity: 'warn', summary: Text.dataDeletedText });
           return data;
         }));
   }

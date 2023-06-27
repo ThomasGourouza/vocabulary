@@ -3,10 +3,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Item } from '../models/item';
 import { Language } from '../models/language';
-export interface Request {
-  language: string,
-  text: string
-}
 
 @Injectable()
 export class ReaderSpeakerService {
@@ -38,10 +34,11 @@ export class ReaderSpeakerService {
     if (!this._isReadSpeakerActivated$.getValue()) {
       return;
     }
-    const request: Request = (position === 1)
-      ? { language: Language.french, text: item.source }
-      : { language: Language.russian, text: item.target };
-    console.log('Text to speech: ' + request.language + ', ' + request.text);
+    const language = Language[
+      (position === 1 ? item.source_language : item.target_language) as keyof typeof Language
+    ];
+    const text = position === 1 ? item.source : item.target
+    console.log({ language, text });
   }
 
   getVoice(TextMessage: string): Observable<any> {
