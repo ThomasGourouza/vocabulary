@@ -25,11 +25,3 @@ export function translate(lang?: string): string {
       return lang ?? '';
   }
 }
-
-export function getLanguages(): string {
-  const languages = Object.keys(Language);
-  const lastLanguage = languages.pop();
-  const joinedLanguages = languages.join(', ');
-
-  return `${joinedLanguages} and ${lastLanguage}.`;
-}

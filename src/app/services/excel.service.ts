@@ -5,7 +5,7 @@ import { Observable, Subject, map } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { Text } from 'src/app/models/text';
 import { MessageService } from 'primeng/api';
-import { Language, getLanguages } from '../models/language';
+import { Language } from '../models/language';
 
 @Injectable()
 export class ExcelService {
@@ -40,7 +40,7 @@ export class ExcelService {
               ![source_language, target_language].every(language => Object.keys(Language).includes(language as Language))
             )) {
               this.messageService.add(
-                { severity: 'error', summary: Text.unsupportedLanguage, detail: `${Text.unsupportedLanguageTextMessage} ${getLanguages()}` }
+                { severity: 'error', summary: Text.unsupportedLanguage, detail: `${Text.unsupportedLanguageTextMessage} ${this.getLanguages()}` }
               );
               return [{ source_language: '', target_language: '', source: '', target: '', priority: 0 }];
             }
@@ -76,5 +76,12 @@ export class ExcelService {
 
   public reset(): void {
     this._uploadedData$.next([]);
+  }
+
+  private getLanguages(): string {
+    const languages = Object.keys(Language);
+    const lastLanguage = languages.pop();
+    const joinedLanguages = languages.join(', ');
+    return `${joinedLanguages} and ${lastLanguage}.`;
   }
 }
