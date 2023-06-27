@@ -11,6 +11,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { InteractiveTableComponent } from './components/interactive-table/interactive-table.component';
 import { TableComponent } from './components/interactive-table/table/table.component';
 import { TableListComponent } from './components/table-list/table-list.component';
+import { CounterOrSoundComponent } from './components/interactive-table/counter-or-sound/counter-or-sound.component';
 
 import { ExcelService } from './services/excel.service';
 
@@ -33,6 +34,7 @@ import { ReaderSpeakerService } from './services/reader-speaker.service';
     InteractiveTableComponent,
     TableComponent,
     TableListComponent,
+    CounterOrSoundComponent,
     TimePipe,
     PriorityPipe,
     PrioritiesPipe

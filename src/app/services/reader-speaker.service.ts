@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Item } from '../models/item';
+export interface Request {
+  language: string,
+  text: string
+}
 
 @Injectable()
 export class ReaderSpeakerService {
@@ -29,14 +33,20 @@ export class ReaderSpeakerService {
     this._isFrenchColFirst$.next(!this._isFrenchColFirst$.getValue());
   }
 
-  textToSpeech(position: number, item: Item): void {
+  textToSpeech(item: Item, position: 1 | 2): void {
     if (!this._isReadSpeakerActivated$.getValue()) {
       return;
     }
-    const isFrenchColFirst = this._isFrenchColFirst$.getValue();
-    const lang = (isFrenchColFirst && position === 1) || (!isFrenchColFirst && position === 2) ? 'fr' : 'ru';
-    const text = (lang === 'fr') ? item.french : item.word;
-    console.log('Text to speech: ' + lang + ', ' + text);
+    const request: Request = (position === 1)
+      ? {
+        language: 'fr',
+        text: item.french
+      }
+      : {
+        language: 'ru',
+        text: item.word
+      };
+    console.log('Text to speech: ' + request.language + ', ' + request.text);
   }
 
   getVoice(TextMessage: string): Observable<any> {

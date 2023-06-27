@@ -7,13 +7,17 @@
 ></app-table>
 <div class="d-flex justify-content-between">
   <div class="index-container">
-    <div class="space-around circle">
-      <span class="big">{{ [0, 1].includes(items.length) ? 0 : currentIndex.counter }}</span>
-    </div>
+    <app-counter-or-sound
+      [isNotEnoughItem]="[0, 1].includes(items.length)"
+      [currentIndex]="currentIndex"
+      [isPlaying]="isPlaying"
+      [position]="'left'"
+      (readSpeak)="onReadSpeak($event)"
+    ></app-counter-or-sound>
   </div>
   <div class="d-flex justify-content-center">
     <p-button
-      styleClass="p-button-rounded p-button-raised"
+      styleClass="p-button-rounded p-button-raised p-button-outlined"
       icon="pi pi-step-backward"
       class="space-around"
       [disabled]="
@@ -29,7 +33,7 @@
     ></ng-container>
     <ng-template #is_not_playing>
       <p-button
-        styleClass="p-button-rounded p-button-success p-button-raised"
+        styleClass="p-button-rounded p-button-success p-button-raised p-button-outlined"
         icon="pi pi-play"
         class="space-around"
         [disabled]="[0, 1].includes(items.length)"
@@ -38,7 +42,7 @@
     </ng-template>
     <ng-template #is_playing>
       <p-button
-        styleClass="p-button-rounded p-button-warning p-button-raised"
+        styleClass="p-button-rounded p-button-warning p-button-raised p-button-outlined"
         icon="pi pi-pause"
         class="space-around"
         (click)="onPause()"
@@ -58,7 +62,7 @@
       </select>
     </div>
     <p-button
-      styleClass="p-button-rounded p-button-raised"
+      styleClass="p-button-rounded p-button-raised p-button-outlined"
       icon="pi pi-step-forward"
       class="space-around"
       [disabled]="isPlaying || [0, 1].includes(items.length)"
@@ -67,22 +71,13 @@
   </div>
   <div>
     <div class="d-flex justify-content-center">
-      <p-button
-        styleClass="p-button-rounded p-button-raised"
-        icon="pi pi-megaphone"
-        class="space-around"
-        [disabled]="
-          isPlaying ||
-          [0, 1].includes(items.length) ||
-          !currentIndex.number ||
-          !currentIndex.showSecondWord ||
-          !(isReadSpeakerActivated$ | async)
-        "
-        (click)="onReadSpeak()"
-      ></p-button>
-      <!-- <audio *ngIf="openReadSpeaker" controls autoplay hidden>
-            <source [src]="audioUrl" type="audio/mpeg" />
-          </audio> -->
+      <app-counter-or-sound
+        [isNotEnoughItem]="[0, 1].includes(items.length)"
+        [currentIndex]="currentIndex"
+        [isPlaying]="isPlaying"
+        [position]="'right'"
+        (readSpeak)="onReadSpeak($event)"
+      ></app-counter-or-sound>
     </div>
   </div>
 </div>
