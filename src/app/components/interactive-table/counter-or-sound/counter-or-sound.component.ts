@@ -24,9 +24,9 @@ export class CounterOrSoundComponent implements OnInit {
     this.audioSource$ = this.readerSpeakerService.audioSource$.pipe(
       filter(_ => this.position === (this.isSourceColFirst ? 'right' : 'left'))
     );
-    // this.audioSource$.subscribe(audioSource => {
-    //   console.log(this.position, audioSource);
-    // });
+    this.audioSource$.subscribe(audioSource => {
+      console.log(this.position, audioSource);
+    });
   }
 
   public onReadSpeak(): void {

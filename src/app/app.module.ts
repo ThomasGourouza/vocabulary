@@ -25,6 +25,7 @@ import { MessageService } from 'primeng/api';
 import { TimePipe } from './pipes/time.pipe';
 import { PriorityPipe } from './pipes/priority.pipe';
 import { PrioritiesPipe } from './pipes/priorities.pipe';
+import { TranslateLangPipe } from './pipes/translate-lang.pipe';
 import { ReaderSpeakerService } from './services/reader-speaker.service';
 
 @NgModule({
@@ -37,7 +38,8 @@ import { ReaderSpeakerService } from './services/reader-speaker.service';
     CounterOrSoundComponent,
     TimePipe,
     PriorityPipe,
-    PrioritiesPipe
+    PrioritiesPipe,
+    TranslateLangPipe
   ],
   imports: [
     BrowserModule,
