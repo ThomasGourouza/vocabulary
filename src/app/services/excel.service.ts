@@ -19,10 +19,11 @@ export class ExcelService {
     "priority"
   ];
 
-  private _items$ = new Subject<Item[]>();
   private _uploadedFile$ = new Subject<{ [tab: string]: Item[]; } | null>();
-  private _tabs$ = new Subject<string[]>();
-  private _selectedTabs$ = new BehaviorSubject<string>('');
+
+  get file$(): Observable<{ [tab: string]: Item[]; } | null> {
+    return this._uploadedFile$.asObservable();
+  }
 
   get items$(): Observable<Item[]> {
     return this._uploadedFile$.asObservable()
@@ -31,7 +32,7 @@ export class ExcelService {
           if (!file) {
             return [];
           }
-          const items = file[this._selectedTabs$.getValue()];
+          const items = file[''];
           if (!items) {
             return [];
           }
@@ -62,10 +63,6 @@ export class ExcelService {
         }));
   }
 
-  get file$(): Observable<{ [tab: string]: Item[]; } | null> {
-    return this._uploadedFile$.asObservable();
-  }
-
   public excelToJSON(file: File): void {
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -77,30 +74,15 @@ export class ExcelService {
 
       const jsonData: { [sheetName: string]: Item[] } = {};
 
-      this._tabs$.next(workbook.SheetNames);
-
       workbook.SheetNames.forEach((sheetName) => {
         const worksheet = workbook.Sheets[sheetName];
         const sheetData: Item[] = XLSX.utils.sheet_to_json(worksheet);
         jsonData[sheetName] = sheetData;
       });
 
-      // this._items$.next(jsonData['verbs']);
       this._uploadedFile$.next(jsonData);
     };
     reader.readAsBinaryString(file);
-  }
-
-  get tabs$(): Observable<string[]> {
-    return this._tabs$.asObservable();
-  }
-
-  get selectedTabs$(): Observable<string> {
-    return this._selectedTabs$.asObservable();
-  }
-
-  setSelectedTabs$(tab: string) {
-    this._selectedTabs$.next(tab);
   }
 
   public reset(): void {
