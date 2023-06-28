@@ -1,5 +1,15 @@
+<div class="d-flex justify-content-center">
+  <div class="small-space-bellow justify-content-center">
+    <p-button
+      styleClass="p-button-rounded p-button-raised p-button-outlined"
+      [icon]="showList ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+      (click)="toggleList()"
+      [disabled]="items.length === 0"
+    ></p-button>
+  </div>
+</div>
 <table>
-  <tr class="toggle-list" (click)="toggleList()">
+  <tr>
     <th scope="col">
       <div class="center-text">
         {{ (isSourceColFirst$ | async) ?? true ? "Source" : "Target" }}

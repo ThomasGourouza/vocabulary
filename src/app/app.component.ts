@@ -8,7 +8,8 @@ import { Observable, shareReplay } from 'rxjs';
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
-  public data$!: Observable<Item[]>;
+  public file$!: Observable<{ [tab: string]: Item[]; } | null>;
+  public tab: string | undefined;
   public priority: number | undefined;
 
   constructor(
@@ -16,10 +17,14 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.data$ = this.excelService.uploadedData$.pipe(shareReplay(1));
+    this.file$ = this.excelService.file$.pipe(shareReplay(1));
   }
 
-  onPriority(priority: number): void {
+  onPriority(priority: number | undefined): void {
     this.priority = priority;
+  }
+
+  onTab(tab: string | undefined): void {
+    this.tab = tab;
   }
 }

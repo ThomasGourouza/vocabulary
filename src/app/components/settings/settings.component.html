@@ -1,8 +1,8 @@
 <div class="d-flex justify-content-between">
-  <div class="flex-container one-third">
+  <div class="flex-container separated-box">
     <div class="settings">
       <ng-container
-        *ngIf="showUpload; then show_upload; else show_trash"
+        *ngIf="tabs.length === 0; then show_upload; else show_trash"
       ></ng-container>
       <ng-template #show_upload>
         <p-fileUpload
@@ -23,33 +23,50 @@
         ></p-button>
       </ng-template>
     </div>
-    <div class="select flex-container">
-      <strong><span class="select">Priority:</span></strong>
+    <div class="flex-container">
       <select
-        class="form-select"
-        (change)="onChangePriority($event.target)"
-        [disabled]="showUpload"
+        class="form-select tab"
+        (change)="onChangeTab($event.target)"
+        [disabled]="tabs.length === 0"
       >
+        <option
+          [value]=""
+          [selected]="tabs.length === 0"
+          [hidden]="false"
+          [disabled]="tabs.length > 0"
+        >
+          Tab
+        </option>
+        <option
+          *ngFor="let tab of tabs"
+          [value]="tab"
+          [label]="tab | titlecase"
+        ></option>
+      </select>
+      <select
+        class="form-select priority"
+        (change)="onChangePriority($event.target)"
+        [disabled]="priorities.length === 0"
+      >
+        <option
+          [value]="0"
+          [selected]="priorities.length === 0"
+          [hidden]="false"
+          [disabled]="priorities.length > 0"
+        >
+          Priority
+        </option>
         <option
           *ngFor="let priority of priorities"
           [value]="priority"
           [label]="priority"
-          [selected]="priority === priorities[0]"
         ></option>
       </select>
     </div>
   </div>
-  <div class="flex-container one-third d-flex justify-content-center">
-    <p-button
-      styleClass="p-button-rounded p-button-raised p-button-outlined"
-      icon="pi pi-arrow-right-arrow-left"
-      (click)="onInterChange()"
-      [disabled]="!!(isPlaying$ | async) || !(isTargetDisplayed$ | async)"
-    ></p-button>
-  </div>
-  <div class="flex-container one-third">
+  <div class="flex-container separated-box">
     <i class="pi pi-volume-up" style="font-size: 2rem"></i>
-    <div class="select">
+    <div class="sound-checkbox">
       <p-checkbox
         [binary]="true"
         (onChange)="toggleSound($event.checked)"

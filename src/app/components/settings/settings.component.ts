@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ExcelService } from 'src/app/services/excel.service';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
@@ -7,31 +7,35 @@ import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
   selector: 'app-settings',
   templateUrl: './settings.component.html'
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent {
+  @Input() set tabs(values: (string | number)[]) {
+    this._tabs = values as string[];
+    if (this.tabs.length === 0) {
+      this.tab.emit(undefined);
+    }
+  }
+  @Input() set priorities(values: (string | number)[]) {
+    this._priorities = values as number[];
+    if (this.priorities.length === 0) {
+      this.priority.emit(undefined);
+    }
+  }
+  @Output() tab = new EventEmitter<string>();
+  @Output() priority = new EventEmitter<number>();
+
+  private _tabs!: string[];
+  get tabs(): string[] {
+    return this._tabs;
+  }
   private _priorities!: number[];
   get priorities(): number[] {
     return this._priorities;
   }
-  @Input() set priorities(values: number[]) {
-    this._priorities = values;
-    if (this._priorities.length > 0) {
-      this.priority.emit(+this._priorities[0]);
-    }
-  }
-  @Input() showUpload!: boolean;
-  @Output() priority = new EventEmitter<number>();
-  public isPlaying$!: Observable<boolean>;
-  public isTargetDisplayed$!: Observable<boolean>;
 
   constructor(
     private excelService: ExcelService,
     private readerSpeakerService: ReaderSpeakerService
   ) { }
-
-  ngOnInit(): void {
-    this.isPlaying$ = this.readerSpeakerService.isPlaying$;
-    this.isTargetDisplayed$ = this.readerSpeakerService.isTargetDisplayed$;
-  }
 
   public onUploadData(file: File): void {
     this.excelService.excelToJSON(file);
@@ -47,11 +51,13 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  public toggleSound(value: boolean): void {
-    this.readerSpeakerService.setIsReadSpeakerActivated$(value);
+  public onChangeTab(tab: EventTarget | null): void {
+    if (!!tab) {
+      this.tab.emit((tab as HTMLSelectElement).value);
+    }
   }
 
-  public onInterChange(): void {
-    this.readerSpeakerService.toggleIsSourceColFirst$();
+  public toggleSound(value: boolean): void {
+    this.readerSpeakerService.setIsReadSpeakerActivated$(value);
   }
 }

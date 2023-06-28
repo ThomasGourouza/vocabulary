@@ -35,12 +35,6 @@ tr:first-child {
   overflow: auto;
   height: 50px;
 }
-tr.toggle-list {
-  cursor: pointer;
-}
-tr.toggle-list:hover {
-  background-color: rgb(105, 105, 105);
-}
 tr:not(:first-child):not(.list) {
   height: 150px;
 }
@@ -65,9 +59,22 @@ tr:nth-child(odd):not(:first-child) {
 
 .form-select {
   background-color: rgb(110, 110, 110);
-  width: 75px;
   color: white;
 }
+.form-select.priority {
+  margin-left: 20px;
+  width: 105px;
+}
+.form-select.tab {
+  margin-left: 20px;
+  width: 200px;
+}
+.form-select.time-select{
+  margin-top: 1.5em;
+  height: 50px;
+  width: 70px;
+}
+
 .form-select:disabled {
   color: rgb(190, 190, 190);
   background-color: rgb(100, 100, 100);
@@ -76,7 +83,6 @@ tr:nth-child(odd):not(:first-child) {
 
 .card {
   background-color: rgb(60, 60, 60);
-  padding-top: 30px;
 }
 
 .big {
@@ -86,10 +92,6 @@ tr:nth-child(odd):not(:first-child) {
   font-size: xx-large;
 }
 
-.time-select{
-  margin-top: 1.5em;
-  height: 50px;
-}
 .space-around {
   margin: 1em;
 }
@@ -129,7 +131,7 @@ div.circle {
   align-items: center;
 }
 
-.select {
+.sound-checkbox {
   margin: 0 10px;
 }
 
@@ -137,6 +139,6 @@ div.circle {
   margin-left: 30px;
 }
 
-.one-third {
+.separated-box {
   width: 100px;
 }

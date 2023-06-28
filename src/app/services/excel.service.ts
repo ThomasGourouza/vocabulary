@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
 import * as _ from 'lodash';
-import { Observable, Subject, map } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, map } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { Text } from 'src/app/models/text';
 import { MessageService } from 'primeng/api';
@@ -19,24 +19,34 @@ export class ExcelService {
     "priority"
   ];
 
-  private _uploadedData$ = new Subject<Item[]>();
+  private _items$ = new Subject<Item[]>();
+  private _uploadedFile$ = new Subject<{ [tab: string]: Item[]; } | null>();
+  private _tabs$ = new Subject<string[]>();
+  private _selectedTabs$ = new BehaviorSubject<string>('');
 
-  get uploadedData$(): Observable<Item[]> {
-    return this._uploadedData$.asObservable()
+  get items$(): Observable<Item[]> {
+    return this._uploadedFile$.asObservable()
       .pipe(
-        map((data) => {
-          if (data.length > 0) {
-            if (Object.keys(data[0]).some((key) => !this.validKeys.includes(key))) {
+        map(file => {
+          if (!file) {
+            return [];
+          }
+          const items = file[this._selectedTabs$.getValue()];
+          if (!items) {
+            return [];
+          }
+          if (items.length > 0) {
+            if (Object.keys(items[0]).some((key) => !this.validKeys.includes(key))) {
               this.messageService.add({ severity: 'error', summary: Text.invalidText, detail: Text.invalidTextMessage });
               return [{ source_language: '', target_language: '', source: '', target: '', priority: 0 }];
             }
-            if (data.some(item =>
+            if (items.some(item =>
               !item.source_language || !item.target_language || !item.source || !item.target || !item.priority
             )) {
               this.messageService.add({ severity: 'error', summary: Text.incomplete, detail: Text.incompleteTextMessage });
               return [{ source_language: '', target_language: '', source: '', target: '', priority: 0 }];
             }
-            if (data.some(({ source_language, target_language }) =>
+            if (items.some(({ source_language, target_language }) =>
               ![source_language, target_language].every(language => Object.keys(Language).includes(language as Language))
             )) {
               this.messageService.add(
@@ -45,11 +55,15 @@ export class ExcelService {
               return [{ source_language: '', target_language: '', source: '', target: '', priority: 0 }];
             }
             this.messageService.add({ severity: 'success', summary: Text.validText });
-            return data;
+            return items;
           }
-          this.messageService.add({ severity: 'warn', summary: Text.dataDeletedText });
-          return data;
+          this.messageService.add({ severity: 'warn', summary: Text.fileDeletedText });
+          return items;
         }));
+  }
+
+  get file$(): Observable<{ [tab: string]: Item[]; } | null> {
+    return this._uploadedFile$.asObservable();
   }
 
   public excelToJSON(file: File): void {
@@ -58,10 +72,12 @@ export class ExcelService {
       if (event.target == null) {
         return;
       }
-      const data = event.target.result;
-      const workbook = XLSX.read(data, { type: 'binary' });
+      const items = event.target.result;
+      const workbook = XLSX.read(items, { type: 'binary' });
 
       const jsonData: { [sheetName: string]: Item[] } = {};
+
+      this._tabs$.next(workbook.SheetNames);
 
       workbook.SheetNames.forEach((sheetName) => {
         const worksheet = workbook.Sheets[sheetName];
@@ -69,13 +85,26 @@ export class ExcelService {
         jsonData[sheetName] = sheetData;
       });
 
-      this._uploadedData$.next(jsonData['verbs']);
+      // this._items$.next(jsonData['verbs']);
+      this._uploadedFile$.next(jsonData);
     };
     reader.readAsBinaryString(file);
   }
 
+  get tabs$(): Observable<string[]> {
+    return this._tabs$.asObservable();
+  }
+
+  get selectedTabs$(): Observable<string> {
+    return this._selectedTabs$.asObservable();
+  }
+
+  setSelectedTabs$(tab: string) {
+    this._selectedTabs$.next(tab);
+  }
+
   public reset(): void {
-    this._uploadedData$.next([]);
+    this._uploadedFile$.next(null);
   }
 
   private getLanguages(): string {

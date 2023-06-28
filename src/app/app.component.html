@@ -1,18 +1,23 @@
 <div class="mx-5 main-page">
   <div class="card component">
     <app-settings
-      [showUpload]="((data$ | async) ?? []).length === 0"
-      [priorities]="((data$ | async) ?? []) | priorities"
+      [tabs]="file$ | async | get : 'tabs'"
+      [priorities]="file$ | async | get : 'priorities' : tab"
+      (tab)="onTab($event)"
       (priority)="onPriority($event)"
     ></app-settings>
   </div>
   <div class="card">
     <div class="big more-space-around">
-      <app-interactive-table [items]="((data$ | async) ?? []) | priority : priority"></app-interactive-table>
+      <app-interactive-table
+        [items]="file$ | async | filter : tab : priority"
+      ></app-interactive-table>
     </div>
   </div>
   <div class="card component">
-    <app-table-list [items]="((data$ | async) ?? []) | priority : priority"></app-table-list>
+    <app-table-list
+      [items]="file$ | async | filter : tab : priority"
+    ></app-table-list>
   </div>
   <p-toast></p-toast>
 </div>

@@ -1,3 +1,13 @@
+<div class="d-flex justify-content-center">
+  <div class="small-space-bellow justify-content-center">
+    <p-button
+      styleClass="p-button-rounded p-button-raised p-button-outlined"
+      icon="pi pi-arrow-right-arrow-left"
+      (click)="onInterChange()"
+      [disabled]="isPlaying|| !(isTargetDisplayed$ | async)"
+    ></p-button>
+  </div>
+</div>
 <app-table
   [item]="
     currentIndex.number !== undefined ? items[currentIndex.number] : undefined
@@ -19,7 +29,7 @@
   </div>
   <div class="d-flex justify-content-center">
     <p-button
-      styleClass="p-button-rounded p-button-raised p-button-outlined"
+      styleClass="p-button-rounded p-button-warning p-button-raised p-button-outlined"
       icon="pi pi-step-backward"
       class="space-around"
       [disabled]="
@@ -44,7 +54,7 @@
     </ng-template>
     <ng-template #is_playing>
       <p-button
-        styleClass="p-button-rounded p-button-warning p-button-raised p-button-outlined"
+        styleClass="p-button-rounded p-button-danger p-button-raised p-button-outlined"
         icon="pi pi-pause"
         class="space-around"
         (click)="onPause()"
@@ -64,7 +74,7 @@
       </select>
     </div>
     <p-button
-      styleClass="p-button-rounded p-button-raised p-button-outlined"
+      styleClass="p-button-rounded p-button-warning p-button-raised p-button-outlined"
       icon="pi pi-step-forward"
       class="space-around"
       [disabled]="isPlaying || [0, 1].includes(items.length)"

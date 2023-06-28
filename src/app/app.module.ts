@@ -23,8 +23,8 @@ import { ToastModule } from 'primeng/toast';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService } from 'primeng/api';
 import { TimePipe } from './pipes/time.pipe';
-import { PriorityPipe } from './pipes/priority.pipe';
-import { PrioritiesPipe } from './pipes/priorities.pipe';
+import { FilterPipe } from './pipes/filter.pipe';
+import { GetPipe } from './pipes/get.pipe';
 import { TranslateLangPipe } from './pipes/translate-lang.pipe';
 import { ReaderSpeakerService } from './services/reader-speaker.service';
 
@@ -37,8 +37,8 @@ import { ReaderSpeakerService } from './services/reader-speaker.service';
     TableListComponent,
     CounterOrSoundComponent,
     TimePipe,
-    PriorityPipe,
-    PrioritiesPipe,
+    FilterPipe,
+    GetPipe,
     TranslateLangPipe
   ],
   imports: [

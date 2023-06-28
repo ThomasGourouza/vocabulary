@@ -45,6 +45,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   public isSourceColFirst!: boolean;
 
   public isReadSpeakerActivated$!: Observable<boolean>;
+  public isTargetDisplayed$!: Observable<boolean>;
   public isSourceColFirstSubscription = new Subscription();
   private timeSubscription = new Subscription();
   private isPlayingSubscription = new Subscription();
@@ -54,6 +55,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.isTargetDisplayed$ = this.readerSpeakerService.isTargetDisplayed$.pipe(shareReplay(1));
     this.isReadSpeakerActivated$ = this.readerSpeakerService.isReadSpeakerActivated$.pipe(shareReplay(1));
     this.isSourceColFirstSubscription = this.readerSpeakerService.isSourceColFirst$
       .subscribe(value => this.isSourceColFirst = value);
@@ -65,6 +67,10 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     this.timeSubscription.unsubscribe();
     this.isPlayingSubscription.unsubscribe();
     this.isSourceColFirstSubscription.unsubscribe();
+  }
+
+  public onInterChange(): void {
+    this.readerSpeakerService.toggleIsSourceColFirst$();
   }
 
   public onNext(): void {
