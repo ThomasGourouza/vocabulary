@@ -1,8 +1,11 @@
 <div class="d-flex justify-content-center">
   <div class="small-space-bellow justify-content-center">
     <p-button
-      styleClass="p-button-rounded p-button-raised p-button-outlined"
-      [icon]="showList ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+      [styleClass]="
+        'p-button-rounded p-button-raised p-button-outlined ' +
+        (showList ? 'p-button-danger' : 'p-button-primary')
+      "
+      [icon]="showList ? 'pi pi-times' : 'pi pi-arrow-down'"
       (click)="toggleList()"
       [disabled]="items.length === 0"
     ></p-button>
@@ -26,14 +29,18 @@
       <td>
         <div class="arial center-text">
           <span>
-            {{ (isSourceColFirst$ | async) ?? true ? item.source : item.target }}
+            {{
+              (isSourceColFirst$ | async) ?? true ? item.source : item.target
+            }}
           </span>
         </div>
       </td>
       <td>
         <div class="arial center-text">
           <span>
-            {{ (isSourceColFirst$ | async) ?? true ? item.target : item.source }}
+            {{
+              (isSourceColFirst$ | async) ?? true ? item.target : item.source
+            }}
           </span>
         </div>
       </td>

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ConfirmationService } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { ExcelService } from 'src/app/services/excel.service';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
@@ -34,7 +35,8 @@ export class SettingsComponent {
 
   constructor(
     private excelService: ExcelService,
-    private readerSpeakerService: ReaderSpeakerService
+    private readerSpeakerService: ReaderSpeakerService,
+    private confirmationService: ConfirmationService
   ) { }
 
   public onUploadData(file: File): void {
@@ -42,7 +44,12 @@ export class SettingsComponent {
   }
 
   public onReset(): void {
-    this.excelService.reset();
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: 'Remove file ?',
+      icon: 'pi pi-trash',
+      accept: () => this.excelService.reset()
+    });
   }
 
   public onChangePriority(priority: EventTarget | null): void {
@@ -53,7 +60,11 @@ export class SettingsComponent {
 
   public onChangeTab(tab: EventTarget | null): void {
     if (!!tab) {
-      this.tab.emit((tab as HTMLSelectElement).value);
+      this.tab.emit(undefined);
+      this.priority.emit(undefined);
+      setTimeout(() => {
+        this.tab.emit((tab as HTMLSelectElement).value);
+      });
     }
   }
 

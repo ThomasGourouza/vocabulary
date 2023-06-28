@@ -20,8 +20,10 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { TimePipe } from './pipes/time.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
 import { GetPipe } from './pipes/get.pipe';
@@ -52,12 +54,14 @@ import { ReaderSpeakerService } from './services/reader-speaker.service';
     ButtonModule,
     CardModule,
     ToastModule,
+    ConfirmDialogModule,
     CheckboxModule
   ],
   providers: [
     ExcelService,
     ReaderSpeakerService,
-    MessageService
+    MessageService,
+    ConfirmationService
   ],
   bootstrap: [AppComponent]
 })

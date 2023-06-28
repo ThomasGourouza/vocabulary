@@ -4,7 +4,10 @@ export enum Language {
   russian = 'ru',
   danish = 'da',
   japanese = 'jp',
-  portuguese = 'br'
+  portuguese = 'br',
+  italian = 'it',
+  german = 'de',
+  spanish = 'es'
 }
 
 export function translate(lang?: string): string {
@@ -19,8 +22,14 @@ export function translate(lang?: string): string {
       return 'Dansk';
     case 'japanese':
       return '日本';
-    case 'portugues':
+    case 'portuguese':
       return 'Portugês';
+    case 'italian':
+      return 'Italiano';
+    case 'german':
+      return 'Deutsch';
+    case 'spanish':
+      return 'Español';
     default:
       return lang ?? '';
   }

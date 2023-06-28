@@ -21,26 +21,23 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
   @Input() set items(values: Item[]) {
     this._items = values;
-    if ([0, 1].includes(this.items.length)) {
-      this.currentIndex = {
-        previousNumber: undefined,
-        nextNumber: undefined,
-        number: undefined,
-        showTarget: false,
-        counter: 0
-      };
-      this.memory = [];
-      this.onPause();
-      this.readerSpeakerService.setIsTargetDisplayed$(true);
-    } else {
-      this.next();
-    }
+    this.currentIndex = {
+      previousNumber: undefined,
+      nextNumber: undefined,
+      number: undefined,
+      showTarget: false,
+      counter: 0
+    };
+    this.memory = [];
+    this.onPause();
+    this.readerSpeakerService.setIsTargetDisplayed$(true);
+    this.next();
   }
 
   public currentIndex!: Index;
   public isPlaying = false;
   public times = [2000, 3000, 5000, 10000];
-  public time = this.times[0];
+  public time = this.times[1];
   private memory: number[] = [];
   public isSourceColFirst!: boolean;
 

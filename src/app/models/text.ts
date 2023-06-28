@@ -6,5 +6,5 @@ export enum Text {
   incompleteTextMessage = 'Missing data in file.',
   unsupportedLanguage = 'Unsupported languages',
   unsupportedLanguageTextMessage = 'The available languages are: ',
-  fileDeletedText = 'File deleted'
+  fileDeletedText = 'File removed'
 }
