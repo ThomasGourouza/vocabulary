@@ -54,9 +54,6 @@ export class SettingsComponent {
       return;
     }
     this.confirmationService.confirm({
-      header: 'Confirmation',
-      message: 'Remove file ?',
-      icon: 'pi pi-trash',
       accept: () => this.excelService.reset()
     });
   }
