@@ -28,6 +28,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       showTarget: false,
       counter: 0
     };
+    this.isDataEmpty = this.items.length === 0;
     this.memory = [];
     this.onPause();
     this.readerSpeakerService.setIsTargetDisplayed$(true);
@@ -40,6 +41,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   public time = this.times[1];
   private memory: number[] = [];
   public isSourceColFirst!: boolean;
+  public isDataEmpty = true;
 
   public isReadSpeakerActivated$!: Observable<boolean>;
   public isTargetDisplayed$!: Observable<boolean>;
@@ -71,7 +73,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   public onNext(): void {
-    if (this.isPlaying || [0, 1].includes(this.items.length)) {
+    if (this.isPlaying || this.isDataEmpty) {
       return;
     }
     this.next();
@@ -110,7 +112,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   public onPrevious(): void {
     if (this.isPlaying
-      || [0, 1].includes(this.items.length)
+      || this.isDataEmpty
       || this.currentIndex.counter === 1
       || this.currentIndex.previousNumber === undefined
     ) {
@@ -128,7 +130,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   public onPlay(): void {
-    if ([0, 1].includes(this.items.length)) {
+    if (this.isDataEmpty) {
       return;
     }
     this.readerSpeakerService.setIsPlaying$(true);

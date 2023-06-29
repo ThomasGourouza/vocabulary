@@ -2,7 +2,7 @@
   <div class="flex-container separated-box">
     <div class="settings">
       <ng-container
-        *ngIf="tabs.length === 0; then show_upload; else show_trash"
+        *ngIf="isFileUploadVisible && tabs.length === 0; then show_upload; else show_trash"
       ></ng-container>
       <ng-template #show_upload>
         <p-fileUpload
@@ -19,6 +19,7 @@
         <p-button
           styleClass="p-button-rounded p-button-danger p-button-raised p-button-outlined"
           icon="pi pi-trash"
+          [disabled]="isFileUploadVisible === false"
           (click)="onReset()"
         ></p-button>
       </ng-template>

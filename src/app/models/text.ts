@@ -1,10 +1,9 @@
 export enum Text {
-  validText = 'File successfully uploaded',
-  invalidText = 'Invalid file',
-  invalidTextMessage = 'The valid column names are: source_language, target_language, source, target and priority.',
-  incomplete = 'Incomplete file',
-  incompleteTextMessage = 'Missing data in file.',
-  unsupportedLanguage = 'Unsupported languages',
-  unsupportedLanguageTextMessage = 'The available languages are: ',
-  fileDeletedText = 'File removed'
+  validFile = 'File successfully uploaded',
+  invalidTab = 'Invalid tab: ',
+  emptyDataMessage = 'No data was found.',
+  invalidColumnMessage = 'The column names should be: source_language, target_language, source, target and priority.',
+  incompleteMessage = 'At least one line misses an entry.',
+  unsupportedLanguageTextMessage = 'At least one language provided is unsupported. The available languages are: ',
+  fileRemoved = 'File removed'
 }

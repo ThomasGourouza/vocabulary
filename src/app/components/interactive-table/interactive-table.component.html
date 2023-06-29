@@ -19,7 +19,7 @@
   <div class="index-container">
     <app-counter-or-sound
       [isSourceColFirst]="isSourceColFirst"
-      [isNotEnoughItem]="[0, 1].includes(items.length)"
+      [isDataEmpty]="isDataEmpty"
       [currentIndex]="currentIndex"
       [isPlaying]="isPlaying"
       [isReadSpeakerActivated]="(isReadSpeakerActivated$ | async) ?? false"
@@ -34,7 +34,7 @@
       class="space-around"
       [disabled]="
         isPlaying ||
-        [0, 1].includes(items.length) ||
+        isDataEmpty ||
         currentIndex.counter === 1 ||
         currentIndex.previousNumber === undefined
       "
@@ -48,7 +48,7 @@
         styleClass="p-button-rounded p-button-success p-button-raised"
         icon="pi pi-play"
         class="space-around"
-        [disabled]="[0, 1].includes(items.length)"
+        [disabled]="isDataEmpty"
         (click)="onPlay()"
       ></p-button>
     </ng-template>
@@ -64,7 +64,7 @@
       <select
         class="form-select time-select"
         [(ngModel)]="time"
-        [disabled]="isPlaying || [0, 1].includes(items.length)"
+        [disabled]="isPlaying || isDataEmpty"
       >
         <option
           *ngFor="let time of times"
@@ -77,7 +77,7 @@
       styleClass="p-button-rounded p-button-raised"
       icon="pi pi-step-forward"
       class="space-around"
-      [disabled]="isPlaying || [0, 1].includes(items.length)"
+      [disabled]="isPlaying || isDataEmpty"
       (click)="onNext()"
     ></p-button>
   </div>
@@ -85,7 +85,7 @@
     <div class="d-flex justify-content-center">
       <app-counter-or-sound
         [isSourceColFirst]="isSourceColFirst"
-        [isNotEnoughItem]="[0, 1].includes(items.length)"
+        [isDataEmpty]="isDataEmpty"
         [currentIndex]="currentIndex"
         [isPlaying]="isPlaying"
         [isReadSpeakerActivated]="(isReadSpeakerActivated$ | async) ?? false"

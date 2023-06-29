@@ -33,6 +33,8 @@ export class SettingsComponent {
     return this._priorities;
   }
 
+  public isFileUploadVisible = true;
+
   constructor(
     private excelService: ExcelService,
     private readerSpeakerService: ReaderSpeakerService,
@@ -40,10 +42,17 @@ export class SettingsComponent {
   ) { }
 
   public onUploadData(file: File): void {
+    this.isFileUploadVisible = false;
+    setTimeout(() => {
+      this.isFileUploadVisible = true;
+    }, 1000);
     this.excelService.excelToJSON(file);
   }
 
   public onReset(): void {
+    if (this.isFileUploadVisible === false) {
+      return;
+    }
     this.confirmationService.confirm({
       header: 'Confirmation',
       message: 'Remove file ?',

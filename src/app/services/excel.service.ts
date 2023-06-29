@@ -22,44 +22,45 @@ export class ExcelService {
   private _uploadedFile$ = new Subject<{ [tab: string]: Item[]; } | null>();
 
   get file$(): Observable<{ [tab: string]: Item[]; } | null> {
-    return this._uploadedFile$.asObservable();
-  }
-
-  get items$(): Observable<Item[]> {
     return this._uploadedFile$.asObservable()
       .pipe(
         map(file => {
           if (!file) {
-            return [];
+            this.messageService.add({ severity: 'warn', summary: Text.fileRemoved });
+            return null;
           }
-          const items = file[''];
-          if (!items) {
-            return [];
+          let isValid = true;
+          Object.keys(file).forEach(key => {
+            const items = file[key];
+            if (items.length === 0) {
+              isValid = false;
+              this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.emptyDataMessage });
+            } else {
+              if (Object.keys(items[0]).some((key) => !this.validKeys.includes(key))) {
+                isValid = false;
+                this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.invalidColumnMessage });
+              }
+              if (items.some(item =>
+                !item.source_language || !item.target_language || !item.source || !item.target || !item.priority
+              )) {
+                isValid = false;
+                this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.incompleteMessage });
+              }
+              if (items.some(({ source_language, target_language }) =>
+                ![source_language, target_language].every(language => Object.keys(Language).includes(language as Language))
+              )) {
+                isValid = false;
+                this.messageService.add(
+                  { severity: 'error', summary: Text.invalidTab + key, detail: `${Text.unsupportedLanguageTextMessage} ${this.getLanguages()}` }
+                );
+              }
+            }
+          });
+          if (!isValid) {
+            return null;
           }
-          if (items.length > 0) {
-            if (Object.keys(items[0]).some((key) => !this.validKeys.includes(key))) {
-              this.messageService.add({ severity: 'error', summary: Text.invalidText, detail: Text.invalidTextMessage });
-              return [{ source_language: '', target_language: '', source: '', target: '', priority: 0 }];
-            }
-            if (items.some(item =>
-              !item.source_language || !item.target_language || !item.source || !item.target || !item.priority
-            )) {
-              this.messageService.add({ severity: 'error', summary: Text.incomplete, detail: Text.incompleteTextMessage });
-              return [{ source_language: '', target_language: '', source: '', target: '', priority: 0 }];
-            }
-            if (items.some(({ source_language, target_language }) =>
-              ![source_language, target_language].every(language => Object.keys(Language).includes(language as Language))
-            )) {
-              this.messageService.add(
-                { severity: 'error', summary: Text.unsupportedLanguage, detail: `${Text.unsupportedLanguageTextMessage} ${this.getLanguages()}` }
-              );
-              return [{ source_language: '', target_language: '', source: '', target: '', priority: 0 }];
-            }
-            this.messageService.add({ severity: 'success', summary: Text.validText });
-            return items;
-          }
-          this.messageService.add({ severity: 'warn', summary: Text.fileDeletedText });
-          return items;
+          this.messageService.add({ severity: 'success', summary: Text.validFile });
+          return file;
         }));
   }
 

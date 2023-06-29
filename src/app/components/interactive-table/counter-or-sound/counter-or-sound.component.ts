@@ -8,7 +8,7 @@ import { Observable, filter } from 'rxjs';
   templateUrl: './counter-or-sound.component.html'
 })
 export class CounterOrSoundComponent implements OnInit {
-  @Input() isNotEnoughItem!: boolean;
+  @Input() isDataEmpty!: boolean;
   @Input() currentIndex!: Index;
   @Input() isPlaying!: boolean;
   @Input() isSourceColFirst!: boolean;
@@ -31,7 +31,7 @@ export class CounterOrSoundComponent implements OnInit {
 
   public onReadSpeak(): void {
     if (this.isPlaying
-      || this.isNotEnoughItem
+      || this.isDataEmpty
       || this.currentIndex.number === undefined
       || (this.isSourceColFirst && !this.currentIndex.showTarget)
     ) {
