@@ -145,14 +145,8 @@ div.circle {
 
 .p-dialog {
   width: 50vw;
-  .p-dialog-header, .p-dialog-content, .p-dialog-footer {
-    color: white;
-    background-color: #495057;
-    border-color: #495057;
-  }
   .p-dialog-footer > .p-confirm-dialog-reject, .p-confirm-dialog-accept {
-    color: white;
-    border-color: white;
+    color: #495057;
   }
   .p-dialog-footer > .p-confirm-dialog-reject {
     margin-right: 30px;
