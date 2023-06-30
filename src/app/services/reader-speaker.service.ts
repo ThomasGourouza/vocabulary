@@ -25,16 +25,12 @@ export class ReaderSpeakerService {
   }
 
   toggleIsSourceColFirst$() {
-    if (this._isPlaying$.getValue() || !this._isTargetDisplayed$.getValue()) {
-      return;
-    }
+    if (this._isPlaying$.getValue() || !this._isTargetDisplayed$.getValue()) return;
     this._isSourceColFirst$.next(!this._isSourceColFirst$.getValue());
   }
 
   textToSpeech(item: Item, position: 1 | 2): void {
-    if (!this._isReadSpeakerActivated$.getValue()) {
-      return;
-    }
+    if (!this._isReadSpeakerActivated$.getValue()) return;
     const language = Language[
       (position === 1 ? item.source_language : item.target_language) as keyof typeof Language
     ];

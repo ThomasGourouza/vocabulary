@@ -50,12 +50,8 @@ export class SettingsComponent {
   }
 
   public onReset(): void {
-    if (this.isFileUploadVisible === false) {
-      return;
-    }
-    this.confirmationService.confirm({
-      accept: () => this.excelService.reset()
-    });
+    if (this.isFileUploadVisible === false) return;
+    this.confirmationService.confirm({ accept: () => this.excelService.reset() });
   }
 
   public onChangePriority(priority: EventTarget | null): void {

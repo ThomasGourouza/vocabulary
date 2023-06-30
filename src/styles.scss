@@ -143,10 +143,17 @@ div.circle {
   width: 100px;
 }
 
-.p-dialog {
+.p-confirm-dialog {
   width: 50vw;
+  .p-dialog-header, .p-dialog-content, .p-dialog-footer {
+    color: white;
+    background-color: #495057;
+    border-color: #495057;
+    border-width: 10px;
+  }
   .p-dialog-footer > .p-confirm-dialog-reject, .p-confirm-dialog-accept {
-    color: #495057;
+    color: white;
+    border-color: white;
   }
   .p-dialog-footer > .p-confirm-dialog-reject {
     margin-right: 30px;

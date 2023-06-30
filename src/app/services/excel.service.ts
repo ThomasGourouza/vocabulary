@@ -67,9 +67,7 @@ export class ExcelService {
   public excelToJSON(file: File): void {
     const reader = new FileReader();
     reader.onload = (event) => {
-      if (event.target == null) {
-        return;
-      }
+      if (event.target == null) return;
       const items = event.target.result;
       const workbook = XLSX.read(items, { type: 'binary' });
 

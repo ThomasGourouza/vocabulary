@@ -73,9 +73,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   public onNext(): void {
-    if (this.isPlaying || this.isDataEmpty) {
-      return;
-    }
+    if (this.isPlaying || this.isDataEmpty) return;
     this.next();
   }
 
@@ -115,9 +113,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       || this.isDataEmpty
       || this.currentIndex.counter === 1
       || this.currentIndex.previousNumber === undefined
-    ) {
-      return;
-    }
+    ) return;
     const nextNumber = this.currentIndex.number;
     const number = this.currentIndex.previousNumber;
     this.currentIndex = {
@@ -128,11 +124,8 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       counter: this.currentIndex.counter - 1
     };
   }
-
   public onPlay(): void {
-    if (this.isDataEmpty) {
-      return;
-    }
+    if (this.isDataEmpty) return;
     this.readerSpeakerService.setIsPlaying$(true);
     this.timeSubscription = interval(this.time)
       .subscribe(() => this.next());

@@ -35,9 +35,7 @@ export class CounterOrSoundComponent implements OnInit {
       || this.isDataEmpty
       || this.currentIndex.number === undefined
       || (this.isSourceColFirst && !this.currentIndex.showTarget)
-    ) {
-      return;
-    }
+    ) return;
     const index: number = this.currentIndex.number;
     this.readSpeak.emit(index);
   }
