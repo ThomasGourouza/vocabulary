@@ -71,7 +71,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.confirmationService.confirm({
       message: "Remove file ?",
       icon: "pi pi-trash",
-      accept: () => this.download()
+      accept: () => this.excelService.reset()
     });
   }
 
