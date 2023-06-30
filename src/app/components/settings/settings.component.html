@@ -1,6 +1,13 @@
 <div class="d-flex justify-content-between">
-  <div class="flex-container separated-box">
-    <div class="settings">
+  <div class="flex-container">
+    <p-button
+      styleClass="p-button-rounded p-button-success p-button-raised p-button-outlined"
+      icon="pi pi-download"
+      (click)="onDownload()"
+    ></p-button>
+  </div>
+  <div class="flex-container">
+    <div class="settings flex-container">
       <ng-container
         *ngIf="isFileUploadVisible && tabs.length === 0; then show_upload; else show_trash"
       ></ng-container>
@@ -65,8 +72,8 @@
       </select>
     </div>
   </div>
-  <div class="flex-container separated-box">
-    <i class="pi pi-volume-up" style="font-size: 2rem"></i>
+  <div class="flex-container">
+    <i class="pi pi-volume-up toggle-sound"></i>
     <div class="sound-checkbox">
       <p-checkbox
         [binary]="true"

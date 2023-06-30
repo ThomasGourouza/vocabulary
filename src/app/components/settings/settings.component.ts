@@ -1,14 +1,15 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
-import { Observable } from 'rxjs';
 import { ExcelService } from 'src/app/services/excel.service';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
+import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html'
 })
-export class SettingsComponent {
+export class SettingsComponent implements OnInit, OnDestroy {
   @Input() set tabs(values: (string | number)[]) {
     this._tabs = values as string[];
     if (this.tabs.length === 0) {
@@ -34,12 +35,29 @@ export class SettingsComponent {
   }
 
   public isFileUploadVisible = true;
+  private httpSubscription = new Subscription();
 
   constructor(
     private excelService: ExcelService,
     private readerSpeakerService: ReaderSpeakerService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private http: HttpClient
   ) { }
+
+  ngOnInit(): void {
+    this.loadFile();
+  }
+
+  ngOnDestroy(): void {
+    this.httpSubscription.unsubscribe();
+  }
+
+  private loadFile() {
+    this.httpSubscription = this.http.get('assets/language-file.xlsx', { responseType: 'blob' })
+      .subscribe((data: Blob) => {
+        this.onUploadData(data as File);
+      });
+  }
 
   public onUploadData(file: File): void {
     this.isFileUploadVisible = false;
@@ -50,8 +68,11 @@ export class SettingsComponent {
   }
 
   public onReset(): void {
-    if (this.isFileUploadVisible === false) return;
-    this.confirmationService.confirm({ accept: () => this.excelService.reset() });
+    this.confirmationService.confirm({
+      message: "Remove file ?",
+      icon: "pi pi-trash",
+      accept: () => this.download()
+    });
   }
 
   public onChangePriority(priority: EventTarget | null): void {
@@ -65,12 +86,32 @@ export class SettingsComponent {
       this.tab.emit(undefined);
       this.priority.emit(undefined);
       setTimeout(() => {
-        this.tab.emit((tab as HTMLSelectElement).value);
+        this.tab.emit((tab as HTMLSelectElement)?.value);
       });
     }
   }
 
   public toggleSound(value: boolean): void {
     this.readerSpeakerService.setIsReadSpeakerActivated$(value);
+  }
+
+  public onDownload() {
+    this.confirmationService.confirm({
+      message: "Download excel file ?",
+      icon: "pi pi-download",
+      accept: () => this.download()
+    });
+  }
+
+  private download() {
+    this.http.get('assets/language-file.xlsx', { responseType: 'blob' })
+      .subscribe((data: Blob) => {
+        const downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(data);
+        downloadLink.setAttribute('download', 'russian-vocabulary.xlsx');
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      });
   }
 }

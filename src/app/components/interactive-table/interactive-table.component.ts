@@ -78,6 +78,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   private next(): void {
+    if (this.items.length === 0) return;
     if (!this.currentIndex.showTarget && this.currentIndex.number !== undefined) {
       this.currentIndex.showTarget = true;
       this.readerSpeakerService.textToSpeech(this.items[this.currentIndex.number], this.isSourceColFirst ? 2 : 1);

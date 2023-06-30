@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="small-space-bellow justify-content-center">
     <p-button
-      styleClass="p-button-rounded p-button-raised p-button-outlined"
+      styleClass="p-button-rounded p-button-warning p-button-raised p-button-outlined"
       icon="pi pi-arrow-right-arrow-left"
       (click)="onInterChange()"
       [disabled]="isPlaying|| !(isTargetDisplayed$ | async)"
@@ -54,7 +54,7 @@
     </ng-template>
     <ng-template #is_playing>
       <p-button
-        styleClass="p-button-rounded p-button-warning p-button-raised"
+        styleClass="p-button-rounded p-button-secondary p-button-raised"
         icon="pi pi-pause"
         class="space-around"
         (click)="onPause()"
