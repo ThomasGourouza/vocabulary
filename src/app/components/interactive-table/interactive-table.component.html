@@ -29,7 +29,7 @@
   </div>
   <div class="d-flex justify-content-center">
     <p-button
-      styleClass="p-button-rounded p-button-raised"
+      styleClass="p-button-rounded p-button-raised p-button-secondary"
       icon="pi pi-step-backward"
       class="space-around"
       [disabled]="
@@ -54,7 +54,7 @@
     </ng-template>
     <ng-template #is_playing>
       <p-button
-        styleClass="p-button-rounded p-button-secondary p-button-raised"
+        styleClass="p-button-rounded p-button-warning p-button-raised"
         icon="pi pi-pause"
         class="space-around"
         (click)="onPause()"
@@ -74,7 +74,7 @@
       </select>
     </div>
     <p-button
-      styleClass="p-button-rounded p-button-raised"
+      styleClass="p-button-rounded p-button-raised p-button-secondary"
       icon="pi pi-step-forward"
       class="space-around"
       [disabled]="isPlaying || isDataEmpty"

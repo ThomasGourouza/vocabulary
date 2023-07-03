@@ -37,7 +37,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   public currentIndex!: Index;
   public isPlaying = false;
-  public times = [2000, 3000, 5000, 10000];
+  public times = [2000, 3000, 5000];
   public time = this.times[1];
   private memory: number[] = [];
   public isSourceColFirst!: boolean;
