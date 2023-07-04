@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription, interval, shareReplay } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
+import { WakelockService } from 'src/app/services/wakelock.service';
 export interface Index {
   previousNumber: number | undefined;
   nextNumber: number | undefined;
@@ -52,7 +53,8 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   private wakeLock: any = null;
 
   constructor(
-    private readerSpeakerService: ReaderSpeakerService
+    private readerSpeakerService: ReaderSpeakerService,
+    private wakelockService: WakelockService,
   ) { }
 
   ngOnInit(): void {
@@ -66,11 +68,11 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.wakeLockRelease();
     this.timeSubscription.unsubscribe();
     this.isPlayingSubscription.unsubscribe();
     this.isSourceColFirstSubscription.unsubscribe();
     this.isReadSpeakerActivatedSubscription.unsubscribe();
+    this.wakelockService.releaseWakeLock();
   }
 
   public onInterChange(): void {
@@ -136,7 +138,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
   public onPlay(): void {
     if (this.isDataEmpty) return;
-    this.wakeLockRequest();
+    this.wakelockService.requestWakeLock();
     this.readerSpeakerService.setIsPlaying$(true);
     this.timeSubscription = interval(this.time)
       .subscribe(() => this.next());
@@ -145,7 +147,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   public onPause(): void {
     this.readerSpeakerService.setIsPlaying$(false);
     this.timeSubscription.unsubscribe();
-    this.wakeLockRelease();
+    this.wakelockService.releaseWakeLock();
   }
 
   public onReadSpeak(index: number): void {
@@ -154,24 +156,5 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   private getRandomInt(exclusiveMax: number): number {
     return Math.floor(Math.random() * exclusiveMax);
-  }
-
-  private wakeLockRequest(): void {
-    if ('wakeLock' in navigator) {
-      const navigatorWakeLock: any = navigator.wakeLock;
-      this.wakeLock = navigatorWakeLock.request('screen');
-      this.wakeLock.then()
-        .catch((err: any) => {
-          console.error('Failed to request wake lock:', err);
-        });
-    }
-  }
-
-  private wakeLockRelease(): void {
-    if (this.wakeLock !== null) {
-      this.wakeLock.release().then(() => {
-        this.wakeLock = null;
-      });
-    }
   }
 }

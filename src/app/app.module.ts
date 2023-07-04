@@ -14,6 +14,8 @@ import { TableListComponent } from './components/table-list/table-list.component
 import { CounterOrSoundComponent } from './components/interactive-table/counter-or-sound/counter-or-sound.component';
 
 import { ExcelService } from './services/excel.service';
+import { ReaderSpeakerService } from './services/reader-speaker.service';
+import { WakelockService } from './services/wakelock.service';
 
 import { FileUploadModule } from 'primeng/fileupload';
 import { TabMenuModule } from 'primeng/tabmenu';
@@ -28,7 +30,6 @@ import { TimePipe } from './pipes/time.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
 import { GetPipe } from './pipes/get.pipe';
 import { TranslateLangPipe } from './pipes/translate-lang.pipe';
-import { ReaderSpeakerService } from './services/reader-speaker.service';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { ReaderSpeakerService } from './services/reader-speaker.service';
   providers: [
     ExcelService,
     ReaderSpeakerService,
+    WakelockService,
     MessageService,
     ConfirmationService
   ],
