@@ -18,6 +18,13 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.file$ = this.excelService.file$.pipe(shareReplay(1));
+    if ('wakeLock' in navigator) {
+      const wakeLock: any = navigator.wakeLock;
+      wakeLock.request('screen').then()
+        .catch((err: any) => {
+          console.error('Failed to request wake lock:', err);
+        });
+    }
   }
 
   onPriority(priority: number | undefined): void {
