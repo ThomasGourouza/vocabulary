@@ -47,7 +47,7 @@ export class ExcelService {
                 this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.incompleteMessage });
               }
               if (items.some(({ source_language, target_language }) =>
-                ![source_language, target_language].every(language => Object.keys(Language).includes(language as Language))
+                ![source_language, target_language].every(language => Object.keys(Language).includes((language?.toLowerCase()) as Language))
               )) {
                 isValid = false;
                 this.messageService.add(

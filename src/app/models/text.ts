@@ -4,6 +4,6 @@ export enum Text {
   emptyDataMessage = 'No data was found.',
   invalidColumnMessage = 'The column names should be: source_language, target_language, source, target and priority.',
   incompleteMessage = 'At least one line misses an entry.',
-  unsupportedLanguageTextMessage = 'At least one language provided is unsupported. The available languages are: ',
+  unsupportedLanguageTextMessage = 'The available languages are: ',
   fileRemoved = 'File removed'
 }
