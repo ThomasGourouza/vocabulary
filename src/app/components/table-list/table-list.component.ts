@@ -8,7 +8,16 @@ import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
   templateUrl: './table-list.component.html'
 })
 export class TableListComponent implements OnInit {
-  @Input() items!: Item[];
+  public _items!: Item[];
+  get items(): Item[] {
+    return this._items;
+  }
+  @Input() set items(values: Item[]) {
+    this._items = values;
+    if (this.items.length === 0) {
+      this.showList = false;
+    }
+  }
   public showList = false;
 
   public isSourceColFirst$!: Observable<boolean>;
