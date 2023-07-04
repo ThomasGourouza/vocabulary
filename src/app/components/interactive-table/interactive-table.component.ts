@@ -37,7 +37,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   public currentIndex!: Index;
   public isPlaying = false;
-  public times = [3000, 5000, 7000, 10000];
+  public times = [3000, 5000, 7000, 9000];
   public time = this.times[1];
   private memory: number[] = [];
   public isSourceColFirst!: boolean;
@@ -49,6 +49,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   private timeSubscription = new Subscription();
   private isPlayingSubscription = new Subscription();
   private isReadSpeakerActivatedSubscription = new Subscription();
+  private wakeLock: any = null;
 
   constructor(
     private readerSpeakerService: ReaderSpeakerService
@@ -65,6 +66,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.wakeLockRelease();
     this.timeSubscription.unsubscribe();
     this.isPlayingSubscription.unsubscribe();
     this.isSourceColFirstSubscription.unsubscribe();
@@ -134,12 +136,14 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
   public onPlay(): void {
     if (this.isDataEmpty) return;
+    this.wakeLockRequest();
     this.readerSpeakerService.setIsPlaying$(true);
     this.timeSubscription = interval(this.time)
       .subscribe(() => this.next());
   }
 
   public onPause(): void {
+    this.wakeLockRelease();
     this.readerSpeakerService.setIsPlaying$(false);
     this.timeSubscription.unsubscribe();
   }
@@ -150,5 +154,24 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   private getRandomInt(exclusiveMax: number): number {
     return Math.floor(Math.random() * exclusiveMax);
+  }
+
+  private wakeLockRequest(): void {
+    if ('wakeLock' in navigator) {
+      const navigatorWakeLock: any = navigator.wakeLock;
+      this.wakeLock = navigatorWakeLock.request('screen');
+      this.wakeLock.then()
+        .catch((err: any) => {
+          console.error('Failed to request wake lock:', err);
+        });
+    }
+  }
+
+  private wakeLockRelease(): void {
+    if (this.wakeLock !== null) {
+      this.wakeLock.release().then(() => {
+        this.wakeLock = null;
+      });
+    }
   }
 }
