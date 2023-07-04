@@ -3,7 +3,7 @@
     <p-button
       styleClass="p-button-rounded p-button-warning p-button-raised p-button-outlined"
       icon="pi pi-arrow-right-arrow-left"
-      (click)="onInterChange()"
+      (onClick)="onInterChange()"
       [disabled]="isPlaying|| !(isTargetDisplayed$ | async)"
     ></p-button>
   </div>
@@ -37,7 +37,7 @@
         currentIndex.counter === 1 ||
         currentIndex.previousNumber === undefined
       "
-      (click)="onPrevious()"
+      (onClick)="onPrevious()"
     ></p-button>
     <ng-container
       *ngIf="!isPlaying; then is_not_playing; else is_playing"
@@ -48,7 +48,7 @@
         icon="pi pi-play"
         class="space-around"
         [disabled]="isDataEmpty"
-        (click)="onPlay()"
+        (onClick)="onPlay()"
       ></p-button>
     </ng-template>
     <ng-template #is_playing>
@@ -56,7 +56,7 @@
         styleClass="p-button-rounded p-button-warning p-button-raised"
         icon="pi pi-pause"
         class="space-around"
-        (click)="onPause()"
+        (onClick)="onPause()"
       ></p-button>
     </ng-template>
     <div class="space-right">
@@ -77,7 +77,7 @@
       icon="pi pi-step-forward"
       class="space-around"
       [disabled]="isPlaying || isDataEmpty"
-      (click)="onNext()"
+      (onClick)="onNext()"
     ></p-button>
   </div>
   <div>

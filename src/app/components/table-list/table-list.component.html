@@ -6,7 +6,7 @@
         (showList ? 'p-button-danger' : 'p-button-primary')
       "
       [icon]="showList ? 'pi pi-times' : 'pi pi-arrow-down'"
-      (click)="toggleList()"
+      (onClick)="toggleList()"
       [disabled]="items.length === 0"
     ></p-button>
   </div>
@@ -27,12 +27,20 @@
   <ng-container *ngIf="showList && items.length > 0 && items[0].priority !== 0">
     <tr *ngFor="let item of items" class="list">
       <td>
-        <div class="arial center-text">
-          <span>
+        <div class="arial center-text flex-container">
+          <div class="target">
             {{
               (isSourceColFirst$ | async) ?? true ? item.source : item.target
             }}
-          </span>
+          </div>
+          <div class="target-sound">
+            <p-button
+              *ngIf="!(isSourceColFirst$ | async) ?? false"
+              styleClass="p-button-rounded p-button-raised p-button-outlined"
+              icon="pi pi-volume-up"
+              (onClick)="onReadSpeak(item)"
+            ></p-button>
+          </div>
         </div>
       </td>
       <td>
@@ -44,9 +52,10 @@
           </div>
           <div class="target-sound">
             <p-button
+              *ngIf="(isSourceColFirst$ | async) ?? true"
               styleClass="p-button-rounded p-button-raised p-button-outlined"
               icon="pi pi-volume-up"
-              (click)="onReadSpeak(item)"
+              (onClick)="onReadSpeak(item)"
             ></p-button>
           </div>
         </div>
