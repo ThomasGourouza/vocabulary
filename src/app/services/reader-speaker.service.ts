@@ -1,32 +1,29 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Item } from '../models/item';
 import { Language } from '../models/language';
 
 @Injectable()
 export class ReaderSpeakerService {
 
-  private readonly baseUrl: string;
+  private synth!: SpeechSynthesisUtterance;
   private _isReadSpeakerActivated$ = new BehaviorSubject<boolean>(false);
   private _isPlaying$ = new BehaviorSubject<boolean>(false);
   private _isTargetDisplayed$ = new BehaviorSubject<boolean>(true);
   private _isSourceColFirst$ = new BehaviorSubject<boolean>(true);
-  private _audioSource$ = new Subject<string>();
 
-  constructor(
-    private readonly http: HttpClient
-  ) {
-    this.baseUrl = 'https://ttsmp3.com/makemp3_new.php';
-  }
+  constructor() {}
 
   get isSourceColFirst$(): Observable<boolean> {
     return this._isSourceColFirst$.asObservable();
   }
 
-  toggleIsSourceColFirst$() {
-    if (this._isPlaying$.getValue() || !this._isTargetDisplayed$.getValue()) return;
-    this._isSourceColFirst$.next(!this._isSourceColFirst$.getValue());
+  private speak(text: string, lang: string): void {
+    this.synth = new SpeechSynthesisUtterance();
+    this.synth.text = text;
+    this.synth.lang = lang;
+    this.synth.rate = 0.8;
+    window.speechSynthesis.speak(this.synth);
   }
 
   textToSpeech(item: Item, position: 1 | 2): void {
@@ -35,22 +32,12 @@ export class ReaderSpeakerService {
       (position === 1 ? item.source_language : item.target_language) as keyof typeof Language
     ];
     const text = position === 1 ? item.source : item.target;
-    this._audioSource$.next(language + ' - ' + text);
+    this.speak(text, language);
   }
 
-  getVoice(TextMessage: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}`,
-      {
-        params: {
-          msg: TextMessage,
-          lang: "Tatyana",
-          source: "ttsmp3"
-        },
-      });
-  }
-
-  getUrl(response: { id: string; }): string {
-    return `https://freetts.com/audio/${response?.id}`;
+  toggleIsSourceColFirst$() {
+    if (this._isPlaying$.getValue() || !this._isTargetDisplayed$.getValue()) return;
+    this._isSourceColFirst$.next(!this._isSourceColFirst$.getValue());
   }
 
   get isReadSpeakerActivated$(): Observable<boolean> {
@@ -77,7 +64,4 @@ export class ReaderSpeakerService {
     this._isTargetDisplayed$.next(value);
   }
 
-  get audioSource$(): Observable<string> {
-    return this._audioSource$.asObservable();
-  }
 }
