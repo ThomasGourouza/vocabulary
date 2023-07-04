@@ -12,7 +12,7 @@ export class ReaderSpeakerService {
   private _isTargetDisplayed$ = new BehaviorSubject<boolean>(true);
   private _isSourceColFirst$ = new BehaviorSubject<boolean>(true);
 
-  constructor() {}
+  constructor() { }
 
   get isSourceColFirst$(): Observable<boolean> {
     return this._isSourceColFirst$.asObservable();
@@ -29,7 +29,8 @@ export class ReaderSpeakerService {
   textToSpeech(item: Item, position: 1 | 2): void {
     if (!this._isReadSpeakerActivated$.getValue()) return;
     const language = Language[
-      (position === 1 ? item.source_language : item.target_language) as keyof typeof Language
+      (position === 1 ? item.source_language : item.target_language)
+        ?.toLowerCase() as keyof typeof Language
     ];
     const text = position === 1 ? item.source : item.target;
     this.speak(text, language);
