@@ -143,9 +143,9 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   public onPause(): void {
-    this.wakeLockRelease();
     this.readerSpeakerService.setIsPlaying$(false);
     this.timeSubscription.unsubscribe();
+    this.wakeLockRelease();
   }
 
   public onReadSpeak(index: number): void {
