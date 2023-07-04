@@ -3,7 +3,7 @@ import { ConfirmationService } from 'primeng/api';
 import { ExcelService } from 'src/app/services/excel.service';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
 import { HttpClient } from '@angular/common/http';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-settings',
@@ -34,6 +34,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     return this._priorities;
   }
 
+  public isPlaying$!: Observable<boolean>;
+
   public isFileUploadVisible = true;
   private httpSubscription = new Subscription();
 
@@ -46,6 +48,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadFile();
+    this.isPlaying$ = this.readerSpeakerService.isPlaying$;
   }
 
   ngOnDestroy(): void {

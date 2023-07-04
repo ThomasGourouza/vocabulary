@@ -7,7 +7,7 @@ import { Language } from '../models/language';
 export class ReaderSpeakerService {
 
   private synth!: SpeechSynthesisUtterance;
-  private _isReadSpeakerActivated$ = new BehaviorSubject<boolean>(false);
+  private _isReadSpeakerActivated$ = new BehaviorSubject<boolean>(true);
   private _isPlaying$ = new BehaviorSubject<boolean>(false);
   private _isTargetDisplayed$ = new BehaviorSubject<boolean>(true);
   private _isSourceColFirst$ = new BehaviorSubject<boolean>(true);
@@ -27,7 +27,6 @@ export class ReaderSpeakerService {
   }
 
   textToSpeech(item: Item, position: 1 | 2): void {
-    if (!this._isReadSpeakerActivated$.getValue()) return;
     const language = Language[
       (position === 1 ? item.source_language : item.target_language)
         ?.toLowerCase() as keyof typeof Language

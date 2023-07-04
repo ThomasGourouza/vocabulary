@@ -36,12 +36,19 @@
         </div>
       </td>
       <td>
-        <div class="arial center-text">
-          <span>
+        <div class="arial center-text flex-container">
+          <div class="target">
             {{
               (isSourceColFirst$ | async) ?? true ? item.target : item.source
             }}
-          </span>
+          </div>
+          <div class="target-sound">
+            <p-button
+              styleClass="p-button-rounded p-button-raised p-button-outlined"
+              icon="pi pi-volume-up"
+              (click)="onReadSpeak(item)"
+            ></p-button>
+          </div>
         </div>
       </td>
     </tr>

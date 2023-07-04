@@ -42,12 +42,13 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   private memory: number[] = [];
   public isSourceColFirst!: boolean;
   public isDataEmpty = true;
+  public isReadSpeakerActivated!: boolean;
 
-  public isReadSpeakerActivated$!: Observable<boolean>;
   public isTargetDisplayed$!: Observable<boolean>;
   public isSourceColFirstSubscription = new Subscription();
   private timeSubscription = new Subscription();
   private isPlayingSubscription = new Subscription();
+  private isReadSpeakerActivatedSubscription = new Subscription();
 
   constructor(
     private readerSpeakerService: ReaderSpeakerService
@@ -55,7 +56,8 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isTargetDisplayed$ = this.readerSpeakerService.isTargetDisplayed$.pipe(shareReplay(1));
-    this.isReadSpeakerActivated$ = this.readerSpeakerService.isReadSpeakerActivated$.pipe(shareReplay(1));
+    this.isReadSpeakerActivatedSubscription = this.readerSpeakerService.isReadSpeakerActivated$
+      .subscribe(value => this.isReadSpeakerActivated = value);
     this.isSourceColFirstSubscription = this.readerSpeakerService.isSourceColFirst$
       .subscribe(value => this.isSourceColFirst = value);
     this.isPlayingSubscription = this.readerSpeakerService.isPlaying$
@@ -66,6 +68,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     this.timeSubscription.unsubscribe();
     this.isPlayingSubscription.unsubscribe();
     this.isSourceColFirstSubscription.unsubscribe();
+    this.isReadSpeakerActivatedSubscription.unsubscribe();
   }
 
   public onInterChange(): void {
@@ -81,7 +84,9 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     if (this.items.length === 0) return;
     if (!this.currentIndex.showTarget && this.currentIndex.number !== undefined) {
       this.currentIndex.showTarget = true;
-      this.readerSpeakerService.textToSpeech(this.items[this.currentIndex.number], this.isSourceColFirst ? 2 : 1);
+      if (this.isReadSpeakerActivated) {
+        this.readerSpeakerService.textToSpeech(this.items[this.currentIndex.number], this.isSourceColFirst ? 2 : 1);
+      }
     } else {
       const previousNumber = this.currentIndex.number;
       const number = this.currentIndex.nextNumber ?? this.getRandomIndex();
@@ -92,7 +97,9 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
         showTarget: false,
         counter: this.currentIndex.counter + 1
       };
-      this.readerSpeakerService.textToSpeech(this.items[number], this.isSourceColFirst ? 1 : 2);
+      if (this.isReadSpeakerActivated) {
+        this.readerSpeakerService.textToSpeech(this.items[number], this.isSourceColFirst ? 1 : 2);
+      }
     }
     this.readerSpeakerService.setIsTargetDisplayed$(this.currentIndex.showTarget);
   }

@@ -10,7 +10,6 @@ export class CounterOrSoundComponent {
   @Input() currentIndex!: Index;
   @Input() isPlaying!: boolean;
   @Input() isSourceColFirst!: boolean;
-  @Input() isReadSpeakerActivated!: boolean;
   @Input() position!: 'left' | 'right';
   @Output() readSpeak = new EventEmitter<number>();
 

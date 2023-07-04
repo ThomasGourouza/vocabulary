@@ -26,8 +26,8 @@
         <p-button
           styleClass="p-button-rounded p-button-danger p-button-raised p-button-outlined"
           icon="pi pi-trash"
-          [disabled]="isFileUploadVisible === false"
-          (click)="onReset()"
+          [disabled]="isFileUploadVisible === false || (isPlaying$ | async) ?? false"
+          (onClick)="onReset()"
         ></p-button>
       </ng-template>
     </div>
@@ -35,7 +35,7 @@
       <select
         class="form-select tab"
         (change)="onChangeTab($event.target)"
-        [disabled]="tabs.length === 0"
+        [disabled]="tabs.length === 0 || (isPlaying$ | async) ?? false"
       >
         <option
           [value]=""
@@ -54,7 +54,7 @@
       <select
         class="form-select priority"
         (change)="onChangePriority($event.target)"
-        [disabled]="priorities.length === 0"
+        [disabled]="priorities.length === 0 || (isPlaying$ | async) ?? false"
       >
         <option
           [value]="0"
@@ -77,6 +77,7 @@
     <div class="sound-checkbox">
       <p-checkbox
         [binary]="true"
+        [ngModel]="true"
         (onChange)="toggleSound($event.checked)"
       ></p-checkbox>
     </div>

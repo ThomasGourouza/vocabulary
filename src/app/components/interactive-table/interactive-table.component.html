@@ -22,7 +22,6 @@
       [isDataEmpty]="isDataEmpty"
       [currentIndex]="currentIndex"
       [isPlaying]="isPlaying"
-      [isReadSpeakerActivated]="(isReadSpeakerActivated$ | async) ?? false"
       [position]="'left'"
       (readSpeak)="onReadSpeak($event)"
     ></app-counter-or-sound>
@@ -88,7 +87,6 @@
         [isDataEmpty]="isDataEmpty"
         [currentIndex]="currentIndex"
         [isPlaying]="isPlaying"
-        [isReadSpeakerActivated]="(isReadSpeakerActivated$ | async) ?? false"
         [position]="'right'"
         (readSpeak)="onReadSpeak($event)"
       ></app-counter-or-sound>

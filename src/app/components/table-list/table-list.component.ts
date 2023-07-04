@@ -24,4 +24,8 @@ export class TableListComponent implements OnInit {
   public toggleList() {
     this.showList = !this.showList && this.items.length > 0;
   }
+
+  public onReadSpeak(item: Item): void {
+    this.readerSpeakerService.textToSpeech(item, 2);
+  }
 }
