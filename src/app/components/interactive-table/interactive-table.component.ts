@@ -50,11 +50,10 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   private timeSubscription = new Subscription();
   private isPlayingSubscription = new Subscription();
   private isReadSpeakerActivatedSubscription = new Subscription();
-  private wakeLock: any = null;
 
   constructor(
     private readerSpeakerService: ReaderSpeakerService,
-    private wakelockService: WakelockService,
+    private wakelockService: WakelockService
   ) { }
 
   ngOnInit(): void {
@@ -136,12 +135,18 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       counter: this.currentIndex.counter - 1
     };
   }
+
   public onPlay(): void {
     if (this.isDataEmpty) return;
     this.wakelockService.requestWakeLock();
     this.readerSpeakerService.setIsPlaying$(true);
-    this.timeSubscription = interval(this.time)
-      .subscribe(() => this.next());
+    this.next();
+    this.timeSubscription = interval(this.time).subscribe(() => {
+      this.next();
+      if (this.currentIndex.counter % this.items.length === 0 && this.currentIndex.showTarget) {
+        this.onPause();
+      }
+    });
   }
 
   public onPause(): void {

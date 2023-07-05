@@ -21,6 +21,7 @@ export class TableListComponent implements OnInit {
   public showList = false;
 
   public isSourceColFirst$!: Observable<boolean>;
+  public isPlaying$!: Observable<boolean>;
 
   constructor(
     private readerSpeakerService: ReaderSpeakerService
@@ -28,6 +29,7 @@ export class TableListComponent implements OnInit {
 
   ngOnInit(): void {
     this.isSourceColFirst$ = this.readerSpeakerService.isSourceColFirst$;
+    this.isPlaying$ = this.readerSpeakerService.isPlaying$
   }
 
   public toggleList() {
