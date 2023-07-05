@@ -45,6 +45,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   public isDataEmpty = true;
   public isReadSpeakerActivated!: boolean;
   public progress = 0;
+  public isFirstProgress = true;
 
   public isTargetDisplayed$!: Observable<boolean>;
   public isSourceColFirstSubscription = new Subscription();
@@ -173,7 +174,11 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     } else if (counter % this.items.length === 0) {
       this.progress = 100;
     } else {
-      this.updateProgress();
+      if (this.progress === 100) {
+        this.isFirstProgress = !this.isFirstProgress;
+        this.progress = 0;
+      }
+      setTimeout(() => { this.updateProgress(); }, 10);
     }
   }
 

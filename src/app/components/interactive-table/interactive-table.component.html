@@ -15,9 +15,19 @@
   [showTarget]="currentIndex.showTarget"
   [isSourceColFirst]="isSourceColFirst"
 ></app-table>
-<div class="progressbar">
-  <p-progressBar [value]="progress" [showValue]="false"></p-progressBar>
-</div>
+<ng-container
+  *ngIf="isFirstProgress; then firstProgressBar; else secondProgressBar"
+></ng-container>
+<ng-template #firstProgressBar>
+  <div class="progressbar">
+    <p-progressBar [value]="progress" [showValue]="false"></p-progressBar>
+  </div>
+</ng-template>
+<ng-template #secondProgressBar>
+  <div class="progressbar">
+    <p-progressBar [value]="progress" [showValue]="false"></p-progressBar>
+  </div>
+</ng-template>
 <div class="d-flex justify-content-between">
   <div class="index-container">
     <app-counter-or-sound
