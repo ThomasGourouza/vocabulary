@@ -36,7 +36,7 @@
           <div class="target-sound">
             <p-button
               *ngIf="!(isSourceColFirst$ | async) ?? false"
-              styleClass="p-button-rounded p-button-raised p-button-outlined"
+              styleClass="p-button-rounded p-button-raised"
               icon="pi pi-volume-up"
               [disabled]="(isPlaying$ | async) ?? false"
               (onClick)="onReadSpeak(item)"
@@ -54,7 +54,7 @@
           <div class="target-sound">
             <p-button
               *ngIf="(isSourceColFirst$ | async) ?? true"
-              styleClass="p-button-rounded p-button-raised p-button-outlined"
+              styleClass="p-button-rounded p-button-raised"
               icon="pi pi-volume-up"
               [disabled]="(isPlaying$ | async) ?? false"
               (onClick)="onReadSpeak(item)"
