@@ -44,6 +44,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   public isSourceColFirst!: boolean;
   public isDataEmpty = true;
   public isReadSpeakerActivated!: boolean;
+  public progress = 0;
 
   public isTargetDisplayed$!: Observable<boolean>;
   public isSourceColFirstSubscription = new Subscription();
@@ -100,6 +101,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
         showTarget: false,
         counter: this.currentIndex.counter + 1
       };
+      this.updateProgressNext();
       if (this.isReadSpeakerActivated) {
         this.readerSpeakerService.textToSpeech(this.items[number], this.isSourceColFirst ? 1 : 2);
       }
@@ -134,6 +136,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       showTarget: true,
       counter: this.currentIndex.counter - 1
     };
+    this.updateProgress();
   }
 
   public onPlay(): void {
@@ -161,5 +164,21 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   private getRandomInt(exclusiveMax: number): number {
     return Math.floor(Math.random() * exclusiveMax);
+  }
+
+  private updateProgressNext(): void {
+    const counter = this.currentIndex.counter;
+    if (counter === 0) {
+      this.progress = 0;
+    } else if (counter % this.items.length === 0) {
+      this.progress = 100;
+    } else {
+      this.updateProgress();
+    }
+  }
+
+  private updateProgress(): void {
+    const itemCount = this.items.length;
+    this.progress = (this.currentIndex.counter % itemCount) * (100 / itemCount);
   }
 }

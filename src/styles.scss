@@ -168,6 +168,17 @@ div.circle {
   margin-left: 30px;
 }
 
+.progressbar {
+  padding: 0 10px;
+}
+.p-progressbar {
+  background: gray;
+  height: 3px;
+  .p-progressbar-value {
+    background: #F59E0B;
+  }
+}
+
 .p-confirm-dialog {
   width: 50vw;
   .p-dialog-header, .p-dialog-content, .p-dialog-footer {

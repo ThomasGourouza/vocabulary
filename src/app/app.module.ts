@@ -24,6 +24,7 @@ import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { TimePipe } from './pipes/time.pipe';
@@ -56,7 +57,8 @@ import { TranslateLangPipe } from './pipes/translate-lang.pipe';
     CardModule,
     ToastModule,
     ConfirmDialogModule,
-    CheckboxModule
+    CheckboxModule,
+    ProgressBarModule
   ],
   providers: [
     ExcelService,
