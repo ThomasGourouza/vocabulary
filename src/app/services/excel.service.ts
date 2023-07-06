@@ -25,6 +25,7 @@ export class ExcelService {
     return this._uploadedFile$.asObservable()
       .pipe(
         map(file => {
+          this.messageService.clear();
           if (!file) {
             this.messageService.add({ severity: 'warn', summary: Text.fileRemoved });
             return null;
@@ -34,11 +35,11 @@ export class ExcelService {
             const items = file[key];
             if (items.length === 0) {
               isValid = false;
-              this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.emptyDataMessage });
+              this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.emptyDataMessage, sticky: true });
             } else {
               if (Object.keys(items[0]).some((key) => !this.validKeys.includes(key))) {
                 isValid = false;
-                this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.invalidColumnMessage });
+                this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.invalidColumnMessage, sticky: true });
               }
               if (items.some(item =>
                 [item.source_language, item.target_language, item.source, item.target, item.tag].some(value =>
@@ -46,14 +47,14 @@ export class ExcelService {
                 )
               )) {
                 isValid = false;
-                this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.incompleteMessage });
+                this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.incompleteMessage, sticky: true });
               }
               if (items.some(({ source_language, target_language }) =>
                 ![source_language, target_language].every(language => Object.keys(Language).includes((language?.toLowerCase()) as Language))
               )) {
                 isValid = false;
                 this.messageService.add(
-                  { severity: 'error', summary: Text.invalidTab + key, detail: `${Text.unsupportedLanguageTextMessage} ${this.getLanguages()}` }
+                  { severity: 'error', summary: Text.invalidTab + key, detail: `${Text.unsupportedLanguageTextMessage} ${this.getLanguages()}`, sticky: true }
                 );
               }
             }
