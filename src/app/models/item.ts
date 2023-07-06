@@ -3,5 +3,5 @@ export interface Item {
     target_language: string;
     source: string;
     target: string;
-    priority: number;
+    tag: string;
 }

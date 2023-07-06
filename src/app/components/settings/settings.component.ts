@@ -10,28 +10,28 @@ import { Observable, Subscription } from 'rxjs';
   templateUrl: './settings.component.html'
 })
 export class SettingsComponent implements OnInit, OnDestroy {
-  @Input() set tabs(values: (string | number)[]) {
+  @Input() set tabs(values: (string | string)[]) {
     this._tabs = values as string[];
     if (this.tabs.length === 0) {
       this.tab.emit(undefined);
     }
   }
-  @Input() set priorities(values: (string | number)[]) {
-    this._priorities = values as number[];
-    if (this.priorities.length === 0) {
-      this.priority.emit(undefined);
+  @Input() set tags(values: (string | string)[]) {
+    this._tags = values as string[];
+    if (this.tags.length === 0) {
+      this.tag.emit(undefined);
     }
   }
   @Output() tab = new EventEmitter<string>();
-  @Output() priority = new EventEmitter<number>();
+  @Output() tag = new EventEmitter<string>();
 
   private _tabs!: string[];
   get tabs(): string[] {
     return this._tabs;
   }
-  private _priorities!: number[];
-  get priorities(): number[] {
-    return this._priorities;
+  private _tags!: string[];
+  get tags(): string[] {
+    return this._tags;
   }
 
   public isPlaying$!: Observable<boolean>;
@@ -78,16 +78,16 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onChangePriority(priority: EventTarget | null): void {
-    if (priority !== null && priority !== undefined) {
-      this.priority.emit(+(priority as HTMLSelectElement).value);
+  public onChangeTag(tag: EventTarget | null): void {
+    if (tag !== null && tag !== undefined) {
+      this.tag.emit((tag as HTMLSelectElement)?.value);
     }
   }
 
   public onChangeTab(tab: EventTarget | null): void {
-    if (!!tab) {
+    if (tab !== null && tab !== undefined) {
       this.tab.emit(undefined);
-      this.priority.emit(undefined);
+      this.tag.emit(undefined);
       setTimeout(() => {
         this.tab.emit((tab as HTMLSelectElement)?.value);
       });

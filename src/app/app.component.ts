@@ -10,7 +10,7 @@ import { Observable, shareReplay } from 'rxjs';
 export class AppComponent implements OnInit {
   public file$!: Observable<{ [tab: string]: Item[]; } | null>;
   public tab: string | undefined;
-  public priority: number | undefined;
+  public tag: string | undefined;
 
   constructor(
     private excelService: ExcelService
@@ -20,8 +20,8 @@ export class AppComponent implements OnInit {
     this.file$ = this.excelService.file$.pipe(shareReplay(1));
   }
 
-  onPriority(priority: number | undefined): void {
-    this.priority = priority;
+  onTag(tag: string | undefined): void {
+    this.tag = tag;
   }
 
   onTab(tab: string | undefined): void {

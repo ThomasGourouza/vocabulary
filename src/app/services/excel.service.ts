@@ -16,7 +16,7 @@ export class ExcelService {
     "target_language",
     "source",
     "target",
-    "priority"
+    "tag"
   ];
 
   private _uploadedFile$ = new Subject<{ [tab: string]: Item[]; } | null>();
@@ -41,7 +41,7 @@ export class ExcelService {
                 this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.invalidColumnMessage });
               }
               if (items.some(item =>
-                [item.source_language, item.target_language, item.source, item.target, item.priority].some(value =>
+                [item.source_language, item.target_language, item.source, item.target, item.tag].some(value =>
                   value === null || value === undefined || value.toString().trim() === ''
                 )
               )) {

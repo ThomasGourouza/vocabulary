@@ -33,7 +33,7 @@
     </div>
     <div class="flex-container">
       <select
-        class="form-select tab"
+        class="form-select settings"
         (change)="onChangeTab($event.target)"
         [disabled]="tabs.length === 0 || (isPlaying$ | async) ?? false"
       >
@@ -52,22 +52,22 @@
         ></option>
       </select>
       <select
-        class="form-select priority"
-        (change)="onChangePriority($event.target)"
-        [disabled]="priorities.length === 0 || (isPlaying$ | async) ?? false"
+        class="form-select settings"
+        (change)="onChangeTag($event.target)"
+        [disabled]="tags.length === 0 || (isPlaying$ | async) ?? false"
       >
         <option
           [value]="0"
-          [selected]="priorities.length === 0"
+          [selected]="tags.length === 0"
           [hidden]="false"
-          [disabled]="priorities.length > 0"
+          [disabled]="tags.length > 0"
         >
-          Priority
+          Tag
         </option>
         <option
-          *ngFor="let priority of priorities"
-          [value]="priority"
-          [label]="priority"
+          *ngFor="let tag of tags"
+          [value]="tag"
+          [label]="tag"
         ></option>
       </select>
     </div>
