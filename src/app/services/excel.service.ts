@@ -41,7 +41,9 @@ export class ExcelService {
                 this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.invalidColumnMessage });
               }
               if (items.some(item =>
-                !item.source_language || !item.target_language || !item.source || !item.target || !item.priority
+                [item.source_language, item.target_language, item.source, item.target, item.priority].some(value =>
+                  value === null || value === undefined || value.toString().trim() === ''
+                )
               )) {
                 isValid = false;
                 this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.incompleteMessage });

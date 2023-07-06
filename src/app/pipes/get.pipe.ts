@@ -11,7 +11,7 @@ export class GetPipe implements PipeTransform {
       return [];
     }
     if (key === 'priorities') {
-      return [...new Set(file[tab as string].map((item) => item.priority))];
+      return [...new Set(file[tab as string].map((item) => item.priority))].sort((a, b) => a - b);
     }
     return Object.keys(file);
   }

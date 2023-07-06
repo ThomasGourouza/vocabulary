@@ -79,7 +79,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   public onChangePriority(priority: EventTarget | null): void {
-    if (!!priority) {
+    if (priority !== null && priority !== undefined) {
       this.priority.emit(+(priority as HTMLSelectElement).value);
     }
   }

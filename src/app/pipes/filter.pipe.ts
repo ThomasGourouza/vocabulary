@@ -7,7 +7,7 @@ import { Item } from '../models/item';
 export class FilterPipe implements PipeTransform {
 
   transform(file: { [tab: string]: Item[]; } | null, tab: string | undefined, priority: number | undefined): Item[] {
-    if (!file || !tab || !priority) {
+    if (!file || tab === undefined || priority === undefined) {
       return [];
     }
     return file[tab].filter((item) => item.priority === priority);
