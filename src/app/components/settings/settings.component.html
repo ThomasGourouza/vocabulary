@@ -67,7 +67,7 @@
         <option
           *ngFor="let tag of tags"
           [value]="tag"
-          [label]="tag"
+          [label]="tag | titlecase"
         ></option>
       </select>
     </div>
