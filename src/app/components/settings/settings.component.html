@@ -48,7 +48,7 @@
         <option
           *ngFor="let tab of tabs"
           [value]="tab"
-          [label]="tab | titlecase"
+          [label]="tab.toString() | titlecase"
         ></option>
       </select>
       <select
@@ -67,7 +67,7 @@
         <option
           *ngFor="let tag of tags"
           [value]="tag"
-          [label]="tag | titlecase"
+          [label]="tag.toString() | titlecase"
         ></option>
       </select>
     </div>
