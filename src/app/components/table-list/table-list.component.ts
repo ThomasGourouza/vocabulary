@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Item } from 'src/app/models/item';
 import { Observable } from 'rxjs';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
+import { toRomaji } from 'wanakana';
 
 @Component({
   selector: 'app-table-list',
@@ -29,7 +30,7 @@ export class TableListComponent implements OnInit {
 
   ngOnInit(): void {
     this.isSourceColFirst$ = this.readerSpeakerService.isSourceColFirst$;
-    this.isPlaying$ = this.readerSpeakerService.isPlaying$
+    this.isPlaying$ = this.readerSpeakerService.isPlaying$;
   }
 
   public toggleList() {
@@ -38,5 +39,9 @@ export class TableListComponent implements OnInit {
 
   public onReadSpeak(item: Item): void {
     this.readerSpeakerService.textToSpeech(item, 2);
+  }
+
+  public toRomanji(japaneseText: string): string {
+    return toRomaji(japaneseText);
   }
 }

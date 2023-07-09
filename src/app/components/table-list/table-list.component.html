@@ -30,7 +30,7 @@
         <div class="arial center-text flex-container">
           <div class="target">
             {{
-              (isSourceColFirst$ | async) ?? true ? item.source : item.target
+              (isSourceColFirst$ | async) ?? true ? item.source : (item.target + " (" + toRomanji(item.target) + ")" )
             }}
           </div>
           <div class="target-sound">
@@ -48,7 +48,7 @@
         <div class="arial center-text flex-container">
           <div class="target">
             {{
-              (isSourceColFirst$ | async) ?? true ? item.target : item.source
+              (isSourceColFirst$ | async) ?? true ? (item.target + " (" + toRomanji(item.target) + ")" ) : item.source
             }}
           </div>
           <div class="target-sound">
