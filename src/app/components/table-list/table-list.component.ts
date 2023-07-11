@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Item } from 'src/app/models/item';
 import { Observable } from 'rxjs';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
+import Kuroshiro from "kuroshiro";
+import KuromojiAnalyzer from "kuroshiro-analyzer-kuromoji";
 
 @Component({
   selector: 'app-table-list',
@@ -30,6 +32,14 @@ export class TableListComponent implements OnInit {
   ngOnInit(): void {
     this.isSourceColFirst$ = this.readerSpeakerService.isSourceColFirst$;
     this.isPlaying$ = this.readerSpeakerService.isPlaying$;
+    const kuroshiro = new Kuroshiro();
+    kuroshiro.init(new KuromojiAnalyzer())
+    .then(function(){
+        return kuroshiro.convert("感じ取れたら手を繋ごう、重なるのは人生のライン and レミリア最高！", { to: "hiragana" });
+    })
+    .then(function(result){
+        console.log(result);
+    })
   }
 
   public toggleList() {

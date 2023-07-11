@@ -19,10 +19,15 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
+    "allowSyntheticDefaultImports": true,
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "paths": {
+      "path": ["node_modules/path-browserify"],
+      "process": ["node_modules/process/browser"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
