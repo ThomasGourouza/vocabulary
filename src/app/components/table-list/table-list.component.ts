@@ -33,13 +33,13 @@ export class TableListComponent implements OnInit {
     this.isSourceColFirst$ = this.readerSpeakerService.isSourceColFirst$;
     this.isPlaying$ = this.readerSpeakerService.isPlaying$;
     const kuroshiro = new Kuroshiro();
-    kuroshiro.init(new KuromojiAnalyzer())
+    kuroshiro.init(new KuromojiAnalyzer({ dictPath: 'assets/dict' }))
     .then(function(){
-        return kuroshiro.convert("感じ取れたら手を繋ごう、重なるのは人生のライン and レミリア最高！", { to: "hiragana" });
+        return kuroshiro.convert("感じ取れたら手を繋ごう、重なるのは人生のライン and レミリア最高！", { to: "romaji" });
     })
     .then(function(result){
         console.log(result);
-    })
+    });
   }
 
   public toggleList() {
