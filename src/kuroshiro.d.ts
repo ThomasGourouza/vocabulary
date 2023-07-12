@@ -6,9 +6,9 @@ declare class Kuroshiro {
   convert(
     str: string,
     options?: {
-      to?: string;
-      mode?: string;
-      romajiSystem?: string;
+      to?: 'romaji' | 'hiragana' | 'katakana';
+      mode?: 'normal' | 'spaced' | 'okurigana' | 'furigana';
+      romajiSystem?: 'nippon' | 'passport' | 'hepburn';
       delimiter_start?: string;
       delimiter_end?: string;
     }

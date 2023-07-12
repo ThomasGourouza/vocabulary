@@ -31,7 +31,7 @@ import { TimePipe } from './pipes/time.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
 import { GetPipe } from './pipes/get.pipe';
 import { TranslateLangPipe } from './pipes/translate-lang.pipe';
-import { RomajiPipe } from './pipes/romaji';
+import { KuroshiroPipe } from './pipes/kuroshiro';
 
 @NgModule({
   declarations: [
@@ -45,7 +45,7 @@ import { RomajiPipe } from './pipes/romaji';
     FilterPipe,
     GetPipe,
     TranslateLangPipe,
-    RomajiPipe
+    KuroshiroPipe
   ],
   imports: [
     BrowserModule,

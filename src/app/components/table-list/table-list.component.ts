@@ -21,25 +21,29 @@ export class TableListComponent implements OnInit {
     }
   }
   public showList = false;
+  public romaji = '感じ取れたら手を繋ごう、重なるのは人生のライン and レミリア最高！';
 
   public isSourceColFirst$!: Observable<boolean>;
   public isPlaying$!: Observable<boolean>;
+  private kuroshiro = new Kuroshiro();
+  private promise: Promise<void>;
 
   constructor(
     private readerSpeakerService: ReaderSpeakerService
-  ) { }
+  ) {
+    this.promise = this.kuroshiro.init(new KuromojiAnalyzer({ dictPath: 'assets/dict' }));
+  }
 
   ngOnInit(): void {
     this.isSourceColFirst$ = this.readerSpeakerService.isSourceColFirst$;
     this.isPlaying$ = this.readerSpeakerService.isPlaying$;
-    const kuroshiro = new Kuroshiro();
-    kuroshiro.init(new KuromojiAnalyzer({ dictPath: 'assets/dict' }))
-    .then(function(){
-        return kuroshiro.convert("感じ取れたら手を繋ごう、重なるのは人生のライン and レミリア最高！", { to: "romaji" });
-    })
-    .then(function(result){
-        console.log(result);
-    });
+
+    this.promise.then(() =>
+      this.kuroshiro.convert(this.romaji, { to: "romaji", mode: "furigana", romajiSystem: "hepburn" })
+    ).then((result) =>
+      this.romaji = result
+    );
+
   }
 
   public toggleList() {

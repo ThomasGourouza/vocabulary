@@ -28,11 +28,14 @@
     <tr *ngFor="let item of items" class="list">
       <td>
         <div class="arial center-text flex-container">
-          <div class="target">
-            {{
-              (isSourceColFirst$ | async) ?? true ? item.source : (item.target | romaji)
-            }}
-          </div>
+          <div
+            class="target"
+            [innerHTML]="
+              (isSourceColFirst$ | async) ?? true
+                ? item.source
+                : (item.target | kuroshiro : item.target_language | async) || item.target
+            "
+          ></div>
           <div class="target-sound">
             <p-button
               *ngIf="!(isSourceColFirst$ | async) ?? false"
@@ -46,11 +49,14 @@
       </td>
       <td>
         <div class="arial center-text flex-container">
-          <div class="target">
-            {{
-              (isSourceColFirst$ | async) ?? true ? (item.target | romaji) : item.source
-            }}
-          </div>
+          <div
+            class="target"
+            [innerHTML]="
+              (isSourceColFirst$ | async) ?? true
+                ? (item.target | kuroshiro : item.target_language | async) || item.target
+                : item.source
+            "
+          ></div>
           <div class="target-sound">
             <p-button
               *ngIf="(isSourceColFirst$ | async) ?? true"

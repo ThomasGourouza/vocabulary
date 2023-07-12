@@ -2,12 +2,18 @@
   <tr>
     <th scope="col">
       <div class="center-text">
-        {{ (isSourceColFirst ? item?.source_language : item?.target_language) | translateLang }}
+        {{
+          (isSourceColFirst ? item?.source_language : item?.target_language)
+            | translateLang
+        }}
       </div>
     </th>
     <th scope="col">
       <div class="center-text">
-        {{ (isSourceColFirst ? item?.target_language : item?.source_language) | translateLang }}
+        {{
+          (isSourceColFirst ? item?.target_language : item?.source_language)
+            | translateLang
+        }}
       </div>
     </th>
   </tr>
@@ -18,13 +24,18 @@
     <ng-template #frenchFirst>
       <td>
         <div class="arial biggest center-text">
-          <span> {{ item?.source }} </span>
+          <span *ngIf="!!item"> {{ item.source }} </span>
         </div>
       </td>
       <td>
         <div class="arial biggest center-text">
-          <span *ngIf="showTarget">
-            {{ item?.target }}
+          <span
+            *ngIf="showTarget && !!item"
+            [innerHTML]="
+              (item.target | kuroshiro : item.target_language | async) ||
+              item.target
+            "
+          >
           </span>
         </div>
       </td>
@@ -32,14 +43,19 @@
     <ng-template #translationFirst>
       <td>
         <div class="arial biggest center-text">
-          <span>
-            {{ item?.target }}
+          <span
+            *ngIf="!!item"
+            [innerHTML]="
+              (item.target | kuroshiro : item.target_language | async) ||
+              item.target
+            "
+          >
           </span>
         </div>
       </td>
       <td>
         <div class="arial biggest center-text">
-          <span *ngIf="showTarget"> {{ item?.source }} </span>
+          <span *ngIf="showTarget && !!item"> {{ item.source }} </span>
         </div>
       </td>
     </ng-template>
