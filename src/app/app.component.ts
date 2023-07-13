@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Item } from './models/item';
 import { ExcelService } from './services/excel.service';
 import { Observable, shareReplay } from 'rxjs';
+import { Language } from './models/language';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +12,13 @@ export class AppComponent implements OnInit {
   public file$!: Observable<{ [tab: string]: Item[]; } | null>;
   public tab: string | undefined;
   public tag: string | undefined;
+  public supportedLanguages: string[];
 
   constructor(
     private excelService: ExcelService
-  ) { }
+  ) {
+    this.supportedLanguages = Object.keys(Language);
+  }
 
   ngOnInit(): void {
     this.file$ = this.excelService.file$.pipe(shareReplay(1));

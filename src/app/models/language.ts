@@ -1,35 +1,35 @@
 export enum Language {
-  danish = 'da-DK',
-  english = 'en-GB',
   french = 'fr-FR',
-  german = 'de-DE',
   italian = 'it-IT',
-  japanese = 'ja-JP',
+  spanish = 'es-ES',
   portuguese = 'pt-BR',
+  english = 'en-GB',
+  german = 'de-DE',
+  danish = 'da-DK',
   russian = 'ru-RU',
-  spanish = 'es-ES'
+  japanese = 'ja-JP'
 }
 
 export function translate(lang?: string): string {
   switch (lang?.toLowerCase()) {
-    case 'danish':
-      return 'Dansk';
-    case 'english':
-      return 'English';
     case 'french':
       return 'Français';
-    case 'german':
-      return 'Deutsch';
     case 'italian':
       return 'Italiano';
-    case 'japanese':
-      return '日本語';
-    case 'portuguese':
-      return 'Português';
-    case 'russian':
-      return 'Русский';
     case 'spanish':
       return 'Español';
+    case 'portuguese':
+      return 'Português';
+    case 'english':
+      return 'English';
+    case 'german':
+      return 'Deutsch';
+    case 'danish':
+      return 'Dansk';
+    case 'russian':
+      return 'Русский';
+    case 'japanese':
+      return '日本語';
     default:
       return lang ?? '';
   }
