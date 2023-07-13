@@ -11,7 +11,7 @@ export enum Language {
 }
 
 export function translate(lang?: string): string {
-  switch (lang) {
+  switch (lang?.toLowerCase()) {
     case 'danish':
       return 'Dansk';
     case 'english':

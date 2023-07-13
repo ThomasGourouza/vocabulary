@@ -1,17 +1,33 @@
 <table>
   <tr>
     <th scope="col">
-      <div class="center-text">
+      <div *ngIf="!!item" class="center-text">
+        <img
+          [src]="
+            'assets/flags/' +
+            ((isSourceColFirst ? item.source_language : item.target_language)
+              | lowercase) +
+            '.png'
+          "
+        />
         {{
-          (isSourceColFirst ? item?.source_language : item?.target_language)
+          (isSourceColFirst ? item.source_language : item.target_language)
             | translateLang
         }}
       </div>
     </th>
     <th scope="col">
-      <div class="center-text">
+      <div *ngIf="!!item" class="center-text">
+        <img
+          [src]="
+            'assets/flags/' +
+            ((isSourceColFirst ? item.target_language : item.source_language)
+              | lowercase) +
+            '.png'
+          "
+        />
         {{
-          (isSourceColFirst ? item?.target_language : item?.source_language)
+          (isSourceColFirst ? item.target_language : item.source_language)
             | translateLang
         }}
       </div>
