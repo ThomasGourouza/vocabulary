@@ -31,9 +31,8 @@
           <div
             class="target"
             [innerHTML]="
-              (isSourceColFirst$ | async) ?? true
-                ? item.source
-                : (item.target | kuroshiro : item.target_language | async) || item.target
+              ((isSourceColFirst$ | async) ?? true ? item.source : item.target)
+                | safeHtml : (japaneseWords$ | async)
             "
           ></div>
           <div class="target-sound">
@@ -52,9 +51,8 @@
           <div
             class="target"
             [innerHTML]="
-              (isSourceColFirst$ | async) ?? true
-                ? (item.target | kuroshiro : item.target_language | async) || item.target
-                : item.source
+              ((isSourceColFirst$ | async) ?? true ? item.target : item.source)
+                | safeHtml : (japaneseWords$ | async)
             "
           ></div>
           <div class="target-sound">

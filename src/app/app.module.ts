@@ -31,7 +31,8 @@ import { TimePipe } from './pipes/time.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
 import { GetPipe } from './pipes/get.pipe';
 import { TranslateLangPipe } from './pipes/translate-lang.pipe';
-import { KuroshiroPipe } from './pipes/kuroshiro';
+import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import { KuroshiroService } from './services/kuroshiro.service';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,7 @@ import { KuroshiroPipe } from './pipes/kuroshiro';
     FilterPipe,
     GetPipe,
     TranslateLangPipe,
-    KuroshiroPipe
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,
@@ -66,6 +67,7 @@ import { KuroshiroPipe } from './pipes/kuroshiro';
     ExcelService,
     ReaderSpeakerService,
     WakelockService,
+    KuroshiroService,
     MessageService,
     ConfirmationService
   ],

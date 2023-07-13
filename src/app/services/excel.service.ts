@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
-import * as _ from 'lodash';
 import { Observable, Subject, map } from 'rxjs';
-import { Item } from 'src/app/models/item';
-import { Text } from 'src/app/models/text';
-import { MessageService } from 'primeng/api';
+import { Item } from '../models/item';
+import { Text } from '../models/text';
 import { Language } from '../models/language';
+import { MessageService } from 'primeng/api';
+import { KuroshiroService } from './kuroshiro.service';
 
 @Injectable()
 export class ExcelService {
-  constructor(private messageService: MessageService) { }
+  constructor(
+    private messageService: MessageService,
+    private kuroshiroService: KuroshiroService,
+  ) { }
 
-  private validKeys = [
+  private validHeaders = [
     "source_language",
     "target_language",
     "source",
@@ -31,15 +34,15 @@ export class ExcelService {
             return null;
           }
           let isValid = true;
-          Object.keys(file).forEach(key => {
-            const items = file[key];
+          Object.keys(file).forEach(tab => {
+            const items = file[tab];
             if (items.length === 0) {
               isValid = false;
-              this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.emptyDataMessage, sticky: true });
+              this.messageService.add({ severity: 'error', summary: Text.invalidTab + tab, detail: Text.emptyDataMessage, sticky: true });
             } else {
-              if (Object.keys(items[0]).some((key) => !this.validKeys.includes(key))) {
+              if (Object.keys(items[0]).some((header) => !this.validHeaders.includes(header))) {
                 isValid = false;
-                this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.invalidColumnMessage, sticky: true });
+                this.messageService.add({ severity: 'error', summary: Text.invalidTab + tab, detail: Text.invalidColumnMessage, sticky: true });
               }
               if (items.some(item =>
                 [item.source_language, item.target_language, item.source, item.target, item.tag].some(value =>
@@ -47,16 +50,22 @@ export class ExcelService {
                 )
               )) {
                 isValid = false;
-                this.messageService.add({ severity: 'error', summary: Text.invalidTab + key, detail: Text.incompleteMessage, sticky: true });
+                this.messageService.add({ severity: 'error', summary: Text.invalidTab + tab, detail: Text.incompleteMessage, sticky: true });
               }
               if (items.some(({ source_language, target_language }) =>
                 ![source_language, target_language].every(language => Object.keys(Language).includes((language?.toLowerCase()) as Language))
               )) {
                 isValid = false;
                 this.messageService.add(
-                  { severity: 'error', summary: Text.invalidTab + key, detail: `${Text.unsupportedLanguageTextMessage} ${this.getLanguages()}`, sticky: true }
+                  { severity: 'error', summary: Text.invalidTab + tab, detail: `${Text.unsupportedLanguageTextMessage} ${this.getLanguages()}`, sticky: true }
                 );
               }
+              // fill japaneseWords from kuroshiro service
+              items.forEach(item => {
+                if (item.target_language.toLowerCase() === 'japanese') {
+                  this.kuroshiroService.addJapaneseWord(item.target);
+                }
+              });
             }
           });
           if (!isValid) {

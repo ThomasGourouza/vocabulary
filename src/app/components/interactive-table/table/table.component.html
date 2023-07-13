@@ -31,10 +31,7 @@
         <div class="arial biggest center-text">
           <span
             *ngIf="showTarget && !!item"
-            [innerHTML]="
-              (item.target | kuroshiro : item.target_language | async) ||
-              item.target
-            "
+            [innerHTML]="item.target | safeHtml : (japaneseWords$ | async)"
           >
           </span>
         </div>
@@ -45,10 +42,7 @@
         <div class="arial biggest center-text">
           <span
             *ngIf="!!item"
-            [innerHTML]="
-              (item.target | kuroshiro : item.target_language | async) ||
-              item.target
-            "
+            [innerHTML]="item.target | safeHtml : (japaneseWords$ | async)"
           >
           </span>
         </div>
