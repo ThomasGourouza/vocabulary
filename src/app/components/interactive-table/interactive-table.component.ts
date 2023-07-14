@@ -204,9 +204,10 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
         ),
         tap(_ => timeSec = 0)
       ).subscribe(_ => {
-        this.next();
         if (this.currentIndex.counter % this.items.length === 0 && this.currentIndex.showTarget) {
           this.onPause();
+        } else {
+          this.next();
         }
       });
   }
