@@ -10,9 +10,9 @@ export enum TimeLabel {
 }
 
 export enum TimeValue {
-  ONE = 4,
-  TWO = 7,
-  THREE = 10,
+  ONE = 5,
+  TWO = 10,
+  THREE = 15,
 }
 
-export const timeBetween = 3;
+export const timeBetween = 5;
