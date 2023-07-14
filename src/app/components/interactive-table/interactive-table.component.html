@@ -4,7 +4,7 @@
       styleClass="p-button-rounded p-button-warning p-button-raised p-button-outlined"
       icon="pi pi-arrow-right-arrow-left"
       (onClick)="onInterChange()"
-      [disabled]="isPlaying|| !(isTargetDisplayed$ | async)"
+      [disabled]="isPlaying || !(isTargetDisplayed$ | async)"
     ></p-button>
   </div>
 </div>
@@ -76,12 +76,12 @@
       <select
         class="form-select time-select"
         [(ngModel)]="time"
-        [disabled]="isPlaying || isDataEmpty"
+        [disabled]="isPlaying || isDataEmpty || !isReadSpeakerActivated"
       >
         <option
           *ngFor="let time of times"
-          [value]="time"
-          [label]="time | time"
+          [value]="time.value"
+          [label]="time.label"
         ></option>
       </select>
     </div>

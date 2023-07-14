@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Index } from '../interactive-table.component';
+import { Index } from 'src/app/models';
 
 @Component({
   selector: 'app-counter-or-sound',

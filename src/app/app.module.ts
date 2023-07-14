@@ -27,7 +27,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
-import { TimePipe } from './pipes/time.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
 import { GetPipe } from './pipes/get.pipe';
 import { TranslateLangPipe } from './pipes/translate-lang.pipe';
@@ -42,7 +41,6 @@ import { KuroshiroService } from './services/kuroshiro.service';
     TableComponent,
     TableListComponent,
     CounterOrSoundComponent,
-    TimePipe,
     FilterPipe,
     GetPipe,
     TranslateLangPipe,

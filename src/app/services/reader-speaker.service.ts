@@ -54,6 +54,9 @@ export class ReaderSpeakerService {
 
   setIsPlaying$(value: boolean) {
     this._isPlaying$.next(value);
+    if (!value) {
+      this.cancelReadSpeak();
+    }
   }
 
   get isTargetDisplayed$(): Observable<boolean> {
@@ -64,4 +67,7 @@ export class ReaderSpeakerService {
     this._isTargetDisplayed$.next(value);
   }
 
+  cancelReadSpeak(): void {
+    window.speechSynthesis.cancel();
+  }
 }
