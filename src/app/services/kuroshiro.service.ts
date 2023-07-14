@@ -24,7 +24,7 @@ export class KuroshiroService {
   }
 
   public addJapaneseWord(japanese: string): void {
-    this.kuroshiroInitDict.then(() =>
+    this.kuroshiroInitDict.then(_ =>
       this.kuroshiro.convert(japanese, { to: 'hiragana', mode: 'furigana' })
     ).then((furigana) =>
       this._japaneseWords$.next([...this._japaneseWords$.getValue(), { japanese, furigana }])

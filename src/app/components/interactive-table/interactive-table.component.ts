@@ -49,6 +49,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   public isReadSpeakerActivated!: boolean;
   public progress = 0;
   public isFirstProgress = true;
+  private isWakeLockActive = false;
 
   public isTargetDisplayed$!: Observable<boolean>;
   public isSourceColFirstSubscription = new Subscription();
@@ -76,7 +77,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     this.isPlayingSubscription.unsubscribe();
     this.isSourceColFirstSubscription.unsubscribe();
     this.isReadSpeakerActivatedSubscription.unsubscribe();
-    this.wakelockService.releaseWakeLock();
+    this.wakelockService.releaseWakeLock().then(_ => this.isWakeLockActive = false);
   }
 
   public onInterChange(): void {
@@ -145,10 +146,12 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   public onPlay(): void {
     if (this.isDataEmpty) return;
-    this.wakelockService.requestWakeLock();
+    this.wakelockService.requestWakeLock().then(wakelock =>
+      this.isWakeLockActive = wakelock
+    );
     this.readerSpeakerService.setIsPlaying$(true);
     this.next();
-    this.timeSubscription = interval(this.time).subscribe(() => {
+    this.timeSubscription = interval(this.time).subscribe(_ => {
       this.next();
       if (this.currentIndex.counter % this.items.length === 0 && this.currentIndex.showTarget) {
         this.onPause();
@@ -159,7 +162,11 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   public onPause(): void {
     this.readerSpeakerService.setIsPlaying$(false);
     this.timeSubscription.unsubscribe();
-    this.wakelockService.releaseWakeLock();
+    if (this.isWakeLockActive) {
+      this.wakelockService.releaseWakeLock().then(wakelock =>
+        this.isWakeLockActive = wakelock
+      );
+    }
   }
 
   public onReadSpeak(index: number): void {

@@ -1,37 +1,44 @@
 import { Injectable } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { Text } from '../models/text';
 
 @Injectable()
 export class WakelockService {
   private wakeLock: any;
 
-  constructor() { }
+  constructor(private messageService: MessageService) { }
 
-  public requestWakeLock(): void {
-    if ('wakeLock' in navigator && (navigator as any).wakeLock !== undefined) {
-      (navigator as any).wakeLock
-        .request('screen')
-        .then((wakeLockObj: any) => {
-          this.wakeLock = wakeLockObj;
-          console.log('Wake lock is active!');
-        })
-        .catch((err: any) => {
-          console.error(`Failed to request wake lock: ${err}`);
-        });
-    } else {
-      console.error('Wake Lock API is not supported.');
-    }
+  public requestWakeLock(): Promise<boolean> {
+    return new Promise((resolve) => {
+      if ('wakeLock' in navigator && (navigator as any).wakeLock !== undefined) {
+        (navigator as any).wakeLock.request('screen')
+          .then((wakeLockObj: any) => {
+            this.wakeLock = wakeLockObj;
+            this.messageService.add({ severity: 'info', summary: Text.screenLocked });
+            resolve(true);
+          }).catch(() =>
+            resolve(false)
+          );
+      } else {
+        resolve(false);
+      }
+    });
   }
 
-  public releaseWakeLock(): void {
-    if (this.wakeLock) {
-      this.wakeLock
-        .release()
-        .then(() => {
-          console.log('Wake lock has been released.');
-        })
-        .catch((err: any) => {
-          console.error(`Failed to release wake lock: ${err}`);
-        });
-    }
+  public releaseWakeLock(): Promise<boolean> {
+    return new Promise((resolve) => {
+      if (this.wakeLock) {
+        this.wakeLock.release()
+          .then(() => {
+            this.messageService.add({ severity: 'info', summary: Text.screenUnlocked });
+            resolve(false);
+          }).catch((err: any) => {
+            this.messageService.add({ severity: 'warn', summary: Text.screenUnlockFailed, detail: err });
+            resolve(true);
+          });
+      } else {
+        resolve(false);
+      }
+    });
   }
 }
