@@ -39,9 +39,7 @@ body {
 .activation-col {
   width: 50px;
 }
-.table-list-wrapper {
-  padding-right: 50px;
-}
+
 table {
   border-spacing: 0;
   border-collapse: separate;
@@ -52,6 +50,9 @@ table {
 }
 th:not(:last-child) {
   border-right: 1px solid rgb(60, 60, 60);
+}
+th:nth-child(3) {
+  width: 50%;
 }
 td:not(:last-child) {
   border-right: 1px solid rgb(120, 120, 120);

@@ -11,84 +11,78 @@
     ></p-button>
   </div>
 </div>
-<div class="table-list-wrapper">
-  <table>
-    <tr>
-      <th class="activation-col">
+<table>
+  <tr>
+    <th class="activation-col">
+      <p-checkbox
+        class="d-flex justify-content-center align-items-center"
+        [disabled]="items.length === 0"
+        [binary]="true"
+        [ngModel]="globalActive"
+        (onChange)="toggleGlobalActive($event.checked)"
+      ></p-checkbox>
+    </th>
+    <th scope="col">
+      <div class="center-text">
+        {{ (isSourceColFirst$ | async) ?? true ? "Source" : "Target" }}
+      </div>
+    </th>
+    <th scope="col">
+      <div class="center-text">
+        {{ (isSourceColFirst$ | async) ?? true ? "Target" : "Source" }}
+      </div>
+    </th>
+  </tr>
+  <ng-container *ngIf="showList && items.length > 0">
+    <tr *ngFor="let item of items" class="list">
+      <td>
         <p-checkbox
           class="d-flex justify-content-center align-items-center"
-          [disabled]="items.length === 0"
           [binary]="true"
-          [ngModel]="globalActive"
-          (onChange)="toggleGlobalActive($event.checked)"
+          [(ngModel)]="item.active"
+          (onChange)="toggleActive()"
         ></p-checkbox>
-      </th>
-      <th scope="col">
-        <div class="center-text">
-          {{ (isSourceColFirst$ | async) ?? true ? "Source" : "Target" }}
+      </td>
+      <td>
+        <div class="arial center-text flex-container">
+          <div
+            class="target"
+            [innerHTML]="
+              ((isSourceColFirst$ | async) ?? true ? item.source : item.target)
+                | safeHtml : (japaneseWords$ | async)
+            "
+          ></div>
+          <div class="target-sound">
+            <p-button
+              *ngIf="!(isSourceColFirst$ | async) ?? false"
+              styleClass="p-button-rounded p-button-raised"
+              icon="pi pi-volume-up"
+              [disabled]="(isPlaying$ | async) ?? false"
+              (onClick)="onReadSpeak(item)"
+            ></p-button>
+          </div>
         </div>
-      </th>
-      <th scope="col">
-        <div class="center-text">
-          {{ (isSourceColFirst$ | async) ?? true ? "Target" : "Source" }}
+      </td>
+      <td>
+        <div class="arial center-text flex-container">
+          <div
+            class="target"
+            [innerHTML]="
+              ((isSourceColFirst$ | async) ?? true ? item.target : item.source)
+                | safeHtml : (japaneseWords$ | async)
+            "
+          ></div>
+          <div class="target-sound">
+            <p-button
+              *ngIf="(isSourceColFirst$ | async) ?? true"
+              styleClass="p-button-rounded p-button-raised"
+              icon="pi pi-volume-up"
+              [disabled]="(isPlaying$ | async) ?? false"
+              (onClick)="onReadSpeak(item)"
+            ></p-button>
+          </div>
         </div>
-      </th>
+      </td>
     </tr>
-    <ng-container *ngIf="showList && items.length > 0">
-      <tr *ngFor="let item of items" class="list">
-        <td>
-          <p-checkbox
-            class="d-flex justify-content-center align-items-center"
-            [binary]="true"
-            [(ngModel)]="item.active"
-            (onChange)="toggleActive()"
-          ></p-checkbox>
-        </td>
-        <td>
-          <div class="arial center-text flex-container">
-            <div
-              class="target"
-              [innerHTML]="
-                ((isSourceColFirst$ | async) ?? true
-                  ? item.source
-                  : item.target
-                ) | safeHtml : (japaneseWords$ | async)
-              "
-            ></div>
-            <div class="target-sound">
-              <p-button
-                *ngIf="!(isSourceColFirst$ | async) ?? false"
-                styleClass="p-button-rounded p-button-raised"
-                icon="pi pi-volume-up"
-                [disabled]="(isPlaying$ | async) ?? false"
-                (onClick)="onReadSpeak(item)"
-              ></p-button>
-            </div>
-          </div>
-        </td>
-        <td>
-          <div class="arial center-text flex-container">
-            <div
-              class="target"
-              [innerHTML]="
-                ((isSourceColFirst$ | async) ?? true
-                  ? item.target
-                  : item.source
-                ) | safeHtml : (japaneseWords$ | async)
-              "
-            ></div>
-            <div class="target-sound">
-              <p-button
-                *ngIf="(isSourceColFirst$ | async) ?? true"
-                styleClass="p-button-rounded p-button-raised"
-                icon="pi pi-volume-up"
-                [disabled]="(isPlaying$ | async) ?? false"
-                (onClick)="onReadSpeak(item)"
-              ></p-button>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </ng-container>
-  </table>
-</div>
+  </ng-container>
+</table>
