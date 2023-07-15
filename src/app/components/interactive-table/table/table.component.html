@@ -1,8 +1,9 @@
 <table>
   <tr>
     <th scope="col">
-      <div *ngIf="!!item" class="center-text">
+      <div class="center-text">
         <img
+          *ngIf="!!item"
           [src]="
             'assets/flags/' +
             ((isSourceColFirst ? item.source_language : item.target_language)
@@ -11,14 +12,17 @@
           "
         />
         {{
-          (isSourceColFirst ? item.source_language : item.target_language)
-            | translateLang
+          (isSourceColFirst
+            ? item?.source_language ?? "Source"
+            : item?.target_language ?? "Target"
+          ) | translateLang
         }}
       </div>
     </th>
     <th scope="col">
-      <div *ngIf="!!item" class="center-text">
+      <div class="center-text">
         <img
+          *ngIf="!!item"
           [src]="
             'assets/flags/' +
             ((isSourceColFirst ? item.target_language : item.source_language)
@@ -27,8 +31,10 @@
           "
         />
         {{
-          (isSourceColFirst ? item.target_language : item.source_language)
-            | translateLang
+          (isSourceColFirst
+            ? item?.target_language ?? "Target"
+            : item?.source_language ?? "Source"
+          ) | translateLang
         }}
       </div>
     </th>

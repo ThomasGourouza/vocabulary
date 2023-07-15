@@ -28,7 +28,6 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     this.memory = [];
     this.onPause();
     this.readerSpeakerService.setIsTargetDisplayed$(true);
-    this.next();
     this.isFirstProgress = !this.isFirstProgress;
     this.progress = 0;
     setTimeout(() => { this.updateProgress(); }, 10);
