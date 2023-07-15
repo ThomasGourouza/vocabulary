@@ -4,4 +4,5 @@ export interface Item {
     source: string;
     target: string;
     tag: string;
+    active: boolean;
 }

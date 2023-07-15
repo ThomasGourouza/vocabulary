@@ -3,6 +3,7 @@ import { Item } from 'src/app/models/item';
 import { Observable } from 'rxjs';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
 import { JapaneseWord, KuroshiroService } from '../../services/kuroshiro.service';
+import { ItemsService } from 'src/app/services/items.service';
 
 @Component({
   selector: 'app-table-list',
@@ -15,6 +16,7 @@ export class TableListComponent implements OnInit {
   }
   @Input() set items(values: Item[]) {
     this._items = values;
+    this.itemsService.setItems$(this.items);
     if (this.items.length === 0) {
       this.showList = false;
     }
@@ -27,7 +29,8 @@ export class TableListComponent implements OnInit {
 
   constructor(
     private readerSpeakerService: ReaderSpeakerService,
-    private kuroshiroService: KuroshiroService
+    private kuroshiroService: KuroshiroService,
+    private itemsService: ItemsService
   ) {}
 
   ngOnInit(): void {
@@ -36,11 +39,24 @@ export class TableListComponent implements OnInit {
     this.japaneseWords$ = this.kuroshiroService.japaneseWords$;
   }
 
+  get globalActive(): boolean {
+    return this.items.length > 0 && this.items.every(item => item.active);
+  }
+
+  public toggleGlobalActive(active: boolean): void {
+    this.items.forEach(item => item.active = active);
+    this.itemsService.setItems$(this.items);
+  }
+
   public toggleList() {
-    this.showList = !this.showList && this.items.length > 0;
+    this.showList = this.items.length > 0 && !this.showList;
   }
 
   public onReadSpeak(item: Item): void {
     this.readerSpeakerService.textToSpeech(item, 2);
+  }
+
+  public toggleActive(): void {
+    this.itemsService.setItems$(this.items);
   }
 }

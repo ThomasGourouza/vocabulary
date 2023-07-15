@@ -23,6 +23,10 @@ body {
   }
 }
 
+.mx-5 {
+  margin-bottom: 50px;
+}
+
 .flags {
   margin-top: 20px;
   text-align: right;
@@ -32,17 +36,22 @@ body {
   }
 }
 
+.activation-col {
+  width: 50px;
+}
+.table-list-wrapper {
+  padding-right: 50px;
+}
 table {
   border-spacing: 0;
   border-collapse: separate;
   border-radius: 10px;
-  border: 1px solid white;
   overflow: hidden;
   table-layout: fixed;
   width: 100%;
 }
 th:not(:last-child) {
-  border-right: 1px solid rgb(120, 120, 120);
+  border-right: 1px solid rgb(60, 60, 60);
 }
 td:not(:last-child) {
   border-right: 1px solid rgb(120, 120, 120);
@@ -156,7 +165,7 @@ div.circle {
 
 .component {
   margin: 30px 0;
-  padding: 2em 4em;
+  padding: 2em 4em 3em 4em;
 }
 
 .flex-container {

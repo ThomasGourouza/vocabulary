@@ -3,6 +3,7 @@ import { Observable, Subscription, filter, interval, shareReplay, tap } from 'rx
 import { Index } from 'src/app/models/index';
 import { Item } from 'src/app/models/item';
 import { Time, TimeLabel, TimeValue, timeBetween } from 'src/app/models/time';
+import { ItemsService } from 'src/app/services/items.service';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
 import { WakelockService } from 'src/app/services/wakelock.service';
 
@@ -11,28 +12,7 @@ import { WakelockService } from 'src/app/services/wakelock.service';
   templateUrl: './interactive-table.component.html'
 })
 export class InteractiveTableComponent implements OnInit, OnDestroy {
-  public _items!: Item[];
-  get items(): Item[] {
-    return this._items;
-  }
-  @Input() set items(values: Item[]) {
-    this._items = values;
-    this.currentIndex = {
-      previousNumber: undefined,
-      nextNumber: undefined,
-      number: undefined,
-      showTarget: false,
-      counter: 0
-    };
-    this.isDataEmpty = this.items.length === 0;
-    this.memory = [];
-    this.onPause();
-    this.readerSpeakerService.setIsTargetDisplayed$(true);
-    this.isFirstProgress = !this.isFirstProgress;
-    this.progress = 0;
-    setTimeout(() => { this.updateProgress(); }, 10);
-  }
-
+  public items: Item[] = [];
   public currentIndex!: Index;
   public isPlaying = false;
   public times: Time[] = [
@@ -57,13 +37,32 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   private timeSubscription = new Subscription();
   private isPlayingSubscription = new Subscription();
   private isReadSpeakerActivatedSubscription = new Subscription();
+  private itemsSubscription = new Subscription();
 
   constructor(
     private readerSpeakerService: ReaderSpeakerService,
-    private wakelockService: WakelockService
+    private wakelockService: WakelockService,
+    private itemsService: ItemsService
   ) { }
 
   ngOnInit(): void {
+    this.itemsSubscription = this.itemsService.items$.subscribe(items => {
+      this.items = items;
+      this.currentIndex = {
+        previousNumber: undefined,
+        nextNumber: undefined,
+        number: undefined,
+        showTarget: false,
+        counter: 0
+      };
+      this.isDataEmpty = this.items.length === 0;
+      this.memory = [];
+      this.onPause();
+      this.readerSpeakerService.setIsTargetDisplayed$(true);
+      this.isFirstProgress = !this.isFirstProgress;
+      this.progress = 0;
+      setTimeout(() => { this.updateProgress(); }, 10);
+    });
     this.isTargetDisplayed$ = this.readerSpeakerService.isTargetDisplayed$.pipe(shareReplay(1));
     this.isReadSpeakerActivatedSubscription = this.readerSpeakerService.isReadSpeakerActivated$
       .subscribe(value => {
@@ -94,6 +93,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     this.isPlayingSubscription.unsubscribe();
     this.isSourceColFirstSubscription.unsubscribe();
     this.isReadSpeakerActivatedSubscription.unsubscribe();
+    this.itemsSubscription.unsubscribe();
     this.wakelockService.releaseWakeLock().then(_ => this.isWakeLockActive = false);
   }
 

@@ -19,7 +19,8 @@ export class ExcelService {
     "target_language",
     "source",
     "target",
-    "tag"
+    "tag",
+    "active"
   ];
 
   private _uploadedFile$ = new Subject<{ [tab: string]: Item[]; } | null>();
@@ -42,10 +43,10 @@ export class ExcelService {
             } else {
               if (Object.keys(items[0]).some((header) => !this.validHeaders.includes(header))) {
                 isValid = false;
-                this.messageService.add({ severity: 'error', summary: Text.invalidTab + tab, detail: Text.invalidColumnMessage, sticky: true });
+                this.messageService.add({ severity: 'error', summary: Text.invalidTab + tab, detail: `${Text.invalidHeaderMessage} ${this.getHeaders()}`, sticky: true });
               }
               if (items.some(item =>
-                [item.source_language, item.target_language, item.source, item.target, item.tag].some(value =>
+                [item.source, item.target, item.tag].some(value =>
                   value === null || value === undefined || value.toString().trim() === ''
                 )
               )) {
@@ -62,9 +63,13 @@ export class ExcelService {
               }
               // fill japaneseWords from kuroshiro service
               items.forEach(item => {
-                if (item.target_language.toLowerCase() === 'japanese') {
+                if (item.target_language?.toLowerCase() === 'japanese') {
                   this.kuroshiroService.addJapaneseWord(item.target);
                 }
+              });
+              // set activation
+              items.forEach(item => {
+                item.active = (item.active as unknown as number) !== 0;
               });
             }
           });
@@ -103,7 +108,14 @@ export class ExcelService {
   private getLanguages(): string {
     const languages = Object.keys(Language);
     const lastLanguage = languages.pop();
-    const joinedLanguages = languages.join(', ');
-    return `${joinedLanguages} and ${lastLanguage}.`;
+    const joinedLanguages = languages.join('", "');
+    return `"${joinedLanguages}" and "${lastLanguage}".`;
+  }
+
+  private getHeaders(): string {
+    const headers = [...this.validHeaders];
+    const lastHeader = headers.pop();
+    const joinedHeaders = headers.join('", "');
+    return `"${joinedHeaders}" and optionally "${lastHeader}".`;
   }
 }
