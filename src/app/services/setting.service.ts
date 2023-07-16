@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+export interface Rename {
+  account_id: number;
+  tag: string;
+  tab: string;
+  activeItemIndexes: number[];
+}
 
 @Injectable()
 export class SettingService {
@@ -28,9 +35,15 @@ export class SettingService {
     return this.http.delete(url);
   }
 
-  getSetting(login: string, password: string, tab: string, tag: string) {
+  getSetting(login: string, password: string, tab: string, tag: string): Observable<Rename> {
     const url = `${this.settingURL}?login=${login}&password=${password}&tab=${tab}&tag=${tag}`;
-    return this.http.get(url);
+    return this.http.get<Rename>(url)
+      .pipe(
+        map(value => {
+          value.activeItemIndexes = JSON.parse(value.activeItemIndexes as unknown as string) as number[];
+          return value;
+        })
+      );
   }
 
   createSetting(login: string, password: string, tab: string, tag: string, activeItemIndexes: number[]) {
