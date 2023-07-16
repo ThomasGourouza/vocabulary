@@ -41,12 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $db->exec('COMMIT');
 
         // Return a success message
+        http_response_code(200);
         echo json_encode(['message' => 'Setting created successfully']);
       } else {
         // Rollback the transaction if the account was not found
         $db->exec('ROLLBACK');
 
         // Return an error message
+        http_response_code(404);
         echo json_encode(['message' => 'Account not found']);
       }
     } catch (Exception $e) {
@@ -54,11 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $db->exec('ROLLBACK');
 
       // Return an error message
+      http_response_code(500);
       echo json_encode(['message' => 'Failed to create setting']);
     }
 
   } else {
     // Return an error message if query parameters are missing
+    http_response_code(400);
     echo json_encode(['message' => 'Query parameters missing']);
   }
 }

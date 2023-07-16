@@ -1,0 +1,3 @@
+https://thomas-gourouza.com/api/accounts.php
+
+https://thomas-gourouza.com/api/account.php?login=test&password=test

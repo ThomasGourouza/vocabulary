@@ -25,12 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $db->exec('COMMIT');
 
         // Return a success message with the account ID
+        http_response_code(200);
         echo json_encode(['message' => 'Account created successfully', 'account_id' => $accountId]);
     } catch (Exception $e) {
         // Rollback the transaction if an error occurred
         $db->exec('ROLLBACK');
 
         // Return an error message
+        http_response_code(500);
         echo json_encode(['message' => 'Failed to create account']);
     }
 }

@@ -34,9 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
               if ($setting) {
                   // Return the setting as JSON
+                  http_response_code(200);
                   echo json_encode($setting);
               } else {
                   // Return an error message if the setting is not found
+                  http_response_code(404);
                   echo json_encode(['message' => 'Setting not found']);
               }
           } else {
@@ -44,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
               $db->exec('ROLLBACK');
 
               // Return an error message
+              http_response_code(404);
               echo json_encode(['message' => 'Account not found']);
           }
       } catch (Exception $e) {
@@ -51,10 +54,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
           $db->exec('ROLLBACK');
 
           // Return an error message
+          http_response_code(500);
           echo json_encode(['message' => 'Failed to retrieve setting']);
       }
   } else {
       // Return an error message if login, password, tag, or tab is missing
+      http_response_code(400);
       echo json_encode(['message' => 'Login, password, tag, or tab parameter missing']);
   }
 }

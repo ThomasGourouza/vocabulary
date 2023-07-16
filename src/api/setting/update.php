@@ -40,12 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
               $db->exec('COMMIT');
 
               // Return a success message
+              http_response_code(200);
               echo json_encode(['message' => 'Setting updated successfully']);
           } else {
               // Rollback the transaction if the account is not found
               $db->exec('ROLLBACK');
 
               // Return an error message
+              http_response_code(404);
               echo json_encode(['message' => 'Account not found']);
           }
       } catch (Exception $e) {
@@ -53,10 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
           $db->exec('ROLLBACK');
 
           // Return an error message
+          http_response_code(500);
           echo json_encode(['message' => 'Failed to update setting']);
       }
   } else {
       // Return an error message if login, password, tag, or tab is missing
+      http_response_code(400);
       echo json_encode(['message' => 'Login, password, tag, or tab parameter missing']);
   }
 }

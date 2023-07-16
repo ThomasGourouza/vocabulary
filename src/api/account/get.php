@@ -17,13 +17,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
       if ($account) {
           // Return the account as JSON
+          http_response_code(200);
           echo json_encode($account);
       } else {
           // Return an error message if the account is not found
+          http_response_code(404);
           echo json_encode(['message' => 'Account not found']);
       }
   } else {
       // Return an error message if login or password is missing
+      http_response_code(400);
       echo json_encode(['message' => 'Login or password parameter missing']);
   }
 }
