@@ -16,7 +16,7 @@ https://thomas-gourouza.com/api/account.php
 }
 
 DELETE:
-https://thomas-gourouza.com/api/account.php?account_id=1
+https://thomas-gourouza.com/api/account.php?login=test&password=test
 
 
 
