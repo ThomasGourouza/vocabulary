@@ -7,3 +7,4 @@ $db = $database->getConnection();
 
 require_once 'account/get.php';
 require_once 'account/post.php';
+require_once 'account/delete.php';
