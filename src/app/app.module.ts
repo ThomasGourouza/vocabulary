@@ -33,6 +33,7 @@ import { TranslateLangPipe } from './pipes/translate-lang.pipe';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { KuroshiroService } from './services/kuroshiro.service';
 import { ItemsService } from './services/items.service';
+import { SettingService } from './services/setting.service';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { ItemsService } from './services/items.service';
     KuroshiroService,
     MessageService,
     ConfirmationService,
-    ItemsService
+    ItemsService,
+    SettingService
   ],
   bootstrap: [AppComponent]
 })
