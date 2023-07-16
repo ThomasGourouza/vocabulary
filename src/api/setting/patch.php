@@ -1,6 +1,6 @@
 <?php
 // UPDATE operation to modify an setting
-if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
   // Check if login, password, tag, and tab are provided as query parameters
   if (isset($_GET['login']) && isset($_GET['password']) && isset($_GET['tag']) && isset($_GET['tab'])) {
       $login = $_GET['login'];

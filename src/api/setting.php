@@ -1,4 +1,10 @@
 <?php
+$allowedMethods = ['GET', 'POST', 'DELETE', 'PATCH'];
+if (!in_array($_SERVER['REQUEST_METHOD'], $allowedMethods)) {
+  http_response_code(500);
+  echo json_encode(['message' => 'Not implemented']);
+}
+
 require_once 'db.php';
 
 // Create a new instance of the Database class
@@ -8,4 +14,4 @@ $db = $database->getConnection();
 require_once 'setting/get.php';
 require_once 'setting/post.php';
 require_once 'setting/delete.php';
-require_once 'setting/update.php';
+require_once 'setting/patch.php';

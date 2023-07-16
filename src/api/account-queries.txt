@@ -1,3 +1,39 @@
-https://thomas-gourouza.com/api/accounts.php
+################# ACCOUNT #################
 
+GET:
+https://thomas-gourouza.com/api/accounts.php
 https://thomas-gourouza.com/api/account.php?login=test&password=test
+
+POST:
+https://thomas-gourouza.com/api/account.php
+{
+  "login": "test",
+  "password": "password"
+}
+
+DELETE:
+https://thomas-gourouza.com/api/account.php?account_id=1
+
+
+
+################# SETTINGS #################
+
+GET:
+https://thomas-gourouza.com/api/setting.php?login=test&password=test&tab=tab&tag=tag
+
+POST:
+https://thomas-gourouza.com/api/setting.php?login=test&password=test
+{
+  "tab": "tab",
+  "tag": "tag",
+  "activeItemIndexes": [1, 2, 3]
+}
+
+PATCH:
+https://thomas-gourouza.com/api/setting.php?login=test&password=test&tab=tab&tag=tag
+{
+  "activeItemIndexes": [4, 5, 6]
+}
+
+DELETE:
+https://thomas-gourouza.com/api/setting.php?login=test&password=test&tab=tab&tag=tag
