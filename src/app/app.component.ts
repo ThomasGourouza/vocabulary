@@ -56,7 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public getAccount() {
-    this.settingsSubscription = this.settingService.createAccount("test", "test")
+    this.settingsSubscription = this.settingService.getAccount("test", "test")
       .subscribe(response => {
         console.log(response);
       });

@@ -2,7 +2,7 @@
 // Allow requests from any origin
 header("Access-Control-Allow-Origin: *");
 // Allow the following HTTP methods
-header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE");
+header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
 // Allow the following headers
 header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token");
 
