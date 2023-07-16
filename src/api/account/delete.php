@@ -2,19 +2,22 @@
 // DELETE operation to remove a specific account
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
   // Check if account_id is provided as a query parameter
-  if (isset($_GET['account_id'])) {
-    $accountId = $_GET['account_id'];
+  if (isset($_GET['login']) && isset($_GET['password'])) {
+    $login = $_GET['login'];
+    $password = $_GET['password'];
 
     // Start a database transaction
     $db->exec('BEGIN');
 
     try {
-      $stmt = $db->prepare("SELECT id FROM account WHERE id = :account_id");
-      $stmt->bindValue(':account_id', $accountId, SQLITE3_INTEGER);
+      $stmt = $db->prepare("SELECT id FROM account WHERE login = :login AND password = :password");
+      $stmt->bindValue(':login', $login, SQLITE3_TEXT);
+      $stmt->bindValue(':password', $password, SQLITE3_TEXT);
       $result = $stmt->execute();
       $row = $result->fetchArray(SQLITE3_ASSOC);
 
       if ($row) {
+        $accountId = $row['id'];
         // Delete the account from the database
         $stmt = $db->prepare("DELETE FROM account WHERE id = :account_id");
         $stmt->bindValue(':account_id', $accountId, SQLITE3_INTEGER);

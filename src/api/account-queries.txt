@@ -1,7 +1,11 @@
-################# ACCOUNT #################
-
+################# ACCOUNTS #################
 GET:
 https://thomas-gourouza.com/api/accounts.php
+
+
+
+################# ACCOUNT #################
+GET:
 https://thomas-gourouza.com/api/account.php?login=test&password=test
 
 POST:
@@ -17,7 +21,6 @@ https://thomas-gourouza.com/api/account.php?account_id=1
 
 
 ################# SETTINGS #################
-
 GET:
 https://thomas-gourouza.com/api/setting.php?login=test&password=test&tab=tab&tag=tag
 
