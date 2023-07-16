@@ -8,7 +8,7 @@ POST:
 https://thomas-gourouza.com/api/account.php
 {
   "login": "test",
-  "password": "password"
+  "password": "test"
 }
 
 DELETE:
