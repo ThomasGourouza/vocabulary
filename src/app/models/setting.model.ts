@@ -1,11 +1,11 @@
-export interface Setting {
+export interface Account {
   id: number;
   login: string;
   password: string;
-  activations: Activation[];
 }
 
-export interface Activation {
+export interface Setting {
+  account_id: number;
   tag: string;
   tab: string;
   activeItemIndexes: number[];
