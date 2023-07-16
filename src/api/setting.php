@@ -6,7 +6,7 @@ header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
 // Allow the following headers
 header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token");
 
-$allowedMethods = ['GET', 'POST', 'DELETE', 'PATCH'];
+$allowedMethods = ['GET', 'POST', 'DELETE', 'PATCH', 'OPTIONS'];
 if (!in_array($_SERVER['REQUEST_METHOD'], $allowedMethods)) {
   http_response_code(500);
   echo json_encode(['message' => 'Not implemented']);
