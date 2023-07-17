@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 
@@ -34,7 +34,8 @@ import { TranslateLangPipe } from './pipes/translate-lang.pipe';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { KuroshiroService } from './services/kuroshiro.service';
 import { ItemsService } from './services/items.service';
-import { SettingService } from './services/setting.service';
+import { SettingApiService } from './services/setting.api.service';
+import { AccountService } from './services/account.service';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { SettingService } from './services/setting.service';
     HttpClientModule,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     FileUploadModule,
     TabMenuModule,
     ButtonModule,
@@ -73,7 +75,8 @@ import { SettingService } from './services/setting.service';
     MessageService,
     ConfirmationService,
     ItemsService,
-    SettingService
+    SettingApiService,
+    AccountService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,12 +1,26 @@
 <div class="account small-space-bellow flex-container">
+  <ng-container
+  *ngIf="!!(login$ | async); then signout; else signin"
+></ng-container>
+<ng-template #signout>
   <p-button
+    title="Sign out"
+    styleClass="p-button-rounded p-button-danger p-button-raised p-button-outlined"
+    icon="pi pi-sign-out"
+    (onClick)="onSignout()"
+  ></p-button>
+  <div class="login d-flex align-items-center">
+    {{ login$ | async }}
+  </div>
+</ng-template>
+<ng-template #signin>
+  <p-button
+    title="Sign in"
     styleClass="p-button-rounded p-button-success p-button-raised p-button-outlined"
     icon="pi pi-user"
     (onClick)="onAccount()"
   ></p-button>
-  <div *ngIf="login !== undefined" class="login d-flex align-items-center">
-    {{ login }}
-  </div>
+</ng-template>
 </div>
 <div class="d-flex justify-content-between">
   <p-button
@@ -105,12 +119,66 @@
   [draggable]="false"
   [resizable]="false"
 >
-  <p class="m-0">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  </p>
+  <div class="flex-container">
+    <div class="account-form sign-in">
+      <span>Sign In</span>
+      <form [formGroup]="signinForm" (ngSubmit)="onSignIn()">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="login"
+            placeholder="Login"
+            formControlName="login"
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            placeholder="Password"
+            formControlName="password"
+          />
+        </div>
+        <p-button
+          class="d-flex justify-content-center"
+          styleClass="p-button-rounded p-button-primary p-button-raised"
+          icon="pi pi-sign-in"
+          type="submit"
+          [disabled]="signinForm.invalid"
+        ></p-button>
+      </form>
+    </div>
+    <div class="account-form">
+      <span>Register</span>
+      <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="login"
+            placeholder="Login"
+            formControlName="login"
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            placeholder="Password"
+            formControlName="password"
+          />
+        </div>
+        <p-button
+          class="d-flex justify-content-center"
+          styleClass="p-button-rounded p-button-success p-button-raised"
+          icon="pi pi-user-plus"
+          type="submit"
+          [disabled]="registerForm.invalid"
+        ></p-button>
+      </form>
+    </div>
+  </div>
 </p-dialog>

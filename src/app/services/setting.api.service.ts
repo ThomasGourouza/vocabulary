@@ -2,9 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Account, Setting } from '../models/setting.model';
+export interface ApiMessage {
+  message: string;
+  account_id: number;
+}
 
 @Injectable()
-export class SettingService {
+export class SettingApiService {
   private baseURL = 'https://thomas-gourouza.com/api/';
   private settingURL = 'setting.php';
   private accountURL = 'account.php';
@@ -16,14 +20,14 @@ export class SettingService {
     return this.http.get<Account>(url);
   }
 
-  public createAccount(login: string, password: string) {
+  public createAccount(login: string, password: string): Observable<ApiMessage> {
     const accountData = { login, password };
-    return this.http.post(`${this.baseURL}${this.accountURL}`, accountData);
+    return this.http.post<ApiMessage>(`${this.baseURL}${this.accountURL}`, accountData);
   }
 
-  public deleteAccount(login: string, password: string) {
+  public deleteAccount(login: string, password: string): Observable<ApiMessage> {
     const url = `${this.baseURL}${this.accountURL}?login=${login}&password=${password}`;
-    return this.http.delete(url);
+    return this.http.delete<ApiMessage>(url);
   }
 
   public getSetting(login: string, password: string, tab: string, tag: string): Observable<Setting> {
@@ -37,15 +41,15 @@ export class SettingService {
       );
   }
 
-  public createSetting(login: string, password: string, tab: string, tag: string, activeItemIndexes: number[]) {
+  public createSetting(login: string, password: string, tab: string, tag: string, activeItemIndexes: number[]): Observable<ApiMessage> {
     const settingData = { tab, tag, activeItemIndexes };
     const url = `${this.baseURL}${this.settingURL}?login=${login}&password=${password}`;
-    return this.http.post(url, settingData);
+    return this.http.post<ApiMessage>(url, settingData);
   }
 
-  public updateSetting(login: string, password: string, tab: string, tag: string, activeItemIndexes: number[]) {
+  public updateSetting(login: string, password: string, tab: string, tag: string, activeItemIndexes: number[]): Observable<ApiMessage> {
     const settingData = { activeItemIndexes };
     const url = `${this.baseURL}${this.settingURL}?login=${login}&password=${password}&tab=${tab}&tag=${tag}`;
-    return this.http.patch(url, settingData);
+    return this.http.patch<ApiMessage>(url, settingData);
   }
 }

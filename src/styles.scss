@@ -207,7 +207,18 @@ div.circle {
 }
 
 .p-dialog {
-  width: 50vw;
+  @media (max-width: 1000px) {
+    width: 80vw;
+  }
+  @media (min-width: 1001px) and (max-width: 1200px) {
+    width: 70vw;
+  }
+  @media (min-width: 1201px) and (max-width: 1600px) {
+    width: 60vw;
+  }
+  @media (min-width: 1601px) {
+    width: 50vw;
+  }
   .p-dialog-header,
   .p-dialog-content {
     color: white;
@@ -248,4 +259,20 @@ div.circle {
   height: 30px;
   padding-right: 10px;
   padding-bottom: 3px;
+}
+
+.form-group {
+  margin: 2em 0;
+}
+
+.account-form {
+  width: 50%;
+  padding: 0 10%;
+  span {
+    font-size: larger;
+  }
+}
+
+.sign-in {
+  border-right: 1px solid white;
 }

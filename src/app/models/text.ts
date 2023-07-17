@@ -8,5 +8,6 @@ export enum Text {
   fileRemoved = 'File removed',
   screenLocked = 'Screen locked',
   screenUnlocked = 'Screen unlocked',
-  screenUnlockFailed = 'Failed to unlock the screen'
+  screenUnlockFailed = 'Failed to unlock the screen',
+  successLogin = 'Successfully logged in'
 }
