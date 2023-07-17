@@ -9,5 +9,6 @@ export enum Text {
   screenLocked = 'Screen locked',
   screenUnlocked = 'Screen unlocked',
   screenUnlockFailed = 'Failed to unlock the screen',
-  successLogin = 'Successfully logged in'
+  successLogin = 'Successfully logged in',
+  logout = 'Logged out',
 }

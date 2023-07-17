@@ -78,6 +78,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
       map(account => account?.login),
       shareReplay(1)
     );
+    const localStorageLogin = localStorage.getItem('vocabularyAppLogin');
+    const localStoragePassword = localStorage.getItem('vocabularyAppPassword');
+    if (!!localStorageLogin && !!localStoragePassword) {
+      this.signinForm.controls['login'].setValue(localStorageLogin);
+      this.signinForm.controls['password'].setValue(localStoragePassword);
+      this.onSignIn();
+    }
   }
 
   ngOnDestroy(): void {
@@ -90,7 +97,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.confirmationService.confirm({
       message: "Sign out ?",
       icon: "pi pi-sign-out",
-      accept: () => this.accountService.setAccount$(undefined)
+      accept: () => {
+        this.accountService.setAccount$(undefined);
+        this.messageService.add({ severity: 'warn', summary: Text.logout });
+      }
     });
   }
 
@@ -109,6 +119,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
           filter(setting => !!setting)
         )
         .subscribe(account => {
+          localStorage.setItem('vocabularyAppLogin', login);
+          localStorage.setItem('vocabularyAppPassword', password);
           this.isAccountDialogVisible = false;
           this.messageService.add({ severity: 'success', summary: Text.successLogin });
           this.accountService.setAccount$(account!);
