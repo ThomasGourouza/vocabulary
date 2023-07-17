@@ -25,7 +25,6 @@ export class TableListComponent implements OnInit, OnDestroy {
     if (this.items.length === 0) {
       this.showList = false;
     }
-    this.settingExist = false;
     this.tab = data.tab;
     this.tag = data.tag;
     this.getSettings();
@@ -123,6 +122,7 @@ export class TableListComponent implements OnInit, OnDestroy {
       .subscribe();
   }
   private getSettings(): void {
+    this.settingExist = false;
     if (!!this.account && this.tab !== undefined && this.tag !== undefined) {
       this.getSettingSubscription = this.settingApiService
         .getSetting(this.account.login, this.account.password, this.tab, this.tag)
