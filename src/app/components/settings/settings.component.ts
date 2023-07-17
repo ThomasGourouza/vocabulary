@@ -113,7 +113,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       this.signinSubscription = this.settingApiService.getAccount(login, password)
         .pipe(
           catchError(error => {
-            this.messageService.add({ severity: 'error', summary: error?.error?.message });
+            this.messageService.add({ severity: 'error', summary: error?.error?.message ?? Text.unableSignIn });
             return of(null);
           }),
           filter(setting => !!setting)
@@ -138,7 +138,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       this.registerSubscription = this.settingApiService.createAccount(login, password)
         .pipe(
           catchError(error => {
-            this.messageService.add({ severity: 'error', summary: error?.error?.message });
+            this.messageService.add({ severity: 'error', summary: error?.error?.message ?? Text.unableRegister });
             return of(null);
           }),
           filter(setting => !!setting)

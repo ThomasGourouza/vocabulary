@@ -11,4 +11,6 @@ export enum Text {
   screenUnlockFailed = 'Failed to unlock the screen',
   successLogin = 'Successfully logged in',
   logout = 'Logged out',
+  unableSignIn = 'Unable to sign in',
+  unableRegister = 'Unable to register'
 }
