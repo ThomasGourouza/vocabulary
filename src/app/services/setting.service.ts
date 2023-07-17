@@ -1,37 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { Setting } from '../models/setting.model';
+import { Account, Setting } from '../models/setting.model';
 
 @Injectable()
 export class SettingService {
-  private settingURL = 'https://thomas-gourouza.com/api/setting.php';
-  private accountsURL = 'https://thomas-gourouza.com/api/accounts.php';
-  private accountURL = 'https://thomas-gourouza.com/api/account.php';
+  private baseURL = 'https://thomas-gourouza.com/api/';
+  private settingURL = 'setting.php';
+  private accountURL = 'account.php';
 
   constructor(private http: HttpClient) { }
 
-  getAccounts() {
-    return this.http.get(this.accountsURL);
+  public getAccount(login: string, password: string): Observable<Account> {
+    const url = `${this.baseURL}${this.accountURL}?login=${login}&password=${password}`;
+    return this.http.get<Account>(url);
   }
 
-  getAccount(login: string, password: string) {
-    const url = `${this.accountURL}?login=${login}&password=${password}`;
-    return this.http.get(url);
-  }
-
-  createAccount(login: string, password: string) {
+  public createAccount(login: string, password: string) {
     const accountData = { login, password };
-    return this.http.post(this.accountURL, accountData);
+    return this.http.post(`${this.baseURL}${this.accountURL}`, accountData);
   }
 
-  deleteAccount(login: string, password: string) {
-    const url = `${this.accountURL}?login=${login}&password=${password}`;
+  public deleteAccount(login: string, password: string) {
+    const url = `${this.baseURL}${this.accountURL}?login=${login}&password=${password}`;
     return this.http.delete(url);
   }
 
-  getSetting(login: string, password: string, tab: string, tag: string): Observable<Setting> {
-    const url = `${this.settingURL}?login=${login}&password=${password}&tab=${tab}&tag=${tag}`;
+  public getSetting(login: string, password: string, tab: string, tag: string): Observable<Setting> {
+    const url = `${this.baseURL}${this.settingURL}?login=${login}&password=${password}&tab=${tab}&tag=${tag}`;
     return this.http.get<Setting>(url)
       .pipe(
         map(value => {
@@ -41,20 +37,15 @@ export class SettingService {
       );
   }
 
-  createSetting(login: string, password: string, tab: string, tag: string, activeItemIndexes: number[]) {
+  public createSetting(login: string, password: string, tab: string, tag: string, activeItemIndexes: number[]) {
     const settingData = { tab, tag, activeItemIndexes };
-    const url = `${this.settingURL}?login=${login}&password=${password}`;
+    const url = `${this.baseURL}${this.settingURL}?login=${login}&password=${password}`;
     return this.http.post(url, settingData);
   }
 
-  updateSetting(login: string, password: string, tab: string, tag: string, activeItemIndexes: number[]) {
+  public updateSetting(login: string, password: string, tab: string, tag: string, activeItemIndexes: number[]) {
     const settingData = { activeItemIndexes };
-    const url = `${this.settingURL}?login=${login}&password=${password}&tab=${tab}&tag=${tag}`;
+    const url = `${this.baseURL}${this.settingURL}?login=${login}&password=${password}&tab=${tab}&tag=${tag}`;
     return this.http.patch(url, settingData);
-  }
-
-  deleteSetting(login: string, password: string, tab: string, tag: string) {
-    const url = `${this.settingURL}?login=${login}&password=${password}&tab=${tab}&tag=${tag}`;
-    return this.http.delete(url);
   }
 }

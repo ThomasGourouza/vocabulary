@@ -25,6 +25,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { DialogModule } from 'primeng/dialog';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { FilterPipe } from './pipes/filter.pipe';
@@ -60,6 +61,7 @@ import { SettingService } from './services/setting.service';
     CardModule,
     ToastModule,
     ConfirmDialogModule,
+    DialogModule,
     CheckboxModule,
     ProgressBarModule
   ],

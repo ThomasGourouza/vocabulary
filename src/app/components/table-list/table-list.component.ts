@@ -5,7 +5,6 @@ import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
 import { JapaneseWord, KuroshiroService } from '../../services/kuroshiro.service';
 import { ItemsService } from 'src/app/services/items.service';
 import { SettingService } from 'src/app/services/setting.service';
-import { Setting } from 'src/app/models/setting.model';
 export interface Data {
   items: Item[];
   tab: string | undefined;

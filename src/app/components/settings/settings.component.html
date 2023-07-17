@@ -1,15 +1,27 @@
-<div class="d-flex justify-content-between">
-  <div class="flex-container">
-    <p-button
-      styleClass="p-button-rounded p-button-success p-button-raised p-button-outlined"
-      icon="pi pi-download"
-      (onClick)="onDownload()"
-    ></p-button>
+<div class="account small-space-bellow flex-container">
+  <p-button
+    styleClass="p-button-rounded p-button-success p-button-raised p-button-outlined"
+    icon="pi pi-user"
+    (onClick)="onAccount()"
+  ></p-button>
+  <div *ngIf="login !== undefined" class="login d-flex align-items-center">
+    {{ login }}
   </div>
+</div>
+<div class="d-flex justify-content-between">
+  <p-button
+    styleClass="p-button-rounded p-button-success p-button-raised p-button-outlined"
+    icon="pi pi-download"
+    (onClick)="onDownload()"
+  ></p-button>
   <div class="flex-container">
-    <div class="settings flex-container">
+    <div class="settings">
       <ng-container
-        *ngIf="isFileUploadVisible && tabs.length === 0; then show_upload; else show_trash"
+        *ngIf="
+          isFileUploadVisible && tabs.length === 0;
+          then show_upload;
+          else show_trash
+        "
       ></ng-container>
       <ng-template #show_upload>
         <p-fileUpload
@@ -26,7 +38,9 @@
         <p-button
           styleClass="p-button-rounded p-button-danger p-button-raised p-button-outlined"
           icon="pi pi-trash"
-          [disabled]="isFileUploadVisible === false || (isPlaying$ | async) ?? false"
+          [disabled]="
+            isFileUploadVisible === false || ((isPlaying$ | async) ?? false)
+          "
           (onClick)="onReset()"
         ></p-button>
       </ng-template>
@@ -35,7 +49,7 @@
       <select
         class="form-select settings"
         (change)="onChangeTab($event.target)"
-        [disabled]="tabs.length === 0 || (isPlaying$ | async) ?? false"
+        [disabled]="tabs.length === 0 || ((isPlaying$ | async) ?? false)"
       >
         <option
           [value]=""
@@ -54,7 +68,7 @@
       <select
         class="form-select settings"
         (change)="onChangeTag($event.target)"
-        [disabled]="tags.length === 0 || (isPlaying$ | async) ?? false"
+        [disabled]="tags.length === 0 || ((isPlaying$ | async) ?? false)"
       >
         <option
           [value]="0"
@@ -83,3 +97,20 @@
     </div>
   </div>
 </div>
+<p-dialog
+  header="Account"
+  [position]="'top'"
+  [(visible)]="isAccountDialogVisible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p class="m-0">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  </p>
+</p-dialog>

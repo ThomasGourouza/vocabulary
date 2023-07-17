@@ -38,6 +38,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   public isFileUploadVisible = true;
   private httpSubscription = new Subscription();
+  public login: string | undefined;
+  private password: string | undefined;
+  public isAccountDialogVisible = false;
 
   constructor(
     private excelService: ExcelService,
@@ -53,6 +56,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.httpSubscription.unsubscribe();
+  }
+
+  public onAccount(): void {
+    this.isAccountDialogVisible = true;
   }
 
   private loadFile() {

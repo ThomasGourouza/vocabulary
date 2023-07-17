@@ -15,10 +15,10 @@ body {
   @media (min-width: 1201px) and (max-width: 1400px) {
     padding: 0 10%;
   }
-  @media (min-width: 1401px){
+  @media (min-width: 1401px) {
     padding: 0 12%;
   }
-  @media (min-width: 1601px){
+  @media (min-width: 1601px) {
     padding: 0 14%;
   }
 }
@@ -105,7 +105,7 @@ tr:nth-child(odd):not(:first-child) {
   margin-left: 20px;
   width: 200px;
 }
-.form-select.time-select{
+.form-select.time-select {
   margin-top: 1.5em;
   height: 50px;
   width: 70px;
@@ -161,7 +161,15 @@ div.circle {
 .first-component {
   margin-top: 10px;
   margin-bottom: 30px;
-  padding: 2em 4em;
+  padding: 1em 4em 2em 4em;
+}
+
+.account {
+  margin-left: calc(50% - 24px);
+}
+.login {
+  font-size: x-large;
+  margin-left: 20px;
 }
 
 .component {
@@ -194,24 +202,39 @@ div.circle {
   background: transparent;
   height: 3px;
   .p-progressbar-value {
-    background: #F59E0B;
+    background: #f59e0b;
+  }
+}
+
+.p-dialog {
+  width: 50vw;
+  .p-dialog-header,
+  .p-dialog-content {
+    color: white;
+    background-color: #495057;
+    border-color: #495057;
+    border-width: 10px;
   }
 }
 
 .p-confirm-dialog {
   width: 50vw;
-  .p-dialog-header, .p-dialog-content, .p-dialog-footer {
+  .p-dialog-header,
+  .p-dialog-content,
+  .p-dialog-footer {
     color: white;
     background-color: #495057;
     border-color: #495057;
     border-width: 10px;
   }
   .p-dialog-footer {
-    .p-confirm-dialog-reject, .p-confirm-dialog-accept {
+    .p-confirm-dialog-reject,
+    .p-confirm-dialog-accept {
       color: white;
       border-color: white;
     }
-    .p-confirm-dialog-reject:hover, .p-confirm-dialog-accept:hover {
+    .p-confirm-dialog-reject:hover,
+    .p-confirm-dialog-accept:hover {
       color: white;
       border-color: white;
     }
