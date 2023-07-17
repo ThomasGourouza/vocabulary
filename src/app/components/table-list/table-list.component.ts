@@ -84,6 +84,7 @@ export class TableListComponent implements OnInit, OnDestroy {
   }
 
   public toggleGlobalActive(active: boolean): void {
+    if (!this.showList || this.items.length === 0) return;
     this.items.forEach(item => item.active = active);
     this.itemsService.setItems$(this.items);
     const indexes = active ? this.items.map((_, index) => index) : [];

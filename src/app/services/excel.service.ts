@@ -114,8 +114,9 @@ export class ExcelService {
 
   private getHeaders(): string {
     const headers = [...this.validHeaders];
-    const lastHeader = headers.pop();
+    headers.pop();
+    const beforeLastHeader = headers.pop();
     const joinedHeaders = headers.join('", "');
-    return `"${joinedHeaders}" and optionally "${lastHeader}".`;
+    return `"${joinedHeaders}" and "${beforeLastHeader}".`;
   }
 }

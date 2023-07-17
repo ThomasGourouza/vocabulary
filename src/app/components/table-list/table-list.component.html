@@ -16,7 +16,7 @@
     <th class="activation-col">
       <p-checkbox
         class="d-flex justify-content-center align-items-center"
-        [disabled]="items.length === 0"
+        [disabled]="!showList || items.length === 0"
         [binary]="true"
         [ngModel]="globalActive"
         (onChange)="toggleGlobalActive($event.checked)"
