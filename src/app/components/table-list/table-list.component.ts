@@ -59,7 +59,10 @@ export class TableListComponent implements OnInit, OnDestroy {
     this.isSourceColFirst$ = this.readerSpeakerService.isSourceColFirst$;
     this.isPlaying$ = this.readerSpeakerService.isPlaying$;
     this.japaneseWords$ = this.kuroshiroService.japaneseWords$;
-    this.accountSubscription = this.accountService.account$.subscribe(account => this.account = account);
+    this.accountSubscription = this.accountService.account$.subscribe(account => {
+      this.account = account;
+      this.getSettings();
+    });
   }
 
   ngOnDestroy(): void {
