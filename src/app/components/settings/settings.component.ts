@@ -119,8 +119,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
           filter(setting => !!setting)
         )
         .subscribe(account => {
-          localStorage.setItem('vocabularyAppLogin', login);
-          localStorage.setItem('vocabularyAppPassword', password);
+          this.setLocalStorage(login, password);
           this.isAccountDialogVisible = false;
           this.messageService.add({ severity: 'success', summary: Text.successLogin });
           this.accountService.setAccount$(account!);
@@ -144,6 +143,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
           filter(setting => !!setting)
         )
         .subscribe(response => {
+          this.setLocalStorage(login, password);
           this.isAccountDialogVisible = false;
           this.messageService.add({ severity: 'success', summary: response!.message });
           const account = {
@@ -222,5 +222,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
         downloadLink.click();
         document.body.removeChild(downloadLink);
       });
+  }
+
+  private setLocalStorage(login: string, password: string): void {
+    localStorage.setItem('vocabularyAppLogin', login);
+    localStorage.setItem('vocabularyAppPassword', password);
   }
 }

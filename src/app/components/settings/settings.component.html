@@ -24,6 +24,7 @@
 </div>
 <div class="d-flex justify-content-between">
   <p-button
+    title="Download example file"
     styleClass="p-button-rounded p-button-success p-button-raised p-button-outlined"
     icon="pi pi-download"
     (onClick)="onDownload()"
@@ -50,6 +51,7 @@
       </ng-template>
       <ng-template #show_trash>
         <p-button
+          title="Remove file"
           styleClass="p-button-rounded p-button-danger p-button-raised p-button-outlined"
           icon="pi pi-trash"
           [disabled]="
@@ -104,6 +106,7 @@
     <i class="pi pi-volume-up toggle-sound"></i>
     <div class="sound-checkbox">
       <p-checkbox
+        title="Automatic speaker"
         [binary]="true"
         [ngModel]="true"
         (onChange)="toggleSound($event.checked)"
@@ -142,6 +145,7 @@
           />
         </div>
         <p-button
+          title="Sign in"
           class="d-flex justify-content-center"
           styleClass="p-button-rounded p-button-primary p-button-raised"
           icon="pi pi-sign-in"
@@ -172,6 +176,7 @@
           />
         </div>
         <p-button
+          title="Register"
           class="d-flex justify-content-center"
           styleClass="p-button-rounded p-button-success p-button-raised"
           icon="pi pi-user-plus"

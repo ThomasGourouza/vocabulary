@@ -1,9 +1,15 @@
 <div class="d-flex justify-content-between">
   <div class="table-list-info d-flex justify-content-left align-items-end">
-    {{ itemsSelectedNumber }} item{{ itemsSelectedNumber > 1 ? 's' : '' }} selected
+    <span *ngIf="items.length > 0"
+      >{{ itemsSelectedNumber }} item{{
+        itemsSelectedNumber > 1 ? "s" : ""
+      }}
+      selected</span
+    >
   </div>
   <div class="small-space-bellow">
     <p-button
+      [title]="showList ? 'Hide list' : 'Show list'"
       [styleClass]="
         'p-button-rounded p-button-warning p-button-raised p-button-outlined ' +
         (showList ? 'p-button-danger' : 'p-button-primary')
@@ -19,6 +25,7 @@
   <tr>
     <th class="activation-col">
       <p-checkbox
+        title="Select all items"
         class="d-flex justify-content-center align-items-center"
         [disabled]="!showList || items.length === 0"
         [binary]="true"
@@ -41,6 +48,7 @@
     <tr *ngFor="let item of items" class="list">
       <td>
         <p-checkbox
+          title="Select item"
           class="d-flex justify-content-center align-items-center"
           [binary]="true"
           [(ngModel)]="item.active"
@@ -58,6 +66,7 @@
           ></div>
           <div class="target-sound">
             <p-button
+              title="Listen"
               *ngIf="!(isSourceColFirst$ | async) ?? false"
               styleClass="p-button-rounded p-button-raised"
               icon="pi pi-volume-up"
@@ -78,6 +87,7 @@
           ></div>
           <div class="target-sound">
             <p-button
+              title="Listen"
               *ngIf="(isSourceColFirst$ | async) ?? true"
               styleClass="p-button-rounded p-button-raised"
               icon="pi pi-volume-up"
