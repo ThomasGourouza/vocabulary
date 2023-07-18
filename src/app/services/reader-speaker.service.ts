@@ -35,6 +35,10 @@ export class ReaderSpeakerService {
     this.speak(text, language);
   }
 
+  signalEndOfPlay(): void {
+    this.speak('End of the list', 'en-GB');
+  }
+
   toggleIsSourceColFirst$() {
     if (this._isPlaying$.getValue() || !this._isTargetDisplayed$.getValue()) return;
     this._isSourceColFirst$.next(!this._isSourceColFirst$.getValue());

@@ -205,6 +205,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
       ).subscribe(_ => {
         if (this.currentIndex.counter % this.items.length === 0 && this.currentIndex.showTarget) {
           this.onPause();
+          this.readerSpeakerService.signalEndOfPlay();
         } else {
           this.next();
         }
