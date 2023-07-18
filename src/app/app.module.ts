@@ -30,6 +30,7 @@ import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { FilterPipe } from './pipes/filter.pipe';
 import { GetPipe } from './pipes/get.pipe';
+import { FlagUrlPipe } from './pipes/flag-url.pipe';
 import { TranslateLangPipe } from './pipes/translate-lang.pipe';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { KuroshiroService } from './services/kuroshiro.service';
@@ -48,7 +49,8 @@ import { AccountService } from './services/account.service';
     FilterPipe,
     GetPipe,
     TranslateLangPipe,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    FlagUrlPipe
   ],
   imports: [
     BrowserModule,

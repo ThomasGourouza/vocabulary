@@ -5,10 +5,9 @@
         <img
           *ngIf="!!item"
           [src]="
-            'assets/flags/' +
-            ((isSourceColFirst ? item.source_language : item.target_language)
-              | lowercase) +
-            '.png'
+            (isSourceColFirst ? item.source_language : item.target_language)
+              | lowercase
+              | flagUrl
           "
         />
         {{
@@ -24,10 +23,9 @@
         <img
           *ngIf="!!item"
           [src]="
-            'assets/flags/' +
-            ((isSourceColFirst ? item.target_language : item.source_language)
-              | lowercase) +
-            '.png'
+            (isSourceColFirst ? item.target_language : item.source_language)
+              | lowercase
+              | flagUrl
           "
         />
         {{

@@ -2,7 +2,7 @@
   <div class="flags">
     <img
       *ngFor="let supportedLanguage of supportedLanguages"
-      [src]="'assets/flags/' + supportedLanguage + '.png'"
+      [src]="supportedLanguage | flagUrl"
       [title]="supportedLanguage | translateLang"
     />
   </div>
