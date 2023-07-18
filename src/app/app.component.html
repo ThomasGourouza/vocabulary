@@ -1,11 +1,11 @@
 <div class="mx-5">
-  <div class="flags">
+  <!-- <div class="flags">
     <img
       *ngFor="let supportedLanguage of supportedLanguages"
       [src]="supportedLanguage | flagUrl"
       [title]="supportedLanguage | translateLang"
     />
-  </div>
+  </div> -->
   <div class="card first-component">
     <app-settings
       [tabs]="file$ | async | get : 'tabs'"

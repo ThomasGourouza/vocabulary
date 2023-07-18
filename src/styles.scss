@@ -159,17 +159,18 @@ div.circle {
 }
 
 .first-component {
-  margin-top: 10px;
+  margin-top: 20px;
   margin-bottom: 30px;
   padding: 1em 4em 2em 4em;
 }
 
 .account {
+  margin-top: 5px;
   margin-left: calc(50% - 24px);
 }
 .login {
   font-size: x-large;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 .component {
@@ -281,3 +282,8 @@ div.circle {
   width: 200px;
   padding-left: 5px;
 }
+
+hr {
+  margin: 40px 0 30px 0;
+}
+

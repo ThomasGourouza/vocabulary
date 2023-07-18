@@ -1,27 +1,28 @@
 <div class="account small-space-bellow flex-container">
   <ng-container
-  *ngIf="!!(login$ | async); then signout; else signin"
-></ng-container>
-<ng-template #signout>
-  <p-button
-    title="Sign out"
-    styleClass="p-button-rounded p-button-danger p-button-raised p-button-outlined"
-    icon="pi pi-user"
-    (onClick)="onSignout()"
-  ></p-button>
-  <div class="login d-flex align-items-center">
-    {{ login$ | async }}
-  </div>
-</ng-template>
-<ng-template #signin>
-  <p-button
-    title="Sign in"
-    styleClass="p-button-rounded p-button-success p-button-raised p-button-outlined"
-    icon="pi pi-user"
-    (onClick)="onAccount()"
-  ></p-button>
-</ng-template>
+    *ngIf="!!(login$ | async); then signout; else signin"
+  ></ng-container>
+  <ng-template #signout>
+    <p-button
+      title="Sign out"
+      styleClass="p-button-rounded p-button-danger p-button-raised p-button-outlined"
+      icon="pi pi-user"
+      (onClick)="onSignout()"
+    ></p-button>
+    <div class="login d-flex align-items-center">
+      {{ login$ | async }}
+    </div>
+  </ng-template>
+  <ng-template #signin>
+    <p-button
+      title="Sign in"
+      styleClass="p-button-rounded p-button-success p-button-raised p-button-outlined"
+      icon="pi pi-user"
+      (onClick)="onAccount()"
+    ></p-button>
+  </ng-template>
 </div>
+<hr />
 <div class="d-flex justify-content-between">
   <p-button
     title="Download example file"
