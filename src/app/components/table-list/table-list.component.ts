@@ -75,6 +75,10 @@ export class TableListComponent implements OnInit, OnDestroy {
     return this.items.length > 0 && this.items.every(item => item.active);
   }
 
+  get itemsSelectedNumber(): number {
+    return this.items.filter(item => item.active).length;
+  }
+
   public toggleGlobalActive(active: boolean): void {
     if (!this.showList || this.items.length === 0) return;
     this.items.forEach(item => item.active = active);

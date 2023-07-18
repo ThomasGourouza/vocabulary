@@ -1,4 +1,7 @@
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-between">
+  <div class="table-list-info d-flex justify-content-left align-items-end">
+    {{ itemsSelectedNumber }} item{{ itemsSelectedNumber > 1 ? 's' : '' }} selected
+  </div>
   <div class="small-space-bellow">
     <p-button
       [styleClass]="
@@ -10,6 +13,7 @@
       [disabled]="items.length === 0"
     ></p-button>
   </div>
+  <div class="table-list-info"></div>
 </div>
 <table>
   <tr>
