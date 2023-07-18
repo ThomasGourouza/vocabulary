@@ -79,6 +79,7 @@
         <option
           *ngFor="let tab of tabs"
           [value]="tab"
+          [selected]="tab === selectedTab"
           [label]="tab.toString() | titlecase"
         ></option>
       </select>
@@ -98,6 +99,7 @@
         <option
           *ngFor="let tag of tags"
           [value]="tag"
+          [selected]="tag === selectedTag"
           [label]="tag.toString() | titlecase"
         ></option>
       </select>

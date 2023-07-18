@@ -24,6 +24,9 @@ export class TableListComponent implements OnInit, OnDestroy {
     this.itemsService.setItems$(this.items);
     if (this.items.length === 0) {
       this.showList = false;
+      if (this.isConnectionTimeOver5sec()) {
+        localStorage.setItem('vocabularyAppShowList', this.showList.toString());
+      }
     }
     this.tab = data.tab;
     this.tag = data.tag;
@@ -36,6 +39,8 @@ export class TableListComponent implements OnInit, OnDestroy {
 
   public showList = false;
   private account: Account | undefined;
+
+  private connectionTime = new Date();
 
   public isSourceColFirst$!: Observable<boolean>;
   public isPlaying$!: Observable<boolean>;
@@ -62,6 +67,7 @@ export class TableListComponent implements OnInit, OnDestroy {
       this.account = account;
       this.getSettings();
     });
+    this.showList = localStorage.getItem('vocabularyAppShowList') === 'true';
   }
 
   ngOnDestroy(): void {
@@ -77,6 +83,12 @@ export class TableListComponent implements OnInit, OnDestroy {
 
   get itemsSelectedNumber(): number {
     return this.items.filter(item => item.active).length;
+  }
+
+  private isConnectionTimeOver5sec(): boolean {
+    const currentTime = new Date();
+    const connectionDuration = currentTime.getTime() - this.connectionTime.getTime();
+    return connectionDuration > 5000;
   }
 
   public toggleGlobalActive(active: boolean): void {
@@ -97,6 +109,7 @@ export class TableListComponent implements OnInit, OnDestroy {
 
   public toggleList() {
     this.showList = this.items.length > 0 && !this.showList;
+    localStorage.setItem('vocabularyAppShowList', this.showList.toString());
   }
 
   public onReadSpeak(item: Item): void {

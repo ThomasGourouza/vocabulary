@@ -14,20 +14,35 @@ import { AccountService } from 'src/app/services/account.service';
   templateUrl: './settings.component.html'
 })
 export class SettingsComponent implements OnInit, OnDestroy {
-  @Input() set tabs(values: (string | string)[]) {
-    this._tabs = values as string[];
+  @Input() set tabs(values: string[]) {
+    this._tabs = values.map(tag => tag.toString());
     if (this.tabs.length === 0) {
       this.tab.emit(undefined);
+    } else {
+      const localStorageTab = localStorage.getItem('vocabularyAppTab');
+      if (!!localStorageTab && this.tabs.includes(localStorageTab)) {
+        this.selectedTab = localStorageTab;
+        this.tab.emit(this.selectedTab);
+      }
     }
   }
-  @Input() set tags(values: (string | string)[]) {
-    this._tags = values as string[];
+  @Input() set tags(values: string[]) {
+    this._tags = values.map(tag => tag.toString());
     if (this.tags.length === 0) {
       this.tag.emit(undefined);
+    } else {
+      const localStorageTag = localStorage.getItem('vocabularyAppTag');
+      if (!!localStorageTag && this.tags.includes(localStorageTag)) {
+        this.selectedTag = localStorageTag;
+        this.tag.emit(this.selectedTag);
+      }
     }
   }
   @Output() tab = new EventEmitter<string>();
   @Output() tag = new EventEmitter<string>();
+
+  public selectedTab: string | undefined;
+  public selectedTag: string | undefined;
 
   private _tabs!: string[];
   get tabs(): string[] {
@@ -119,7 +134,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
           filter(setting => !!setting)
         )
         .subscribe(account => {
-          this.setLocalStorage(login, password);
+          this.setAccountLocalStorage(login, password);
           this.isAccountDialogVisible = false;
           this.messageService.add({ severity: 'success', summary: Text.successLogin });
           this.accountService.setAccount$(account!);
@@ -143,7 +158,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
           filter(setting => !!setting)
         )
         .subscribe(response => {
-          this.setLocalStorage(login, password);
+          this.setAccountLocalStorage(login, password);
           this.isAccountDialogVisible = false;
           this.messageService.add({ severity: 'success', summary: response!.message });
           const account = {
@@ -162,6 +177,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   private loadFile() {
+    this.isFileUploadVisible = false;
     this.httpSubscription = this.http.get('assets/language-file.xlsx', { responseType: 'blob' })
       .subscribe((data: Blob) => {
         this.onUploadData(data as File);
@@ -186,16 +202,16 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   public onChangeTag(tag: EventTarget | null): void {
     if (tag !== null && tag !== undefined) {
-      this.tag.emit((tag as HTMLSelectElement)?.value);
+      this.tagEmitter((tag as HTMLSelectElement)?.value);
     }
   }
 
   public onChangeTab(tab: EventTarget | null): void {
     if (tab !== null && tab !== undefined) {
-      this.tab.emit(undefined);
-      this.tag.emit(undefined);
+      this.tabEmitter(undefined);
+      this.tagEmitter(undefined);
       setTimeout(() => {
-        this.tab.emit((tab as HTMLSelectElement)?.value);
+        this.tabEmitter((tab as HTMLSelectElement)?.value);
       });
     }
   }
@@ -224,8 +240,20 @@ export class SettingsComponent implements OnInit, OnDestroy {
       });
   }
 
-  private setLocalStorage(login: string, password: string): void {
+  private setAccountLocalStorage(login: string, password: string): void {
     localStorage.setItem('vocabularyAppLogin', login);
     localStorage.setItem('vocabularyAppPassword', password);
+  }
+
+  private tabEmitter(tab: string | undefined): void {
+    this.tab.emit(tab);
+    if (tab !== undefined) {
+      localStorage.setItem('vocabularyAppTab', tab ?? '');
+    }
+  }
+
+  private tagEmitter(tag: string | undefined): void {
+    this.tag.emit(tag);
+    localStorage.setItem('vocabularyAppTag', tag ?? '');
   }
 }
