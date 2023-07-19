@@ -6,7 +6,7 @@
       [title]="supportedLanguage | translateLang"
     />
   </div> -->
-  <div class="card first-component">
+  <div class="card first">
     <app-settings
       [tabs]="file$ | async | get : 'tabs'"
       [tags]="file$ | async | get : 'tags' : tab"
@@ -19,7 +19,7 @@
       <app-interactive-table></app-interactive-table>
     </div>
   </div>
-  <div class="card component">
+  <div class="card last">
     <app-table-list
       [data]="{ tab, tag, items: file$ | async | filter : tab : tag }"
     ></app-table-list>

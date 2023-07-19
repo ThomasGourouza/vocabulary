@@ -36,10 +36,6 @@ body {
   }
 }
 
-.activation-col {
-  width: 50px;
-}
-
 table {
   border-spacing: 0;
   border-collapse: separate;
@@ -51,7 +47,7 @@ table {
 th:not(:last-child) {
   border-right: 1px solid rgb(60, 60, 60);
 }
-th:nth-child(3) {
+th:last-child {
   width: 50%;
 }
 td:not(:last-child) {
@@ -60,24 +56,53 @@ td:not(:last-child) {
 td {
   overflow: auto;
 }
-tr:first-child {
+thead tr {
   background-color: rgb(100, 100, 100);
   font-size: x-large;
-  overflow: auto;
   height: 50px;
 }
-tr:not(:first-child):not(.list) {
-  height: 150px;
+tbody {
+  tr {
+    height: 150px;
+  }
+  tr:nth-child(even) {
+    background-color: rgb(40, 40, 40);
+  }
+  tr:nth-child(odd) {
+    background-color: rgb(30, 30, 30);
+  }
 }
-tr.list {
-  height: 60px;
-  font-size: x-large;
-}
-tr:nth-child(even) {
-  background-color: rgb(30, 30, 30);
-}
-tr:nth-child(odd):not(:first-child) {
-  background-color: rgb(40, 40, 40);
+
+table.table-list-container {
+  th:first-child {
+    width: 50px;
+  }
+  thead,
+  tbody tr {
+    font-size: x-large;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+  tbody {
+    display: block;
+    height: 40vh;
+    overflow: auto;
+    tr {
+      height: 60px;
+    }
+    td:first-child {
+      width: 50px;
+    }
+    td:last-child {
+      width: 50%;
+    }
+    td:not(:first-child) {
+      @media (min-width: 1500px) {
+        border-right: 0px;
+      }
+    }
+  }
 }
 
 .center-text {
@@ -120,6 +145,15 @@ tr:nth-child(odd):not(:first-child) {
 .card {
   background-color: rgb(60, 60, 60);
 }
+.card.first {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  padding: 1em 4em 2em 4em;
+}
+.card.last {
+  margin: 30px 0;
+  padding: 2em 4em 3em 4em;
+}
 
 .big {
   font-size: x-large;
@@ -158,12 +192,6 @@ div.circle {
   align-items: center;
 }
 
-.first-component {
-  margin-top: 20px;
-  margin-bottom: 30px;
-  padding: 1em 4em 2em 4em;
-}
-
 .account {
   margin-top: 5px;
   margin-left: calc(50% - 24px);
@@ -171,11 +199,6 @@ div.circle {
 .login {
   font-size: x-large;
   margin-left: 10px;
-}
-
-.component {
-  margin: 30px 0;
-  padding: 2em 4em 3em 4em;
 }
 
 .flex-container {
@@ -286,4 +309,3 @@ div.circle {
 hr {
   margin: 20px 0;
 }
-

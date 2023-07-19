@@ -1,77 +1,81 @@
 <table>
-  <tr>
-    <th scope="col">
-      <div class="center-text">
-        <img
-          *ngIf="!!item"
-          [src]="
-            (isSourceColFirst ? item.source_language : item.target_language)
-              | lowercase
-              | flagUrl
-          "
-        />
-        {{
-          (isSourceColFirst
-            ? item?.source_language ?? "Source"
-            : item?.target_language ?? "Target"
-          ) | translateLang
-        }}
-      </div>
-    </th>
-    <th scope="col">
-      <div class="center-text">
-        <img
-          *ngIf="!!item"
-          [src]="
-            (isSourceColFirst ? item.target_language : item.source_language)
-              | lowercase
-              | flagUrl
-          "
-        />
-        {{
-          (isSourceColFirst
-            ? item?.target_language ?? "Target"
-            : item?.source_language ?? "Source"
-          ) | translateLang
-        }}
-      </div>
-    </th>
-  </tr>
-  <tr>
-    <ng-container
-      *ngIf="isSourceColFirst; then frenchFirst; else translationFirst"
-    ></ng-container>
-    <ng-template #frenchFirst>
-      <td>
-        <div class="arial biggest center-text">
-          <span *ngIf="!!item"> {{ item.source }} </span>
-        </div>
-      </td>
-      <td>
-        <div class="arial biggest center-text">
-          <span
-            *ngIf="showTarget && !!item"
-            [innerHTML]="item.target | safeHtml : (japaneseWords$ | async)"
-          >
-          </span>
-        </div>
-      </td>
-    </ng-template>
-    <ng-template #translationFirst>
-      <td>
-        <div class="arial biggest center-text">
-          <span
+  <thead>
+    <tr>
+      <th scope="col">
+        <div class="center-text">
+          <img
             *ngIf="!!item"
-            [innerHTML]="item.target | safeHtml : (japaneseWords$ | async)"
-          >
-          </span>
+            [src]="
+              (isSourceColFirst ? item.source_language : item.target_language)
+                | lowercase
+                | flagUrl
+            "
+          />
+          {{
+            (isSourceColFirst
+              ? item?.source_language ?? "Source"
+              : item?.target_language ?? "Target"
+            ) | translateLang
+          }}
         </div>
-      </td>
-      <td>
-        <div class="arial biggest center-text">
-          <span *ngIf="showTarget && !!item"> {{ item.source }} </span>
+      </th>
+      <th scope="col">
+        <div class="center-text">
+          <img
+            *ngIf="!!item"
+            [src]="
+              (isSourceColFirst ? item.target_language : item.source_language)
+                | lowercase
+                | flagUrl
+            "
+          />
+          {{
+            (isSourceColFirst
+              ? item?.target_language ?? "Target"
+              : item?.source_language ?? "Source"
+            ) | translateLang
+          }}
         </div>
-      </td>
-    </ng-template>
-  </tr>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <ng-container
+        *ngIf="isSourceColFirst; then frenchFirst; else translationFirst"
+      ></ng-container>
+      <ng-template #frenchFirst>
+        <td>
+          <div class="arial biggest center-text">
+            <span *ngIf="!!item"> {{ item.source }} </span>
+          </div>
+        </td>
+        <td>
+          <div class="arial biggest center-text">
+            <span
+              *ngIf="showTarget && !!item"
+              [innerHTML]="item.target | safeHtml : (japaneseWords$ | async)"
+            >
+            </span>
+          </div>
+        </td>
+      </ng-template>
+      <ng-template #translationFirst>
+        <td>
+          <div class="arial biggest center-text">
+            <span
+              *ngIf="!!item"
+              [innerHTML]="item.target | safeHtml : (japaneseWords$ | async)"
+            >
+            </span>
+          </div>
+        </td>
+        <td>
+          <div class="arial biggest center-text">
+            <span *ngIf="showTarget && !!item"> {{ item.source }} </span>
+          </div>
+        </td>
+      </ng-template>
+    </tr>
+  </tbody>
 </table>
