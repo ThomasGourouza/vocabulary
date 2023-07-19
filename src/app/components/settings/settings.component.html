@@ -111,7 +111,7 @@
       <p-checkbox
         title="Automatic speaker"
         [binary]="true"
-        [ngModel]="true"
+        [ngModel]="isSoundActivated | async"
         (onChange)="toggleSound($event.checked)"
       ></p-checkbox>
     </div>

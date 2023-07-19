@@ -216,6 +216,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
   }
 
+  get isSoundActivated(): Observable<boolean> {
+    return this.readerSpeakerService.isReadSpeakerActivated$
+  }
+
   public toggleSound(value: boolean): void {
     this.readerSpeakerService.setIsReadSpeakerActivated$(value);
   }

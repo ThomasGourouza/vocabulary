@@ -7,10 +7,10 @@ import { Language } from '../models/language';
 export class ReaderSpeakerService {
 
   private synth!: SpeechSynthesisUtterance;
-  private _isReadSpeakerActivated$ = new BehaviorSubject<boolean>(true);
   private _isPlaying$ = new BehaviorSubject<boolean>(false);
   private _isTargetDisplayed$ = new BehaviorSubject<boolean>(true);
-  private _isSourceColFirst$ = new BehaviorSubject<boolean>(true);
+  private _isReadSpeakerActivated$ = new BehaviorSubject<boolean>(localStorage.getItem('vocabularyAppIsReadSpeakerActivated') === 'true');
+  private _isSourceColFirst$ = new BehaviorSubject<boolean>(localStorage.getItem('vocabularyAppIsSourceColFirst') === 'true');
 
   constructor() { }
 
@@ -41,6 +41,7 @@ export class ReaderSpeakerService {
 
   toggleIsSourceColFirst$() {
     if (this._isPlaying$.getValue() || !this._isTargetDisplayed$.getValue()) return;
+    localStorage.setItem('vocabularyAppIsSourceColFirst', (!this._isSourceColFirst$.getValue()).toString());
     this._isSourceColFirst$.next(!this._isSourceColFirst$.getValue());
   }
 
@@ -49,6 +50,7 @@ export class ReaderSpeakerService {
   }
 
   setIsReadSpeakerActivated$(activated: boolean) {
+    localStorage.setItem('vocabularyAppIsReadSpeakerActivated', activated.toString());
     this._isReadSpeakerActivated$.next(activated);
   }
 
