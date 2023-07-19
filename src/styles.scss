@@ -85,8 +85,14 @@ table.table-list-container {
     table-layout: fixed;
   }
   tbody {
+    transition: max-height 0.5s ease-in-out;
     display: block;
-    height: 40vh;
+    @media (max-width: 1500px) {
+      max-height: 900px;
+    }
+    @media (min-width: 1501px) {
+      max-height: 600px;
+    }
     overflow: auto;
     tr {
       height: 60px;
@@ -102,6 +108,9 @@ table.table-list-container {
         border-right: 0px;
       }
     }
+  }
+  tbody.listClosed {
+    max-height: 0;
   }
 }
 
@@ -153,6 +162,12 @@ table.table-list-container {
 .card.last {
   margin: 30px 0;
   padding: 2em 4em 3em 4em;
+  @media (max-width: 1500px) {
+    height: 1100px;
+  }
+  @media (min-width: 1501px) {
+    height: 800px;
+  }
 }
 
 .big {

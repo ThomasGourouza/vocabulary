@@ -46,7 +46,7 @@
       </th>
     </tr>
   </thead>
-  <tbody *ngIf="showList && items.length > 0">
+  <tbody [ngClass]="{listClosed: !showList || items.length === 0}">
     <tr *ngFor="let item of items">
       <td>
         <p-checkbox

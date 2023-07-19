@@ -35,6 +35,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
       if (!!localStorageTag && this.tags.includes(localStorageTag)) {
         this.selectedTag = localStorageTag;
         this.tag.emit(this.selectedTag);
+      } else {
+        this.tag.emit(undefined);
       }
     }
   }
