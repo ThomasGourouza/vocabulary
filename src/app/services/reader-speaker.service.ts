@@ -27,6 +27,7 @@ export class ReaderSpeakerService {
   }
 
   textToSpeech(item: Item, position: 1 | 2): void {
+    this.cancelReadSpeak();
     const language = Language[
       (position === 1 ? item.source_language : item.target_language)
         ?.toLowerCase() as keyof typeof Language
