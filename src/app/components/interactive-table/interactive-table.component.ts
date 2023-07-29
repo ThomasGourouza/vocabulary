@@ -21,7 +21,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     { label: TimeLabel.THREE, value: TimeValue.THREE }
   ];
   private sourceTime: number = this.times[0].value;
-  public time: number = this.times[1].value;
+  public time: number;
   private memory: number[] = [];
   public isSourceColFirst!: boolean;
   public isDataEmpty = true;
@@ -43,7 +43,9 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     private readerSpeakerService: ReaderSpeakerService,
     private wakelockService: WakelockService,
     private itemsService: ItemsService
-  ) { }
+  ) {
+    this.time = +(localStorage.getItem('vocabularyAppTime') ?? this.times[1].value);
+  }
 
   ngOnInit(): void {
     this.itemsSubscription = this.itemsService.items$.subscribe(items => {
@@ -73,7 +75,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
           clearTimeout(this.timerIdThirdTime);
           this.time = this.times[0].value;
         } else {
-          this.time = this.times[1].value;
+          this.time = +(localStorage.getItem('vocabularyAppTime') ?? this.times[1].value);
         }
       });
     this.isSourceColFirstSubscription = this.readerSpeakerService.isSourceColFirst$
@@ -99,6 +101,10 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   public onInterChange(): void {
     this.readerSpeakerService.toggleIsSourceColFirst$();
+  }
+
+  public setLocalStorageTime(time: any): void {
+    localStorage.setItem('vocabularyAppTime', time);
   }
 
   public onNext(): void {

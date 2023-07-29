@@ -80,6 +80,7 @@
       <select
         class="form-select time-select"
         [(ngModel)]="time"
+        (ngModelChange)="setLocalStorageTime($event)"
         [disabled]="isPlaying || isDataEmpty || !isReadSpeakerActivated"
       >
         <option
