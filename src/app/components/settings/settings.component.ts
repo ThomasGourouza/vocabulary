@@ -116,6 +116,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       icon: "pi pi-sign-out",
       accept: () => {
         this.accountService.setAccount$(undefined);
+        this.removeAccountLocalStorage();
         this.messageService.add({ severity: 'warn', summary: Text.logout });
       }
     });
@@ -249,6 +250,11 @@ export class SettingsComponent implements OnInit, OnDestroy {
   private setAccountLocalStorage(login: string, password: string): void {
     localStorage.setItem('vocabularyAppLogin', login);
     localStorage.setItem('vocabularyAppPassword', password);
+  }
+
+  private removeAccountLocalStorage(): void {
+    localStorage.removeItem('vocabularyAppLogin');
+    localStorage.removeItem('vocabularyAppPassword');
   }
 
   private tabEmitter(tab: string | undefined): void {
