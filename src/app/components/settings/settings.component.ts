@@ -211,8 +211,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   public onChangeTab(tab: EventTarget | null): void {
     if (tab !== null && tab !== undefined) {
-      this.tabEmitter(undefined);
       this.tagEmitter(undefined);
+      this.tabEmitter(undefined);
       setTimeout(() => {
         this.tabEmitter((tab as HTMLSelectElement)?.value);
       });
@@ -260,12 +260,16 @@ export class SettingsComponent implements OnInit, OnDestroy {
   private tabEmitter(tab: string | undefined): void {
     this.tab.emit(tab);
     if (tab !== undefined) {
-      localStorage.setItem('vocabularyAppTab', tab ?? '');
+      localStorage.setItem('vocabularyAppTab', tab);
     }
   }
 
   private tagEmitter(tag: string | undefined): void {
     this.tag.emit(tag);
-    localStorage.setItem('vocabularyAppTag', tag ?? '');
+    if (tag !== undefined) {
+      localStorage.setItem('vocabularyAppTag', tag);
+    } else {
+      localStorage.removeItem('vocabularyAppTag');
+    }
   }
 }

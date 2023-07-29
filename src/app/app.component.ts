@@ -12,13 +12,10 @@ export class AppComponent implements OnInit {
   public file$!: Observable<{ [tab: string]: Item[]; } | null>;
   public tab: string | undefined;
   public tag: string | undefined;
-  public supportedLanguages: string[];
 
   constructor(
     private excelService: ExcelService
-  ) {
-    this.supportedLanguages = Object.keys(Language);
-  }
+  ) { }
 
   ngOnInit(): void {
     this.file$ = this.excelService.file$.pipe(shareReplay(1));
