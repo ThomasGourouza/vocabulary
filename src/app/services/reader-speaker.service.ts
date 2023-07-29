@@ -9,8 +9,8 @@ export class ReaderSpeakerService {
   private synth!: SpeechSynthesisUtterance;
   private _isPlaying$ = new BehaviorSubject<boolean>(false);
   private _isTargetDisplayed$ = new BehaviorSubject<boolean>(true);
-  private _isReadSpeakerActivated$ = new BehaviorSubject<boolean>(localStorage.getItem('vocabularyAppIsReadSpeakerActivated') === 'true');
-  private _isSourceColFirst$ = new BehaviorSubject<boolean>(localStorage.getItem('vocabularyAppIsSourceColFirst') === 'true');
+  private _isReadSpeakerActivated$ = new BehaviorSubject<boolean>((localStorage.getItem('vocabularyAppIsReadSpeakerActivated') ?? 'true') === 'true');
+  private _isSourceColFirst$ = new BehaviorSubject<boolean>((localStorage.getItem('vocabularyAppIsSourceColFirst') ?? 'true') === 'true');
 
   constructor() { }
 
