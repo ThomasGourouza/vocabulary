@@ -8,10 +8,10 @@ import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
 import { WakelockService } from 'src/app/services/wakelock.service';
 
 @Component({
-  selector: 'app-interactive-table',
-  templateUrl: './interactive-table.component.html'
+  selector: 'app-game-mode',
+  templateUrl: './game-mode.component.html'
 })
-export class InteractiveTableComponent implements OnInit, OnDestroy {
+export class GameModeComponent implements OnInit, OnDestroy {
   @Output() gameMode = new EventEmitter<boolean>();
   public items: Item[] = [];
   public currentIndex!: Index;
@@ -108,18 +108,18 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     this.ngOnInit();
   }
 
-  public onGameMode(): void {
-    this.gameMode.emit(true);
+  public onNoGameMode(): void {
+    this.gameMode.emit(false);
   }
 
-  public setLocalStorageTime(time: any): void {
-    localStorage.setItem('vocabularyAppTime', time);
-  }
+  // public setLocalStorageTime(time: any): void {
+  //   localStorage.setItem('vocabularyAppTime', time);
+  // }
 
-  public onNext(): void {
-    if (this.isPlaying || this.isDataEmpty) return;
-    this.next();
-  }
+  // public onNext(): void {
+  //   if (this.isPlaying || this.isDataEmpty) return;
+  //   this.next();
+  // }
 
   private next(): void {
     if (this.items.length === 0) return;
@@ -179,23 +179,23 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     return randomIndex;
   }
 
-  public onPrevious(): void {
-    if (this.isPlaying
-      || this.isDataEmpty
-      || this.currentIndex.counter === 1
-      || this.currentIndex.previousNumber === undefined
-    ) return;
-    const nextNumber = this.currentIndex.number;
-    const number = this.currentIndex.previousNumber;
-    this.currentIndex = {
-      previousNumber: undefined,
-      nextNumber,
-      number,
-      showTarget: true,
-      counter: this.currentIndex.counter - 1
-    };
-    this.updateProgress();
-  }
+  // public onPrevious(): void {
+  //   if (this.isPlaying
+  //     || this.isDataEmpty
+  //     || this.currentIndex.counter === 1
+  //     || this.currentIndex.previousNumber === undefined
+  //   ) return;
+  //   const nextNumber = this.currentIndex.number;
+  //   const number = this.currentIndex.previousNumber;
+  //   this.currentIndex = {
+  //     previousNumber: undefined,
+  //     nextNumber,
+  //     number,
+  //     showTarget: true,
+  //     counter: this.currentIndex.counter - 1
+  //   };
+  //   this.updateProgress();
+  // }
 
   public onPlay(): void {
     if (this.isDataEmpty) return;
@@ -237,9 +237,9 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onReadSpeak(index: number): void {
-    this.readerSpeakerService.textToSpeech(this.items[index], 2);
-  }
+  // public onReadSpeak(index: number): void {
+  //   this.readerSpeakerService.textToSpeech(this.items[index], 2);
+  // }
 
   private getRandomInt(exclusiveMax: number): number {
     return Math.floor(Math.random() * exclusiveMax);

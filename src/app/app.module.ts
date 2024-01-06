@@ -37,12 +37,14 @@ import { KuroshiroService } from './services/kuroshiro.service';
 import { ItemsService } from './services/items.service';
 import { SettingApiService } from './services/setting.api.service';
 import { AccountService } from './services/account.service';
+import { GameModeComponent } from './components/game-mode/game-mode.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SettingsComponent,
     InteractiveTableComponent,
+    GameModeComponent,
     TableComponent,
     TableListComponent,
     CounterOrSoundComponent,

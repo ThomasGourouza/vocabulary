@@ -12,10 +12,13 @@ export class AppComponent implements OnInit {
   public file$!: Observable<{ [tab: string]: Item[]; } | null>;
   public tab: string | undefined;
   public tag: string | undefined;
+  public gameMode: boolean;
 
   constructor(
     private excelService: ExcelService
-  ) { }
+  ) {
+    this.gameMode = localStorage.getItem('gameMode') === 'true';
+  }
 
   ngOnInit(): void {
     this.file$ = this.excelService.file$.pipe(shareReplay(1));
@@ -27,5 +30,10 @@ export class AppComponent implements OnInit {
 
   onTab(tab: string | undefined): void {
     this.tab = tab;
+  }
+
+  onGameModeSwitch(gameMode: boolean): void {
+    this.gameMode = gameMode;
+    localStorage.setItem('gameMode', gameMode.toString());
   }
 }

@@ -9,7 +9,13 @@
   </div>
   <div class="card">
     <div class="big more-space-around">
-      <app-interactive-table></app-interactive-table>
+      <ng-container *ngIf="gameMode;then game else noGame"></ng-container>
+      <ng-template #game>
+        <app-game-mode (gameMode)="onGameModeSwitch($event)"></app-game-mode>
+      </ng-template>
+      <ng-template #noGame>
+        <app-interactive-table (gameMode)="onGameModeSwitch($event)"></app-interactive-table>
+      </ng-template>
     </div>
   </div>
   <div class="card last">

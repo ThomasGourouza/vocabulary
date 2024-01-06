@@ -1,10 +1,10 @@
 <div class="d-flex justify-content-between">
   <div class="small-space-bellow">
     <p-button
-      title="Game mode"
+      title="No game mode"
       styleClass="p-button-rounded p-button-warning p-button-raised p-button-outlined"
-      icon="pi pi-star"
-      (onClick)="onGameMode()"
+      icon="pi pi-star-fill"
+      (onClick)="onNoGameMode()"
       [disabled]="isPlaying"
     ></p-button>
   </div>
@@ -48,30 +48,10 @@
   </div>
 </ng-template>
 <div class="d-flex justify-content-between">
-  <div class="index-container">
-    <app-counter-or-sound
-      [isSourceColFirst]="isSourceColFirst"
-      [isDataEmpty]="isDataEmpty"
-      [currentIndex]="currentIndex"
-      [isPlaying]="isPlaying"
-      [position]="'left'"
-      (readSpeak)="onReadSpeak($event)"
-    ></app-counter-or-sound>
+  <div class="space-around circle">
+    <span class="big">{{ isDataEmpty ? 0 : currentIndex.counter }}</span>
   </div>
   <div class="d-flex justify-content-center">
-    <p-button
-      title="Previous"
-      styleClass="p-button-rounded p-button-raised p-button-secondary"
-      icon="pi pi-step-backward"
-      class="space-around"
-      [disabled]="
-        isPlaying ||
-        isDataEmpty ||
-        currentIndex.counter === 1 ||
-        currentIndex.previousNumber === undefined
-      "
-      (onClick)="onPrevious()"
-    ></p-button>
     <ng-container
       *ngIf="!isPlaying; then is_not_playing; else is_playing"
     ></ng-container>
@@ -94,39 +74,6 @@
         (onClick)="onPause()"
       ></p-button>
     </ng-template>
-    <div class="space-right">
-      <select
-        class="form-select time-select"
-        [(ngModel)]="time"
-        (ngModelChange)="setLocalStorageTime($event)"
-        [disabled]="isPlaying || isDataEmpty || !isReadSpeakerActivated"
-      >
-        <option
-          *ngFor="let time of times"
-          [value]="time.value"
-          [label]="time.label"
-        ></option>
-      </select>
-    </div>
-    <p-button
-      title="Next"
-      styleClass="p-button-rounded p-button-raised p-button-secondary"
-      icon="pi pi-step-forward"
-      class="space-around"
-      [disabled]="isPlaying || isDataEmpty"
-      (onClick)="onNext()"
-    ></p-button>
   </div>
-  <div>
-    <div class="d-flex justify-content-center">
-      <app-counter-or-sound
-        [isSourceColFirst]="isSourceColFirst"
-        [isDataEmpty]="isDataEmpty"
-        [currentIndex]="currentIndex"
-        [isPlaying]="isPlaying"
-        [position]="'right'"
-        (readSpeak)="onReadSpeak($event)"
-      ></app-counter-or-sound>
-    </div>
-  </div>
+  <div style="width: 96px;"></div>
 </div>
