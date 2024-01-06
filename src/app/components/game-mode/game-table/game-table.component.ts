@@ -33,6 +33,14 @@ export class GameTableComponent implements OnInit {
     this.japaneseWords$ = this.kuroshiroService.japaneseWords$;
   }
 
+  public onSelect(gameItem: Item): void {
+    if (this.item?.source === gameItem.source && this.item?.target === gameItem.target) {
+      console.log('win');
+    } else {
+      console.log('loose');
+    }
+  }
+
   private updateGameList(): void {
     const itemIndex = this.items.findIndex((item) => item.source === this.item?.source && item.target === this.item?.target);
     if (itemIndex === -1) {

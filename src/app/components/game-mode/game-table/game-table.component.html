@@ -27,7 +27,7 @@
         </td>
         <td>
           <div class="arial biggest center-text" *ngFor="let gameItem of gameList">
-            <div class="game-select" *ngIf="showTarget" [innerHTML]="gameItem.target | safeHtml : (japaneseWords$ | async)"></div>
+            <div class="game-select" *ngIf="showTarget" [innerHTML]="gameItem.target | safeHtml : (japaneseWords$ | async)" (click)="onSelect(gameItem)"></div>
           </div>
         </td>
       </ng-template>
@@ -41,7 +41,7 @@
         </td>
         <td>
           <div class="arial biggest center-text" *ngFor="let gameItem of gameList">
-            <div class="game-select" *ngIf="showTarget">{{ gameItem.source }}</div>
+            <div class="game-select" *ngIf="showTarget">{{ gameItem.source }} (click)="onSelect(gameItem)"</div>
           </div>
         </td>
       </ng-template>

@@ -1,14 +1,12 @@
 <ng-container
   *ngIf="
     position === (isSourceColFirst ? 'left' : 'right');
-    then display_counter;
+    then display_nothing;
     else display_sound_button
   "
 ></ng-container>
-<ng-template #display_counter>
-  <div class="space-around circle">
-    <span class="big">{{ isDataEmpty ? 0 : currentIndex.counter }}</span>
-  </div>
+<ng-template #display_nothing>
+  <div class="space-around" style="width: 48px;"></div>
 </ng-template>
 <ng-template #display_sound_button>
   <div class="space-around">
