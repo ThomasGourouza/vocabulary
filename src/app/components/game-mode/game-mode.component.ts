@@ -13,7 +13,6 @@ export class GameModeComponent implements OnInit, OnDestroy {
   @Output() gameMode = new EventEmitter<boolean>();
   public items: Item[] = [];
   public currentIndex!: Index;
-  public isPlaying = false;
 
   private memory: number[] = [];
   public isSourceColFirst!: boolean;
@@ -23,7 +22,6 @@ export class GameModeComponent implements OnInit, OnDestroy {
 
   public isTargetDisplayed$!: Observable<boolean>;
   public isSourceColFirstSubscription = new Subscription();
-  private isPlayingSubscription = new Subscription();
   private itemsSubscription = new Subscription();
   private timeSubscription = new Subscription();
 
@@ -44,7 +42,6 @@ export class GameModeComponent implements OnInit, OnDestroy {
       };
       this.isDataEmpty = this.items.length === 0;
       this.memory = [];
-      this.onPause();
       this.isFirstProgress = !this.isFirstProgress;
       this.progress = 0;
       setTimeout(() => { this.updateProgress(); }, 10);
@@ -52,17 +49,12 @@ export class GameModeComponent implements OnInit, OnDestroy {
     this.isTargetDisplayed$ = this.readerSpeakerService.isTargetDisplayed$.pipe(shareReplay(1));
     this.isSourceColFirstSubscription = this.readerSpeakerService.isSourceColFirst$
       .subscribe(value => this.isSourceColFirst = value);
-    this.isPlayingSubscription = this.readerSpeakerService.isPlaying$
-      .subscribe(value => {
-        this.isPlaying = value;
-      });
   }
 
   ngOnDestroy(): void {
     this.itemsSubscription.unsubscribe();
     this.timeSubscription.unsubscribe();
     this.isSourceColFirstSubscription.unsubscribe();
-    this.isPlayingSubscription.unsubscribe();
   }
 
   public onInterChange(): void {
@@ -75,6 +67,11 @@ export class GameModeComponent implements OnInit, OnDestroy {
 
   public onNoGameMode(): void {
     this.gameMode.emit(false);
+  }
+
+  public onPlay(): void {
+    if (this.isDataEmpty) return;
+    this.next();
   }
 
   private next(): void {
@@ -106,38 +103,6 @@ export class GameModeComponent implements OnInit, OnDestroy {
     } while (this.memory.includes(randomIndex));
     this.memory.push(randomIndex);
     return randomIndex;
-  }
-
-  public onPlay(): void {
-    if (this.isDataEmpty) return;
-    this.readerSpeakerService.setIsPlaying$(true);
-    this.next();
-    let timeSec = 0;
-    this.timeSubscription = interval(1000)
-      .pipe(
-        tap(_ => timeSec++),
-        filter(_ =>
-          this.isSourceColFirst
-          && (!this.currentIndex.showTarget && timeSec === 5
-            || this.currentIndex.showTarget && timeSec === 5) ||
-          !this.isSourceColFirst
-          && (!this.currentIndex.showTarget && timeSec === 5
-            || this.currentIndex.showTarget && timeSec === 5)
-        ),
-        tap(_ => timeSec = 0)
-      ).subscribe(_ => {
-        if (this.currentIndex.counter % this.items.length === 0 && this.currentIndex.showTarget) {
-          this.onPause();
-          this.readerSpeakerService.signalEndOfPlay();
-        } else {
-          this.next();
-        }
-      });
-  }
-
-  public onPause(): void {
-    this.readerSpeakerService.setIsPlaying$(false);
-    this.timeSubscription.unsubscribe();
   }
 
   private updateProgressNext(): void {

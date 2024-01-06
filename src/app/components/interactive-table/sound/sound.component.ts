@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Index } from 'src/app/models';
 
 @Component({
-  selector: 'app-counter-or-sound',
-  templateUrl: './counter-or-sound.component.html'
+  selector: 'app-sound',
+  templateUrl: './sound.component.html'
 })
-export class CounterOrSoundComponent {
+export class SoundComponent {
   @Input() isDataEmpty!: boolean;
   @Input() currentIndex!: Index;
   @Input() isPlaying!: boolean;

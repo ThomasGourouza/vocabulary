@@ -5,7 +5,6 @@
       styleClass="p-button-rounded p-button-warning p-button-raised p-button-outlined"
       icon="pi pi-star-fill"
       (onClick)="onNoGameMode()"
-      [disabled]="isPlaying"
     ></p-button>
   </div>
   <div class="small-space-bellow">
@@ -14,7 +13,7 @@
       styleClass="p-button-rounded p-button-warning p-button-raised p-button-outlined"
       icon="pi pi-arrow-right-arrow-left"
       (onClick)="onInterChange()"
-      [disabled]="isPlaying || !(isTargetDisplayed$ | async)"
+      [disabled]="progress !== 0"
     ></p-button>
   </div>
   <div class="small-space-bellow">
@@ -23,7 +22,6 @@
       styleClass="p-button-rounded p-button-warning p-button-raised p-button-outlined"
       icon="pi pi-refresh"
       (onClick)="onRefresh()"
-      [disabled]="isPlaying"
     ></p-button>
   </div>
 </div>
@@ -53,28 +51,14 @@
     <span class="big">{{ isDataEmpty ? 0 : currentIndex.counter }}</span>
   </div>
   <div class="d-flex justify-content-center">
-    <ng-container
-      *ngIf="!isPlaying; then is_not_playing; else is_playing"
-    ></ng-container>
-    <ng-template #is_not_playing>
-      <p-button
-        title="Play"
-        styleClass="p-button-rounded p-button-success p-button-raised"
-        icon="pi pi-play"
-        class="space-around"
-        [disabled]="isDataEmpty"
-        (onClick)="onPlay()"
-      ></p-button>
-    </ng-template>
-    <ng-template #is_playing>
-      <p-button
-        title="Pause"
-        styleClass="p-button-rounded p-button-warning p-button-raised"
-        icon="pi pi-pause"
-        class="space-around"
-        (onClick)="onPause()"
-      ></p-button>
-    </ng-template>
+    <p-button
+      title="Play"
+      styleClass="p-button-rounded p-button-success p-button-raised"
+      icon="pi pi-play"
+      class="space-around"
+      [disabled]="isDataEmpty"
+      (onClick)="onPlay()"
+    ></p-button>
   </div>
-  <div style="width: 96px;"></div>
+  <div style="width: 96px"></div>
 </div>
