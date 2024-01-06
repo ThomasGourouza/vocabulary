@@ -173,7 +173,7 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
     }
     let randomIndex: number;
     do {
-      randomIndex = this.getRandomInt(this.items.length);
+      randomIndex = this.itemsService.getRandomInt(this.items.length);
     } while (this.memory.includes(randomIndex));
     this.memory.push(randomIndex);
     return randomIndex;
@@ -239,10 +239,6 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
 
   public onReadSpeak(index: number): void {
     this.readerSpeakerService.textToSpeech(this.items[index], 2);
-  }
-
-  private getRandomInt(exclusiveMax: number): number {
-    return Math.floor(Math.random() * exclusiveMax);
   }
 
   private updateProgressNext(): void {

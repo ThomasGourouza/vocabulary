@@ -102,7 +102,7 @@ export class GameModeComponent implements OnInit, OnDestroy {
     }
     let randomIndex: number;
     do {
-      randomIndex = this.getRandomInt(this.items.length);
+      randomIndex = this.itemsService.getRandomInt(this.items.length);
     } while (this.memory.includes(randomIndex));
     this.memory.push(randomIndex);
     return randomIndex;
@@ -138,10 +138,6 @@ export class GameModeComponent implements OnInit, OnDestroy {
   public onPause(): void {
     this.readerSpeakerService.setIsPlaying$(false);
     this.timeSubscription.unsubscribe();
-  }
-
-  private getRandomInt(exclusiveMax: number): number {
-    return Math.floor(Math.random() * exclusiveMax);
   }
 
   private updateProgressNext(): void {

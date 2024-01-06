@@ -27,13 +27,14 @@
     ></p-button>
   </div>
 </div>
-<app-table
+<app-game-table
+  [items]="items"
   [item]="
     currentIndex.number !== undefined ? items[currentIndex.number] : undefined
   "
   [showTarget]="currentIndex.showTarget"
   [isSourceColFirst]="isSourceColFirst"
-></app-table>
+></app-game-table>
 <ng-container
   *ngIf="isFirstProgress; then firstProgressBar; else secondProgressBar"
 ></ng-container>

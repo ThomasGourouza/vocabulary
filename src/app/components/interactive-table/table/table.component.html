@@ -42,9 +42,9 @@
   <tbody>
     <tr>
       <ng-container
-        *ngIf="isSourceColFirst; then frenchFirst; else translationFirst"
+        *ngIf="isSourceColFirst; then sourceFirst; else targetFirst"
       ></ng-container>
-      <ng-template #frenchFirst>
+      <ng-template #sourceFirst>
         <td>
           <div class="arial biggest center-text">
             <span *ngIf="!!item"> {{ item.source }} </span>
@@ -60,7 +60,7 @@
           </div>
         </td>
       </ng-template>
-      <ng-template #translationFirst>
+      <ng-template #targetFirst>
         <td>
           <div class="arial biggest center-text">
             <span

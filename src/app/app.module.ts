@@ -38,6 +38,7 @@ import { ItemsService } from './services/items.service';
 import { SettingApiService } from './services/setting.api.service';
 import { AccountService } from './services/account.service';
 import { GameModeComponent } from './components/game-mode/game-mode.component';
+import { GameTableComponent } from './components/game-mode/game-table/game-table.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { GameModeComponent } from './components/game-mode/game-mode.component';
     SettingsComponent,
     InteractiveTableComponent,
     GameModeComponent,
+    GameTableComponent,
     TableComponent,
     TableListComponent,
     CounterOrSoundComponent,

@@ -64,6 +64,9 @@ thead tr {
 tbody {
   tr {
     height: 150px;
+    &.game-mode {
+      height: 300px;
+    }
   }
   tr:nth-child(even) {
     background-color: rgb(40, 40, 40);
@@ -112,6 +115,10 @@ table.table-list-container {
   tbody.listClosed {
     max-height: 0;
   }
+}
+
+.game-select {
+  margin: 30px 0;
 }
 
 .center-text {

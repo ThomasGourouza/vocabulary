@@ -18,4 +18,8 @@ export class ItemsService {
   public setItems$(items: Item[]): void {
     this._items$.next(items);
   }
+
+  public getRandomInt(exclusiveMax: number): number {
+    return Math.floor(Math.random() * exclusiveMax);
+  }
 }

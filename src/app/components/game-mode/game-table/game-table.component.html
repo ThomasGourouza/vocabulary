@@ -1,0 +1,50 @@
+<table>
+  <thead>
+    <tr>
+      <th scope="col">
+        <div class="center-text">
+          <img *ngIf="!!item" [src]="(isSourceColFirst ? item.source_language : item.target_language) | lowercase | flagUrl"/>
+          {{ (isSourceColFirst ? item?.source_language ?? "Source" : item?.target_language ?? "Target" ) | translateLang }}
+        </div>
+      </th>
+      <th scope="col">
+        <div class="center-text">
+          <img *ngIf="!!item" [src]="(isSourceColFirst ? item.target_language : item.source_language) | lowercase | flagUrl"/>
+          {{ (isSourceColFirst ? item?.target_language ?? "Target" : item?.source_language ?? "Source") | translateLang }}
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="game-mode">
+      <ng-container *ngIf="isSourceColFirst; then sourceFirst; else targetFirst"></ng-container>
+
+      <ng-template #sourceFirst>
+        <td>
+          <div class="arial biggest center-text">
+            <span *ngIf="!!item">{{ item.source }}</span>
+          </div>
+        </td>
+        <td>
+          <div class="arial biggest center-text" *ngFor="let gameItem of gameList">
+            <div class="game-select" *ngIf="showTarget" [innerHTML]="gameItem.target | safeHtml : (japaneseWords$ | async)"></div>
+          </div>
+        </td>
+      </ng-template>
+
+      <ng-template #targetFirst>
+        <td>
+          <div class="arial biggest center-text">
+            <span *ngIf="!!item" [innerHTML]="item.target | safeHtml : (japaneseWords$ | async)">
+            </span>
+          </div>
+        </td>
+        <td>
+          <div class="arial biggest center-text" *ngFor="let gameItem of gameList">
+            <div class="game-select" *ngIf="showTarget">{{ gameItem.source }}</div>
+          </div>
+        </td>
+      </ng-template>
+    </tr>
+  </tbody>
+</table>
