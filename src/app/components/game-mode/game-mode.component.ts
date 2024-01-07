@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { Observable, Subscription, filter, interval, shareReplay, tap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Index } from 'src/app/models/index';
 import { Item } from 'src/app/models/item';
 import { GameService } from 'src/app/services/game.service';
@@ -26,7 +26,6 @@ export class GameModeComponent implements OnInit, OnDestroy {
 
   public isSourceColFirstSubscription = new Subscription();
   private itemsSubscription = new Subscription();
-  private timeSubscription = new Subscription();
 
   constructor(
     private itemsService: ItemsService,
@@ -57,7 +56,7 @@ export class GameModeComponent implements OnInit, OnDestroy {
     });
     this.gameService.failure$.subscribe(failure => {
       if (failure) {
-        setTimeout(() => this.failure = true, 500);
+        this.failure = true;
       }
     });
     this.gameService.isPlaying$.subscribe(isPlaying => this.isPlaying = isPlaying);
@@ -65,7 +64,6 @@ export class GameModeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.itemsSubscription.unsubscribe();
-    this.timeSubscription.unsubscribe();
     this.isSourceColFirstSubscription.unsubscribe();
   }
 
@@ -79,6 +77,7 @@ export class GameModeComponent implements OnInit, OnDestroy {
     this.gameService.setIsPlaying$(false);
     this.gameService.setSuccess$(false);
     this.gameService.setFailure$(false);
+    this.gameService.setTimer$(false);
     this.currentIndex = {
       previousNumber: undefined,
       nextNumber: undefined,
@@ -100,11 +99,10 @@ export class GameModeComponent implements OnInit, OnDestroy {
   public onPlay(): void {
     this.onRefresh();
     setTimeout(() => {
-      if (this.isEnoughData) {
-        this.gameService.setIsPlaying$(true);
-        this.next();
-        this.updateProgressNext();
-      }
+      if (!this.isEnoughData) return;
+      this.gameService.setIsPlaying$(true);
+      this.next();
+      this.updateProgressNext();
     });
   }
 
@@ -113,6 +111,7 @@ export class GameModeComponent implements OnInit, OnDestroy {
     const number = this.currentIndex.nextNumber ?? this.getRandomIndex();
     this.currentIndex.number = number;
     this.currentIndex.showTarget = true;
+    this.gameService.setTimer$(true);
   }
 
   public getRandomIndex(): number {

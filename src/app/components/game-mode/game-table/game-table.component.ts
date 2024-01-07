@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2 } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2, OnDestroy } from '@angular/core';
+import { Observable, Subscription, interval, map } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { JapaneseWord, KuroshiroService } from '../../../services/kuroshiro.service';
 import { ItemsService } from 'src/app/services/items.service';
@@ -9,7 +9,7 @@ import { GameService } from 'src/app/services/game.service';
   selector: 'app-game-table',
   templateUrl: './game-table.component.html'
 })
-export class GameTableComponent implements OnInit {
+export class GameTableComponent implements OnInit, OnDestroy {
   @ViewChild('timerWrapper', { static: true }) timerWrapper!: ElementRef;
   @ViewChild('timer', { static: true }) timer!: ElementRef;
   @ViewChild('td', { static: true }) td!: ElementRef;
@@ -36,6 +36,7 @@ export class GameTableComponent implements OnInit {
   public clickable = true;
   public gameList: Item[] = [];
   public japaneseWords$!: Observable<JapaneseWord[]>;
+  private timeSubscription = new Subscription();
 
   constructor(
     private kuroshiroService: KuroshiroService,
@@ -49,6 +50,17 @@ export class GameTableComponent implements OnInit {
     this.gameService.isPlaying$.subscribe(isPlaying => {
       this.clickable = isPlaying;
     });
+    this.gameService.timer$.subscribe(value => {
+      if (value) {
+        this.runTime();
+      } else {
+        this.timeSubscription.unsubscribe();
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.timeSubscription.unsubscribe();
   }
 
   public onSelect(gameItem: Item): void {
@@ -56,6 +68,7 @@ export class GameTableComponent implements OnInit {
       return;
     }
     this.clickable = false;
+    this.gameService.setTimer$(false);
     this.selectedIndex = this.gameList.indexOf(gameItem);
     this.answerIndex = this.gameList.indexOf(this.item!);
     if (this.item?.source === gameItem.source && this.item?.target === gameItem.target) {
@@ -64,9 +77,28 @@ export class GameTableComponent implements OnInit {
         this.clickable = true;
       }, 500);
     } else {
+      this.gameOver();
+    }
+  }
+
+  private gameOver(): void {
+    this.gameService.setTimer$(false);
+    setTimeout(() => {
       this.gameService.setIsPlaying$(false);
       this.gameService.setFailure$(true);
-    }
+    }, 500);
+  }
+
+  private runTime(): void {
+    this.timeSubscription = interval(1000)
+      .pipe(
+        map(t => 3 - t)
+      ).subscribe(time => {
+        console.log(time);
+        if (time < 1) {
+          this.gameOver();
+        }
+      });
   }
 
   private updateGameList(): void {
@@ -85,7 +117,7 @@ export class GameTableComponent implements OnInit {
 
     const itemIndexInGameList = this.itemsService.getRandomInt(3);
     this.gameList = [];
-    switch(itemIndexInGameList) {
+    switch (itemIndexInGameList) {
       case 0:
         this.gameList.push(this.items[itemIndex], this.items[secondIndex], this.items[thirdIndex]);
         break;

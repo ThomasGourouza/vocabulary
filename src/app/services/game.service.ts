@@ -8,6 +8,7 @@ export class GameService {
   private _success$ = new BehaviorSubject<boolean>(false);
   private _failure$ = new BehaviorSubject<boolean>(false);
   private _isPlaying$ = new BehaviorSubject<boolean>(false);
+  private _timer$ = new BehaviorSubject<boolean>(false);
 
   get success$(): Observable<boolean> {
     return this._success$.asObservable();
@@ -31,5 +32,13 @@ export class GameService {
 
   public setIsPlaying$(isPlaying: boolean): void {
     this._isPlaying$.next(isPlaying);
+  }
+
+  get timer$(): Observable<boolean> {
+    return this._timer$.asObservable();
+  }
+
+  public setTimer$(timer: boolean): void {
+    this._timer$.next(timer);
   }
 }
