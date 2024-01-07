@@ -38,12 +38,20 @@
 ></ng-container>
 <ng-template #firstProgressBar>
   <div class="progressbar">
-    <p-progressBar [value]="progress" [showValue]="false" class="game-progress-bar"></p-progressBar>
+    <p-progressBar
+      [value]="progress"
+      [showValue]="false"
+      class="game-progress-bar"
+    ></p-progressBar>
   </div>
 </ng-template>
 <ng-template #secondProgressBar>
   <div class="progressbar">
-    <p-progressBar [value]="progress" [showValue]="false" class="game-progress-bar"></p-progressBar>
+    <p-progressBar
+      [value]="progress"
+      [showValue]="false"
+      class="game-progress-bar"
+    ></p-progressBar>
   </div>
 </ng-template>
 <div class="d-flex justify-content-between">
@@ -64,6 +72,7 @@
 </div>
 
 <p-dialog
+  class="failure"
   header="Oh nooo!"
   [(visible)]="failure"
   [modal]="true"
@@ -73,6 +82,7 @@
   <p class="congrats">You'll do better next time!</p>
 </p-dialog>
 <p-dialog
+  class="congrats"
   header="Congratulations!"
   [(visible)]="congratulations"
   [modal]="true"
