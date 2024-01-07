@@ -23,9 +23,6 @@ export class GameTableComponent implements OnInit, OnDestroy {
     this.selectedIndex = undefined;
     this.answerIndex = undefined;
     this.updateGameList();
-    setTimeout(() => {
-      this.updateTimer(100);
-    });
   }
   @Input() items!: Item[];
   @Input() showTarget!: boolean;
@@ -54,6 +51,7 @@ export class GameTableComponent implements OnInit, OnDestroy {
       if (value) {
         this.runTime();
       } else {
+        this.updateTimer(0);
         this.timeSubscription.unsubscribe();
       }
     });
@@ -82,6 +80,7 @@ export class GameTableComponent implements OnInit, OnDestroy {
   }
 
   private gameOver(): void {
+    this.clickable = false;
     this.gameService.setTimer$(false);
     setTimeout(() => {
       this.gameService.setIsPlaying$(false);
@@ -90,11 +89,13 @@ export class GameTableComponent implements OnInit, OnDestroy {
   }
 
   private runTime(): void {
+    this.updateTimer(3);
     this.timeSubscription = interval(1000)
       .pipe(
-        map(t => 3 - t)
+        map(t => 2 - t)
       ).subscribe(time => {
         console.log(time);
+        this.updateTimer(time);
         if (time < 1) {
           this.gameOver();
         }
@@ -130,9 +131,9 @@ export class GameTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateTimer(percentage: number) {
+  private updateTimer(time: number) {
     const totalHeigth = this.td.nativeElement.offsetHeight;
-    const TimerSize = (totalHeigth * percentage) / 100;
+    const TimerSize = (totalHeigth * time) / 3;
     this.renderer.setStyle(this.timerWrapper.nativeElement, 'transform', `translateY(calc((${totalHeigth}px - ${TimerSize}px) / 2))`);
     this.renderer.setStyle(this.timer.nativeElement, 'width', `${TimerSize}px`);
     this.renderer.setStyle(this.timer.nativeElement, 'transform', `translateX(calc((${TimerSize}px + 3px) / 2)) rotate(90deg)`);

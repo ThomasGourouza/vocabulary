@@ -48,6 +48,7 @@ export class GameModeComponent implements OnInit, OnDestroy {
           setTimeout(() => this.congratulations = true, 500);
           this.updateProgressNext();
           this.gameService.setIsPlaying$(false);
+          this.gameService.setTimer$(false);
         } else {
           this.updateProgressNext();
           setTimeout(() => this.next(), 500);
@@ -75,9 +76,9 @@ export class GameModeComponent implements OnInit, OnDestroy {
     this.congratulations = false;
     this.failure = false;
     this.gameService.setIsPlaying$(false);
+    this.gameService.setTimer$(false);
     this.gameService.setSuccess$(false);
     this.gameService.setFailure$(false);
-    this.gameService.setTimer$(false);
     this.currentIndex = {
       previousNumber: undefined,
       nextNumber: undefined,
