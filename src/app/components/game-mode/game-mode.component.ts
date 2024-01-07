@@ -21,6 +21,7 @@ export class GameModeComponent implements OnInit, OnDestroy {
   public progress = 0;
   public isFirstProgress = true;
   public isPlaying = true;
+  public congratulations = false;
 
   public isSourceColFirstSubscription = new Subscription();
   private itemsSubscription = new Subscription();
@@ -44,7 +45,7 @@ export class GameModeComponent implements OnInit, OnDestroy {
       if (success) {
         this.currentIndex.counter++;
         if (this.currentIndex.counter === this.items.length) {
-          console.log('gongrats!');
+          this.congratulations = true;
           this.updateProgressNext();
           this.gameService.setIsPlaying$(false);
         } else {
@@ -67,6 +68,7 @@ export class GameModeComponent implements OnInit, OnDestroy {
   }
 
   public onRefresh(): void {
+    this.congratulations = false;
     this.gameService.setIsPlaying$(false);
     this.gameService.setSuccess$(false);
     this.currentIndex = {
