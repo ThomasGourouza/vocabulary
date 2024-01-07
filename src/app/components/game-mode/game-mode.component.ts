@@ -42,6 +42,7 @@ export class GameModeComponent implements OnInit, OnDestroy {
       .subscribe(value => this.isSourceColFirst = value);
     this.gameService.success$.subscribe(success => {
       if (success) {
+        this.currentIndex.counter++;
         setTimeout(() => this.next(), 500);
       }
     });
@@ -78,10 +79,13 @@ export class GameModeComponent implements OnInit, OnDestroy {
   }
 
   public onPlay(): void {
-    if (this.isEnoughData) {
-      this.gameService.setIsPlaying$(true);
-      this.next();
-    }
+    this.onRefresh();
+    setTimeout(() => {
+      if (this.isEnoughData) {
+        this.gameService.setIsPlaying$(true);
+        this.next();
+      }
+    });
   }
 
   private next(): void {
@@ -89,7 +93,6 @@ export class GameModeComponent implements OnInit, OnDestroy {
     const number = this.currentIndex.nextNumber ?? this.getRandomIndex();
     this.currentIndex.number = number;
     this.currentIndex.showTarget = true;
-    this.currentIndex.counter = this.currentIndex.counter + 1;
     this.updateProgressNext();
 
   }
