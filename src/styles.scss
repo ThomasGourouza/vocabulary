@@ -267,6 +267,9 @@ div.circle {
     background: #f59e0b;
   }
 }
+.game-progress-bar .p-progressbar-determinate .p-progressbar-value-animate {
+  transition: width 600ms ease-in-out;
+}
 
 .p-dialog {
   @media (max-width: 1000px) {
