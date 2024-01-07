@@ -65,6 +65,7 @@ export class GameTableComponent implements OnInit {
       }, 500);
     } else {
       this.gameService.setIsPlaying$(false);
+      this.gameService.setFailure$(true);
     }
   }
 

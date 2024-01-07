@@ -64,13 +64,20 @@
 </div>
 
 <p-dialog
+  header="Oh nooo!"
+  [(visible)]="failure"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p class="congrats">You'll do better next time!</p>
+</p-dialog>
+<p-dialog
   header="Congratulations!"
   [(visible)]="congratulations"
   [modal]="true"
   [draggable]="false"
   [resizable]="false"
 >
-  <div class="">
-    <p class="congrats">You are the best!</p>
-  </div>
+  <p class="congrats">You are the best!</p>
 </p-dialog>

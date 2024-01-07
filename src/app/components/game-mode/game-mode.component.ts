@@ -22,6 +22,7 @@ export class GameModeComponent implements OnInit, OnDestroy {
   public isFirstProgress = true;
   public isPlaying = true;
   public congratulations = false;
+  public failure = false;
 
   public isSourceColFirstSubscription = new Subscription();
   private itemsSubscription = new Subscription();
@@ -45,13 +46,18 @@ export class GameModeComponent implements OnInit, OnDestroy {
       if (success) {
         this.currentIndex.counter++;
         if (this.currentIndex.counter === this.items.length) {
-          this.congratulations = true;
+          setTimeout(() => this.congratulations = true, 500);
           this.updateProgressNext();
           this.gameService.setIsPlaying$(false);
         } else {
           this.updateProgressNext();
           setTimeout(() => this.next(), 500);
         }
+      }
+    });
+    this.gameService.failure$.subscribe(failure => {
+      if (failure) {
+        setTimeout(() => this.failure = true, 500);
       }
     });
     this.gameService.isPlaying$.subscribe(isPlaying => this.isPlaying = isPlaying);
@@ -69,8 +75,10 @@ export class GameModeComponent implements OnInit, OnDestroy {
 
   public onRefresh(): void {
     this.congratulations = false;
+    this.failure = false;
     this.gameService.setIsPlaying$(false);
     this.gameService.setSuccess$(false);
+    this.gameService.setFailure$(false);
     this.currentIndex = {
       previousNumber: undefined,
       nextNumber: undefined,
