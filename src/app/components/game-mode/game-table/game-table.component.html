@@ -3,14 +3,38 @@
     <tr>
       <th scope="col">
         <div class="center-text">
-          <img *ngIf="!!item" [src]="(isSourceColFirst ? item.source_language : item.target_language) | lowercase | flagUrl"/>
-          {{ (isSourceColFirst ? item?.source_language ?? "Source" : item?.target_language ?? "Target" ) | translateLang }}
+          <img
+            *ngIf="!!item"
+            [src]="
+              (isSourceColFirst ? item.source_language : item.target_language)
+                | lowercase
+                | flagUrl
+            "
+          />
+          {{
+            (isSourceColFirst
+              ? item?.source_language ?? "Source"
+              : item?.target_language ?? "Target"
+            ) | translateLang
+          }}
         </div>
       </th>
       <th scope="col">
         <div class="center-text">
-          <img *ngIf="!!item" [src]="(isSourceColFirst ? item.target_language : item.source_language) | lowercase | flagUrl"/>
-          {{ (isSourceColFirst ? item?.target_language ?? "Target" : item?.source_language ?? "Source") | translateLang }}
+          <img
+            *ngIf="!!item"
+            [src]="
+              (isSourceColFirst ? item.target_language : item.source_language)
+                | lowercase
+                | flagUrl
+            "
+          />
+          {{
+            (isSourceColFirst
+              ? item?.target_language ?? "Target"
+              : item?.source_language ?? "Source"
+            ) | translateLang
+          }}
         </div>
       </th>
     </tr>
@@ -19,12 +43,23 @@
     <tr class="game-mode">
       <td #td>
         <div class="arial biggest center-text">
-          <ng-container *ngIf="isSourceColFirst; then sourceFirstQuestion; else targetFirstQuestion"></ng-container>
+          <ng-container
+            *ngIf="
+              isSourceColFirst;
+              then sourceFirstQuestion;
+              else targetFirstQuestion
+            "
+          ></ng-container>
           <ng-template #sourceFirstQuestion>
-            <span class="game-question">{{ item?.source ?? '' }}</span>
+            <span class="game-question">{{ item?.source ?? "" }}</span>
           </ng-template>
           <ng-template #targetFirstQuestion>
-            <span class="game-question" [innerHTML]="(item?.target ?? '') | safeHtml : (japaneseWords$ | async)"></span>
+            <span
+              class="game-question"
+              [innerHTML]="
+                item?.target ?? '' | safeHtml : (japaneseWords$ | async)
+              "
+            ></span>
           </ng-template>
         </div>
         <div #timerWrapper class="timer-wrapper">
@@ -32,13 +67,57 @@
         </div>
       </td>
       <td>
-        <div class="arial biggest center-text" *ngFor="let gameItem of gameList">
-          <ng-container *ngIf="isSourceColFirst; then sourceFirstAnswer; else targetFirstAnswer"></ng-container>
+        <div
+          class="arial biggest center-text"
+          *ngFor="let gameItem of gameList; let i = index"
+        >
+          <ng-container
+            *ngIf="
+              isSourceColFirst;
+              then sourceFirstAnswer;
+              else targetFirstAnswer
+            "
+          ></ng-container>
           <ng-template #sourceFirstAnswer>
-            <div class="game-select" *ngIf="showTarget" (click)="onSelect(gameItem)" [innerHTML]="gameItem.target | safeHtml : (japaneseWords$ | async)"></div>
+            <div
+              class="game-select"
+              *ngIf="showTarget"
+              [ngClass]="{
+                success:
+                  answerIndex === i ||
+                  (selectedIndex === i &&
+                    item?.source === gameItem.source &&
+                    item?.target === gameItem.target),
+                failure:
+                  selectedIndex === i &&
+                  (item?.source !== gameItem.source ||
+                    item?.target !== gameItem.target)
+              }"
+              (click)="onSelect(gameItem)"
+              [innerHTML]="
+                gameItem.target | safeHtml : (japaneseWords$ | async)
+              "
+            ></div>
           </ng-template>
           <ng-template #targetFirstAnswer>
-            <div class="game-select" *ngIf="showTarget" (click)="onSelect(gameItem)">{{ gameItem.source }}</div>
+            <div
+              class="game-select"
+              *ngIf="showTarget"
+              [ngClass]="{
+                success:
+                  answerIndex === i ||
+                  (selectedIndex === i &&
+                    item?.source === gameItem.source &&
+                    item?.target === gameItem.target),
+                failure:
+                  selectedIndex === i &&
+                  (item?.source !== gameItem.source ||
+                    item?.target !== gameItem.target)
+              }"
+              (click)="onSelect(gameItem)"
+            >
+              {{ gameItem.source }}
+            </div>
           </ng-template>
         </div>
       </td>

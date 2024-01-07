@@ -42,7 +42,7 @@ export class GameModeComponent implements OnInit, OnDestroy {
       .subscribe(value => this.isSourceColFirst = value);
     this.gameService.success$.subscribe(success => {
       if (success) {
-        this.next();
+        setTimeout(() => this.next(), 500);
       }
     });
     this.gameService.isPlaying$.subscribe(isPlaying => this.isPlaying = isPlaying);
@@ -60,7 +60,6 @@ export class GameModeComponent implements OnInit, OnDestroy {
 
   public onRefresh(): void {
     this.gameService.setIsPlaying$(false);
-    this.gameService.setSuccess$(false);
     this.currentIndex = {
       previousNumber: undefined,
       nextNumber: undefined,

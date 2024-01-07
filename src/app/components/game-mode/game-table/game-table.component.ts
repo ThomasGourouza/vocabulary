@@ -20,6 +20,8 @@ export class GameTableComponent implements OnInit {
   }
   @Input() set item(value: Item | undefined) {
     this._item = value;
+    this.selectedIndex = undefined;
+    this.answerIndex = undefined;
     this.updateGameList();
     setTimeout(() => {
       this.updateTimer(100);
@@ -29,6 +31,8 @@ export class GameTableComponent implements OnInit {
   @Input() showTarget!: boolean;
   @Input() isSourceColFirst!: boolean;
 
+  public selectedIndex: number | undefined;
+  public answerIndex: number | undefined;
   public gameList: Item[] = [];
   public japaneseWords$!: Observable<JapaneseWord[]>;
 
@@ -47,6 +51,8 @@ export class GameTableComponent implements OnInit {
   }
 
   public onSelect(gameItem: Item): void {
+    this.selectedIndex = this.gameList.indexOf(gameItem);
+    this.answerIndex = this.gameList.indexOf(this.item!);
     if (this.item?.source === gameItem.source && this.item?.target === gameItem.target) {
       this.gameService.setSuccess$(true);
     } else {

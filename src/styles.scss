@@ -128,6 +128,13 @@ table.table-list-container {
   cursor: pointer;
 }
 
+.success {
+  color: #1fed6b;
+}
+.failure {
+  color: rgb(255, 75, 75);
+}
+
 .timer-wrapper {
   float: right;
 }
