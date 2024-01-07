@@ -39,6 +39,7 @@ import { SettingApiService } from './services/setting.api.service';
 import { AccountService } from './services/account.service';
 import { GameModeComponent } from './components/game-mode/game-mode.component';
 import { GameTableComponent } from './components/game-mode/game-table/game-table.component';
+import { GameService } from './services/game.service';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { GameTableComponent } from './components/game-mode/game-table/game-table
     MessageService,
     ConfirmationService,
     ItemsService,
+    GameService,
     SettingApiService,
     AccountService
   ],

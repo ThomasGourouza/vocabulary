@@ -51,20 +51,8 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.itemsSubscription = this.itemsService.items$.subscribe(items => {
       this.items = items;
-      this.currentIndex = {
-        previousNumber: undefined,
-        nextNumber: undefined,
-        number: undefined,
-        showTarget: false,
-        counter: 0
-      };
       this.isDataEmpty = this.items.length === 0;
-      this.memory = [];
-      this.onPause();
-      this.readerSpeakerService.setIsTargetDisplayed$(true);
-      this.isFirstProgress = !this.isFirstProgress;
-      this.progress = 0;
-      setTimeout(() => { this.updateProgress(); }, 10);
+      this.onRefresh();
     });
     this.isTargetDisplayed$ = this.readerSpeakerService.isTargetDisplayed$.pipe(shareReplay(1));
     this.isReadSpeakerActivatedSubscription = this.readerSpeakerService.isReadSpeakerActivated$
@@ -105,10 +93,23 @@ export class InteractiveTableComponent implements OnInit, OnDestroy {
   }
 
   public onRefresh(): void {
-    this.ngOnInit();
+    this.currentIndex = {
+      previousNumber: undefined,
+      nextNumber: undefined,
+      number: undefined,
+      showTarget: false,
+      counter: 0
+    };
+    this.memory = [];
+    this.onPause();
+    this.readerSpeakerService.setIsTargetDisplayed$(true);
+    this.isFirstProgress = !this.isFirstProgress;
+    this.progress = 0;
+    setTimeout(() => { this.updateProgress(); }, 10);
   }
 
   public onGameMode(): void {
+    this.onRefresh();
     this.gameMode.emit(true);
   }
 

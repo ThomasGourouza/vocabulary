@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Item } from './models/item';
 import { ExcelService } from './services/excel.service';
 import { Observable, shareReplay } from 'rxjs';
-import { Language } from './models/language';
 
 @Component({
   selector: 'app-root',

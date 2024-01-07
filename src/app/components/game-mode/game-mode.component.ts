@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { Observable, Subscription, filter, interval, shareReplay, tap } from 'rxjs';
 import { Index } from 'src/app/models/index';
 import { Item } from 'src/app/models/item';
+import { GameService } from 'src/app/services/game.service';
 import { ItemsService } from 'src/app/services/items.service';
 import { ReaderSpeakerService } from 'src/app/services/reader-speaker.service';
 
@@ -19,36 +20,32 @@ export class GameModeComponent implements OnInit, OnDestroy {
   public isEnoughData = true;
   public progress = 0;
   public isFirstProgress = true;
+  public isPlaying = true;
 
-  public isTargetDisplayed$!: Observable<boolean>;
   public isSourceColFirstSubscription = new Subscription();
   private itemsSubscription = new Subscription();
   private timeSubscription = new Subscription();
 
   constructor(
     private itemsService: ItemsService,
-    private readerSpeakerService: ReaderSpeakerService
+    private readerSpeakerService: ReaderSpeakerService,
+    private gameService: GameService
   ) { }
 
   ngOnInit(): void {
     this.itemsSubscription = this.itemsService.items$.subscribe(items => {
       this.items = items;
-      this.currentIndex = {
-        previousNumber: undefined,
-        nextNumber: undefined,
-        number: undefined,
-        showTarget: false,
-        counter: 0
-      };
       this.isEnoughData = this.items.length >= 3;
-      this.memory = [];
-      this.isFirstProgress = !this.isFirstProgress;
-      this.progress = 0;
-      setTimeout(() => { this.updateProgress(); }, 10);
+      this.onRefresh();
     });
-    this.isTargetDisplayed$ = this.readerSpeakerService.isTargetDisplayed$.pipe(shareReplay(1));
     this.isSourceColFirstSubscription = this.readerSpeakerService.isSourceColFirst$
       .subscribe(value => this.isSourceColFirst = value);
+    this.gameService.success$.subscribe(success => {
+      if (success) {
+        this.next();
+      }
+    });
+    this.gameService.isPlaying$.subscribe(isPlaying => this.isPlaying = isPlaying);
   }
 
   ngOnDestroy(): void {
@@ -62,7 +59,19 @@ export class GameModeComponent implements OnInit, OnDestroy {
   }
 
   public onRefresh(): void {
-    this.ngOnInit();
+    this.gameService.setIsPlaying$(false);
+    this.gameService.setSuccess$(false);
+    this.currentIndex = {
+      previousNumber: undefined,
+      nextNumber: undefined,
+      number: undefined,
+      showTarget: false,
+      counter: 0
+    };
+    this.memory = [];
+    this.isFirstProgress = !this.isFirstProgress;
+    this.progress = 0;
+    setTimeout(() => { this.updateProgress(); }, 10);
   }
 
   public onNoGameMode(): void {
@@ -71,27 +80,19 @@ export class GameModeComponent implements OnInit, OnDestroy {
 
   public onPlay(): void {
     if (this.isEnoughData) {
+      this.gameService.setIsPlaying$(true);
       this.next();
     }
   }
 
   private next(): void {
-    if (this.items.length === 0) return;
-    if (!this.currentIndex.showTarget && this.currentIndex.number !== undefined) {
-      this.currentIndex.showTarget = true;
-    } else {
-      const previousNumber = this.currentIndex.number;
-      const number = this.currentIndex.nextNumber ?? this.getRandomIndex();
-      this.currentIndex = {
-        previousNumber,
-        nextNumber: undefined,
-        number,
-        showTarget: false,
-        counter: this.currentIndex.counter + 1
-      };
-      this.updateProgressNext();
-    }
-    this.readerSpeakerService.setIsTargetDisplayed$(this.currentIndex.showTarget);
+    if (!this.isEnoughData) return;
+    const number = this.currentIndex.nextNumber ?? this.getRandomIndex();
+    this.currentIndex.number = number;
+    this.currentIndex.showTarget = true;
+    this.currentIndex.counter = this.currentIndex.counter + 1;
+    this.updateProgressNext();
+
   }
 
   public getRandomIndex(): number {

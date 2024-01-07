@@ -56,7 +56,7 @@
       styleClass="p-button-rounded p-button-success p-button-raised"
       icon="pi pi-play"
       class="space-around"
-      [disabled]="!isEnoughData"
+      [disabled]="!isEnoughData || isPlaying"
       (onClick)="onPlay()"
     ></p-button>
   </div>
