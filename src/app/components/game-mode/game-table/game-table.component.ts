@@ -33,6 +33,7 @@ export class GameTableComponent implements OnInit {
 
   public selectedIndex: number | undefined;
   public answerIndex: number | undefined;
+  public clickable = true;
   public gameList: Item[] = [];
   public japaneseWords$!: Observable<JapaneseWord[]>;
 
@@ -46,15 +47,22 @@ export class GameTableComponent implements OnInit {
   ngOnInit(): void {
     this.japaneseWords$ = this.kuroshiroService.japaneseWords$;
     this.gameService.isPlaying$.subscribe(isPlaying => {
-      //
+      this.clickable = isPlaying;
     });
   }
 
   public onSelect(gameItem: Item): void {
+    if (!this.clickable) {
+      return;
+    }
+    this.clickable = false;
     this.selectedIndex = this.gameList.indexOf(gameItem);
     this.answerIndex = this.gameList.indexOf(this.item!);
     if (this.item?.source === gameItem.source && this.item?.target === gameItem.target) {
       this.gameService.setSuccess$(true);
+      setTimeout(() => {
+        this.clickable = true;
+      }, 500);
     } else {
       this.gameService.setIsPlaying$(false);
     }

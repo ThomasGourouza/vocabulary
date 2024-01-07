@@ -101,9 +101,10 @@
           </ng-template>
           <ng-template #targetFirstAnswer>
             <div
-              class="game-select"
               *ngIf="showTarget"
               [ngClass]="{
+                'game-select': true,
+                'game-select-pointer': clickable,
                 success:
                   answerIndex === i ||
                   (selectedIndex === i &&

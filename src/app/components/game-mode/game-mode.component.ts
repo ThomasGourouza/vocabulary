@@ -46,6 +46,7 @@ export class GameModeComponent implements OnInit, OnDestroy {
         if (this.currentIndex.counter === this.items.length) {
           console.log('gongrats!');
           this.updateProgressNext();
+          this.gameService.setIsPlaying$(false);
         } else {
           this.updateProgressNext();
           setTimeout(() => this.next(), 500);
