@@ -17,34 +17,31 @@
   </thead>
   <tbody>
     <tr class="game-mode">
-      <ng-container *ngIf="isSourceColFirst; then sourceFirst; else targetFirst"></ng-container>
-
-      <ng-template #sourceFirst>
-        <td>
-          <div class="arial biggest center-text">
-            <span *ngIf="!!item">{{ item.source }}</span>
-          </div>
-        </td>
-        <td>
-          <div class="arial biggest center-text" *ngFor="let gameItem of gameList">
+      <td>
+        <div class="arial biggest center-text">
+          <ng-container *ngIf="isSourceColFirst; then sourceFirstQuestion; else targetFirstQuestion"></ng-container>
+          <ng-template #sourceFirstQuestion>
+            <span class="game-question">{{ item?.source ?? '' }}</span>
+          </ng-template>
+          <ng-template #targetFirstQuestion>
+            <span class="game-question" [innerHTML]="(item?.target ?? '') | safeHtml : (japaneseWords$ | async)"></span>
+          </ng-template>
+        </div>
+        <div #timerWrapper class="timer-wrapper">
+          <div #timer class="timer"></div>
+        </div>
+      </td>
+      <td>
+        <div class="arial biggest center-text" *ngFor="let gameItem of gameList">
+          <ng-container *ngIf="isSourceColFirst; then sourceFirstAnswer; else targetFirstAnswer"></ng-container>
+          <ng-template #sourceFirstAnswer>
             <div class="game-select" *ngIf="showTarget" (click)="onSelect(gameItem)" [innerHTML]="gameItem.target | safeHtml : (japaneseWords$ | async)"></div>
-          </div>
-        </td>
-      </ng-template>
-
-      <ng-template #targetFirst>
-        <td>
-          <div class="arial biggest center-text">
-            <span *ngIf="!!item" [innerHTML]="item.target | safeHtml : (japaneseWords$ | async)">
-            </span>
-          </div>
-        </td>
-        <td>
-          <div class="arial biggest center-text" *ngFor="let gameItem of gameList">
+          </ng-template>
+          <ng-template #targetFirstAnswer>
             <div class="game-select" *ngIf="showTarget" (click)="onSelect(gameItem)">{{ gameItem.source }}</div>
-          </div>
-        </td>
-      </ng-template>
+          </ng-template>
+        </div>
+      </td>
     </tr>
   </tbody>
 </table>

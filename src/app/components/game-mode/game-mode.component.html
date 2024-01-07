@@ -48,7 +48,7 @@
 </ng-template>
 <div class="d-flex justify-content-between">
   <div class="space-around circle">
-    <span class="big">{{ isDataEmpty ? 0 : currentIndex.counter }}</span>
+    <span class="big">{{ isEnoughData ? currentIndex.counter : 0 }}</span>
   </div>
   <div class="d-flex justify-content-center">
     <p-button
@@ -56,7 +56,7 @@
       styleClass="p-button-rounded p-button-success p-button-raised"
       icon="pi pi-play"
       class="space-around"
-      [disabled]="isDataEmpty"
+      [disabled]="!isEnoughData"
       (onClick)="onPlay()"
     ></p-button>
   </div>

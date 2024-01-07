@@ -117,9 +117,23 @@ table.table-list-container {
   }
 }
 
+.game-question {
+  position: absolute;
+  width: 40%;
+  transform: translate(-50%, -50%);
+}
+
 .game-select {
   margin: 30px 0;
   cursor: pointer;
+}
+
+.timer-wrapper {
+  float: right;
+}
+.timer {
+  height: 3px;
+  background-color: #16a34a;
 }
 
 .center-text {

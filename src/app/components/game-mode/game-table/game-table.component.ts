@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Item } from 'src/app/models/item';
 import { JapaneseWord, KuroshiroService } from '../../../services/kuroshiro.service';
@@ -8,7 +8,10 @@ import { ItemsService } from 'src/app/services/items.service';
   selector: 'app-game-table',
   templateUrl: './game-table.component.html'
 })
-export class GameTableComponent implements OnInit {
+export class GameTableComponent implements OnInit, AfterViewInit {
+  @ViewChild('timerWrapper', { static: true }) timerWrapper!: ElementRef;
+  @ViewChild('timer', { static: true }) timer!: ElementRef;
+
   private _item: Item | undefined;
   get item(): Item | undefined {
     return this._item;
@@ -27,10 +30,14 @@ export class GameTableComponent implements OnInit {
   constructor(
     private kuroshiroService: KuroshiroService,
     private itemsService: ItemsService,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
     this.japaneseWords$ = this.kuroshiroService.japaneseWords$;
+  }
+  ngAfterViewInit() {
+    this.updateTimer(100);
   }
 
   public onSelect(gameItem: Item): void {
@@ -39,6 +46,14 @@ export class GameTableComponent implements OnInit {
     } else {
       console.log('loose');
     }
+  }
+
+  public updateTimer(percentage: number) {
+    const size = 3 * percentage;
+    // this.renderer.setStyle(this.timerWrapper.nativeElement, 'transform', `translateY(calc(((300px - ${size}px) / 2) - 24px))`);
+    this.renderer.setStyle(this.timerWrapper.nativeElement, 'transform', `translateY(calc((300px - ${size}px) / 2))`);
+    this.renderer.setStyle(this.timer.nativeElement, 'width', `${size}px`);
+    this.renderer.setStyle(this.timer.nativeElement, 'transform', `translateX(calc((${size}px + 3px) / 2)) rotate(90deg)`);
   }
 
   private updateGameList(): void {

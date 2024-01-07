@@ -16,7 +16,7 @@ export class GameModeComponent implements OnInit, OnDestroy {
 
   private memory: number[] = [];
   public isSourceColFirst!: boolean;
-  public isDataEmpty = true;
+  public isEnoughData = true;
   public progress = 0;
   public isFirstProgress = true;
 
@@ -40,7 +40,7 @@ export class GameModeComponent implements OnInit, OnDestroy {
         showTarget: false,
         counter: 0
       };
-      this.isDataEmpty = this.items.length === 0;
+      this.isEnoughData = this.items.length >= 3;
       this.memory = [];
       this.isFirstProgress = !this.isFirstProgress;
       this.progress = 0;
@@ -70,8 +70,9 @@ export class GameModeComponent implements OnInit, OnDestroy {
   }
 
   public onPlay(): void {
-    if (this.isDataEmpty) return;
-    this.next();
+    if (this.isEnoughData) {
+      this.next();
+    }
   }
 
   private next(): void {
