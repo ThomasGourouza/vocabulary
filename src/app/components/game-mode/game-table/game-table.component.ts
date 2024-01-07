@@ -90,13 +90,12 @@ export class GameTableComponent implements OnInit, OnDestroy {
 
   private runTime(): void {
     this.updateTimer(3);
-    this.timeSubscription = interval(1000)
+    this.timeSubscription = interval(10)
       .pipe(
-        map(t => 2 - t)
+        map(t => 3 - (t / 100))
       ).subscribe(time => {
-        console.log(time);
         this.updateTimer(time);
-        if (time < 1) {
+        if (time === 0) {
           this.gameOver();
         }
       });
