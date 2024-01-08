@@ -80,18 +80,12 @@
           ></ng-container>
           <ng-template #sourceFirstAnswer>
             <div
-              class="game-select"
               *ngIf="showTarget"
               [ngClass]="{
-                success:
-                  answerIndex === i ||
-                  (selectedIndex === i &&
-                    item?.source === gameItem.source &&
-                    item?.target === gameItem.target),
-                failure:
-                  selectedIndex === i &&
-                  (item?.source !== gameItem.source ||
-                    item?.target !== gameItem.target)
+                'game-select': true,
+                'game-select-pointer': clickable,
+                success: isSuccess(i, gameItem),
+                failure: isFailure(i, gameItem)
               }"
               (click)="onSelect(gameItem)"
               [innerHTML]="
@@ -105,15 +99,8 @@
               [ngClass]="{
                 'game-select': true,
                 'game-select-pointer': clickable,
-                success:
-                  answerIndex === i ||
-                  (selectedIndex === i &&
-                    item?.source === gameItem.source &&
-                    item?.target === gameItem.target),
-                failure:
-                  selectedIndex === i &&
-                  (item?.source !== gameItem.source ||
-                    item?.target !== gameItem.target)
+                success: isSuccess(i, gameItem),
+                failure: isFailure(i, gameItem)
               }"
               (click)="onSelect(gameItem)"
             >

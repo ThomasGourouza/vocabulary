@@ -79,6 +79,19 @@ export class GameTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  public isSuccess(i: number, gameItem: Item): boolean {
+    return this.answerIndex === i ||
+      (this.selectedIndex === i &&
+        this.item?.source === gameItem.source &&
+        this.item?.target === gameItem.target);
+  }
+
+  public isFailure(i: number, gameItem: Item): boolean {
+    return this.selectedIndex === i &&
+      (this.item?.source !== gameItem.source ||
+        this.item?.target !== gameItem.target);
+  }
+
   private gameOver(): void {
     this.clickable = false;
     this.gameService.setTimer$(false);
