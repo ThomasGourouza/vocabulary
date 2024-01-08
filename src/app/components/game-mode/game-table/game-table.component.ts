@@ -51,8 +51,8 @@ export class GameTableComponent implements OnInit, OnDestroy {
       if (value) {
         this.runTime();
       } else {
-        this.updateTimer(0);
         this.timeSubscription.unsubscribe();
+        this.updateTimer(0);
       }
     });
   }
@@ -108,7 +108,8 @@ export class GameTableComponent implements OnInit, OnDestroy {
         map(t => 3 - (t / 100))
       ).subscribe(time => {
         this.updateTimer(time);
-        if (time === 0) {
+        if (time <= 0) {
+          this.answerIndex = this.gameList.indexOf(this.item!);
           this.gameOver();
         }
       });
